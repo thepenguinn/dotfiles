@@ -30,6 +30,9 @@ require('lualine').setup{
 }
 
 -- Testing
+-- require('getnoteshead')
+
+-- Testing
 -- require('daniel')
 
 --require('lualine').hide({
