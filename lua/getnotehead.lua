@@ -30,6 +30,9 @@ function gethead.inject ()
 		line = io.read("l")
 	end
 
+	local line_num = 1
+	local line_col = 0
+
 	if line == "@document.meta" then
 		local time = os.date("%Y-%m-%d")
 		while line ~= "@end" and not string.match(line, "^ *%*+") do
@@ -44,12 +47,22 @@ function gethead.inject ()
 			else
 				notes_head[#notes_head + 1] = line
 			end
+			line_num = line_num + 1
 			line = io.read("l")
 		end
 
-		notes_head[#notes_head + 1] = string.gsub(line, "[Ss]yllabus$", "Notes")
+		notes_head[#notes_head + 1] = line
+		line_num = line_num + 1
 		line = io.read("l")
 	end
+
+	while line == '' do
+		line_num = line_num + 1
+		notes_head[#notes_head + 1] = line
+		line = io.read("l")
+	end
+
+	line_col = math.floor(string.len(line) / 2)
 
 	local pre_head = 0
 	local cur_head
@@ -74,6 +87,7 @@ function gethead.inject ()
 	io.input(pre_io_stream)
 
 	vim.api.nvim_buf_set_lines(0, 0, 0, 0, notes_head)
+	vim.api.nvim_win_set_cursor(0, {line_num, line_col})
 
 end
 
