@@ -10,7 +10,15 @@ function gethead.inject ()
 
 	notes_path = vim.api.nvim_buf_get_name(0)
 
+	if not string.match(notes_path, "%.norg$") then
+		return 1
+	end
+
 	syllabus_path = string.gsub(notes_path, "notes_mod_(%d+.norg)$", "syllabus_mod_%1")
+
+	if notes_path == syllabus_path then
+		return 1
+	end
 
 	pre_io_stream = io.input()
 	new_io_stream = io.open(syllabus_path, "r")

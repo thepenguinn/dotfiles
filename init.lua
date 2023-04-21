@@ -18,8 +18,12 @@ vim.opt.shiftwidth=4
 vim.opt.termguicolors=true
 
 vim.cmd('colorscheme catppuccin')
-vim.cmd(':command GenNoteHead silent r !get-note-heading %:p')
 vim.cmd(":command LuaLineHide silent :lua require('lualine').hide()")
+vim.api.nvim_create_user_command(
+	'GenNoteHead',
+	function () require('getnotehead').inject() end,
+	{ nargs = 0 }
+)
 
 --noremap <leader><leader> /<++><return>c4l
 --inoremap <leader><leader> <esc>/<++><return>c4l
@@ -28,12 +32,6 @@ vim.cmd(":command LuaLineHide silent :lua require('lualine').hide()")
 require('lualine').setup{
 	options = { theme = 'auto' }
 }
-
--- Testing
--- require('getnoteshead')
-
--- Testing
--- require('daniel')
 
 --require('lualine').hide({
 --	place = {'statusline', 'tabline', 'winbar'}, -- The segment this change applies to.
