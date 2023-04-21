@@ -68,6 +68,84 @@ function gethead.inject ()
 	local cur_head
 	local list_level
 
+	--[[ local no_cap = {
+		"and",
+		"as",
+		"as if",
+		"as long as",
+		"at",
+		"but",
+		"by",
+		"even if",
+		"for",
+		"from",
+		"if",
+		"if only",
+		"in",
+		"into",
+		"like",
+		"near",
+		"now that",
+		"nor",
+		"of",
+		"off",
+		"on",
+		"on top of",
+		"once",
+		"onto",
+		"or",
+		"out of",
+		"over",
+		"past",
+		"so",
+		"so that",
+		"than",
+		"that",
+		"till",
+		"to",
+		"up",
+		"upon",
+		"with",
+		"when",
+		"yet"
+	}
+	]]
+
+	local function get_cap(word)
+		local no_cap = {
+			["and"] = "yes",
+			["of"] = "yes",
+			["for"] = "yes",
+			["to"] = "yes",
+			["its"] = "yes",
+			["in"] = "yes",
+			["by"] = "yes",
+			["on"] = "yes",
+			["as"] = "yes",
+			["out"] = "yes",
+		}
+
+		if no_cap[word] then
+			return word
+		else
+			return string.gsub(word, "^%l", string.upper)
+		end
+
+	end
+
+	local function capitalize_word (line)
+		local word
+		local cap_line = nil
+		for word in string.gmatch(line, "%g+") do
+			if cap_line then
+				cap_line = cap_line .. " " .. get_cap(word)
+			else
+				cap_line = get_cap(word)
+			end
+		end
+		return cap_line
+	end
+
 	while line do
 		cur_head = string.match(line, "^*+")
 		list_level = string.match(line, "^ *-+ ")
@@ -76,7 +154,7 @@ function gethead.inject ()
 			notes_head[#notes_head + 1] = line
 		elseif list_level then
 			list_level = string.match(list_level, "-+")
-			notes_head[#notes_head + 1] = string.gsub(line, "^ *-+", string.rep("*", #list_level + pre_head))
+			notes_head[#notes_head + 1] = capitalize_word(string.gsub(line, "^ *-+", string.rep("*", #list_level + pre_head)))
 		else
 			notes_head[#notes_head + 1] = line
 		end
