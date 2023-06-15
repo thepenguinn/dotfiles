@@ -1,4 +1,3 @@
-
 local gethead = {}
 
 function gethead.inject ()
@@ -52,6 +51,8 @@ function gethead.inject ()
 				notes_head[#notes_head + 1] = string.gsub(line, "%d+-%d+-%d+", time)
 			elseif string.match(line , "^updated: ") then
 				notes_head[#notes_head + 1] = string.gsub(line, "%d+-%d+-%d+", time)
+			elseif string.match(line , "^title: ") then
+				notes_head[#notes_head + 1] = string.gsub(line, "[Ss]yllabus", "notes")
 			else
 				notes_head[#notes_head + 1] = line
 			end
@@ -131,6 +132,7 @@ function gethead.inject ()
 			["on"] = "yes",
 			["as"] = "yes",
 			["out"] = "yes",
+			["with"] = "yes",
 		}
 
 		if no_cap[word] then
