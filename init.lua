@@ -1,10 +1,10 @@
---     _       _ _     _             
---   (_)_ __ (_) |_  | |_   _  __ _ 
+--     _       _ _     _
+--   (_)_ __ (_) |_  | |_   _  __ _
 --  | | '_ \| | __| | | | | |/ _` |
 -- | | | | | | |_ _| | |_| | (_| |
 --|_|_| |_|_|\__(_)_|\__,_|\__,_|
 --
---                               
+--
 
 vim.g.mapleader = " "
 vim.opt.rnu=true
@@ -18,6 +18,8 @@ vim.opt.shiftwidth=4
 vim.opt.termguicolors=true
 
 vim.cmd('colorscheme catppuccin')
+vim.api.nvim_set_hl(0, "Normal", {bg = "none"})
+vim.api.nvim_set_hl(0, "NormalFloat", {bg = "none"})
 vim.cmd(":command LuaLineHide silent :lua require('lualine').hide()")
 vim.api.nvim_create_user_command(
 	'GenNoteHead',
@@ -25,8 +27,40 @@ vim.api.nvim_create_user_command(
 	{ nargs = 0 }
 )
 
---noremap <leader><leader> /<++><return>c4l
---inoremap <leader><leader> <esc>/<++><return>c4l
+vim.api.nvim_create_user_command(
+	'GenNoteTemplate',
+	function () require('getnotetemplate').inject() end,
+	{ nargs = 0 }
+)
+
+-- Keymaps --
+
+-- Harpoon --
+vim.keymap.set("n", "<leader>hn", function () require("harpoon.mark").add_file() end)
+vim.keymap.set("n", "<leader>hq", function () require("harpoon.ui").toggle_quick_menu() end)
+vim.keymap.set("n", "<leader>hf", function () require("harpoon.ui").nav_file(1) end)
+vim.keymap.set("n", "<leader>hd", function () require("harpoon.ui").nav_file(2) end)
+vim.keymap.set("n", "<leader>hs", function () require("harpoon.ui").nav_file(3) end)
+vim.keymap.set("n", "<leader>ha", function () require("harpoon.ui").nav_file(4) end)
+
+-- colorizer --
+require('colorizer').setup()
+
+-- clean this --
+vim.api.nvim_create_user_command(
+	'SpaceJumpInsertEnable',
+	function () vim.cmd('inoremap <leader><leader> <esc>/<++><return>c4l') end,
+	{ nargs = 0 }
+)
+
+vim.api.nvim_create_user_command(
+	'SpaceJumpInsertDisable',
+	function () vim.cmd('iunmap <leader><leader>') end,
+	{ nargs = 0 }
+)
+
+vim.cmd('noremap <leader><leader> /<++><return>c4l')
+-- vim.cmd('inoremap <leader><leader> <esc>/<++><return>c4l')
 
 --require('feline').setup()
 require('lualine').setup{
@@ -40,15 +74,15 @@ require('lualine').setup{
 
 
 require 'nvim-treesitter.configs'.setup {
-	ensure_installed = { 'c', 'norg', 'bash', 'lua' },
+	ensure_installed = { 'c', 'markdown', 'python', 'cpp', 'norg', 'bash', 'lua', 'make', 'latex' },
 	highlight = {
 		enable = true,
-		additional_vim_regex_highlighting = false,
+		additional_vim_regex_highlighting = true,
+	},
+	indent = {
+		enable = true,
 	}
-	--indent = {
-		--	enable = false,
-		--}
-	}
+}
 
 --lua require('colorizer').setup() something is wrong here
 require('packer').startup()
@@ -57,7 +91,3 @@ require('plugins')
 
 --plugins blah
 require('colorizer')
-
-
-
-

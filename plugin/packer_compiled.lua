@@ -79,16 +79,26 @@ _G.packer_plugins = {
     path = "/data/data/com.termux/files/home/.local/share/nvim/site/pack/packer/start/catppuccin",
     url = "https://github.com/catppuccin/nvim"
   },
+  harpoon = {
+    loaded = true,
+    path = "/data/data/com.termux/files/home/.local/share/nvim/site/pack/packer/start/harpoon",
+    url = "https://github.com/ThePrimeagen/harpoon"
+  },
   ["lualine.nvim"] = {
     loaded = true,
     path = "/data/data/com.termux/files/home/.local/share/nvim/site/pack/packer/start/lualine.nvim",
     url = "https://github.com/nvim-lualine/lualine.nvim"
   },
   neorg = {
-    config = { "\27LJ\2\n¾\3\0\0\a\0\26\0%6\0\0\0'\2\1\0B\0\2\0029\0\2\0005\2\24\0005\3\3\0004\4\0\0=\4\4\0035\4\6\0005\5\5\0=\5\a\4=\4\b\0034\4\0\0=\4\t\0034\4\0\0=\4\n\0034\4\0\0=\4\v\0035\4\r\0005\5\f\0=\5\a\4=\4\14\0035\4\16\0005\5\15\0=\5\a\4=\4\17\0034\4\0\0=\4\18\0035\4\22\0005\5\20\0005\6\19\0=\6\21\5=\5\a\4=\4\23\3=\3\25\2B\0\2\1K\0\1\0\tload\1\0\0\21core.norg.dirman\1\0\0\15workspaces\1\0\0\1\0\1\nnotes\f~/notes\23core.looking-glass\20core.highlights\1\0\0\1\0\1\27todo_items_match_color\ball\25core.export.markdown\1\0\0\1\0\1\15extensions\ball\16core.export\15core.promo\15core.itero\24core.norg.concealer\vconfig\1\0\0\1\0\1\16icon_preset\nbasic\18core.defaults\1\0\0\nsetup\nneorg\frequire\0" },
+    config = { "\27LJ\2\nµ\3\0\0\a\0\26\0%6\0\0\0'\2\1\0B\0\2\0029\0\2\0005\2\24\0005\3\3\0004\4\0\0=\4\4\0035\4\6\0005\5\5\0=\5\a\4=\4\b\0034\4\0\0=\4\t\0034\4\0\0=\4\n\0034\4\0\0=\4\v\0035\4\r\0005\5\f\0=\5\a\4=\4\14\0035\4\16\0005\5\15\0=\5\a\4=\4\17\0034\4\0\0=\4\18\0035\4\22\0005\5\20\0005\6\19\0=\6\21\5=\5\a\4=\4\23\3=\3\25\2B\0\2\1K\0\1\0\tload\1\0\0\16core.dirman\1\0\0\15workspaces\1\0\0\1\0\1\nnotes\f~/notes\23core.looking-glass\20core.highlights\1\0\0\1\0\1\27todo_items_match_color\ball\25core.export.markdown\1\0\0\1\0\1\15extensions\ball\16core.export\15core.promo\15core.itero\20core..concealer\vconfig\1\0\0\1\0\1\16icon_preset\nbasic\18core.defaults\1\0\0\nsetup\nneorg\frequire\0" },
     loaded = true,
     path = "/data/data/com.termux/files/home/.local/share/nvim/site/pack/packer/start/neorg",
     url = "https://github.com/nvim-neorg/neorg"
+  },
+  ["nvim-colorizer.lua"] = {
+    loaded = true,
+    path = "/data/data/com.termux/files/home/.local/share/nvim/site/pack/packer/start/nvim-colorizer.lua",
+    url = "https://github.com/norcalli/nvim-colorizer.lua"
   },
   ["nvim-treesitter"] = {
     loaded = true,
@@ -117,6 +127,12 @@ _G.packer_plugins = {
     path = "/data/data/com.termux/files/home/.local/share/nvim/site/pack/packer/start/pretty-fold.nvim",
     url = "https://github.com/anuvyklack/pretty-fold.nvim"
   },
+  ["trim.nvim"] = {
+    config = { "\27LJ\2\n6\0\0\3\0\3\0\a6\0\0\0'\2\1\0B\0\2\0029\0\2\0004\2\0\0B\0\2\1K\0\1\0\nsetup\ttrim\frequire\0" },
+    loaded = true,
+    path = "/data/data/com.termux/files/home/.local/share/nvim/site/pack/packer/start/trim.nvim",
+    url = "https://github.com/cappyzawa/trim.nvim"
+  },
   ["true-zen.nvim"] = {
     config = { "\27LJ\2\n:\0\0\3\0\3\0\a6\0\0\0'\2\1\0B\0\2\0029\0\2\0004\2\0\0B\0\2\1K\0\1\0\nsetup\rtrue-zen\frequire\0" },
     loaded = true,
@@ -126,18 +142,22 @@ _G.packer_plugins = {
 }
 
 time([[Defining packer_plugins]], false)
--- Config for: true-zen.nvim
-time([[Config for true-zen.nvim]], true)
-try_loadstring("\27LJ\2\n:\0\0\3\0\3\0\a6\0\0\0'\2\1\0B\0\2\0029\0\2\0004\2\0\0B\0\2\1K\0\1\0\nsetup\rtrue-zen\frequire\0", "config", "true-zen.nvim")
-time([[Config for true-zen.nvim]], false)
--- Config for: neorg
-time([[Config for neorg]], true)
-try_loadstring("\27LJ\2\n¾\3\0\0\a\0\26\0%6\0\0\0'\2\1\0B\0\2\0029\0\2\0005\2\24\0005\3\3\0004\4\0\0=\4\4\0035\4\6\0005\5\5\0=\5\a\4=\4\b\0034\4\0\0=\4\t\0034\4\0\0=\4\n\0034\4\0\0=\4\v\0035\4\r\0005\5\f\0=\5\a\4=\4\14\0035\4\16\0005\5\15\0=\5\a\4=\4\17\0034\4\0\0=\4\18\0035\4\22\0005\5\20\0005\6\19\0=\6\21\5=\5\a\4=\4\23\3=\3\25\2B\0\2\1K\0\1\0\tload\1\0\0\21core.norg.dirman\1\0\0\15workspaces\1\0\0\1\0\1\nnotes\f~/notes\23core.looking-glass\20core.highlights\1\0\0\1\0\1\27todo_items_match_color\ball\25core.export.markdown\1\0\0\1\0\1\15extensions\ball\16core.export\15core.promo\15core.itero\24core.norg.concealer\vconfig\1\0\0\1\0\1\16icon_preset\nbasic\18core.defaults\1\0\0\nsetup\nneorg\frequire\0", "config", "neorg")
-time([[Config for neorg]], false)
 -- Config for: pretty-fold.nvim
 time([[Config for pretty-fold.nvim]], true)
 try_loadstring("\27LJ\2\n9\0\0\3\0\3\0\0066\0\0\0'\2\1\0B\0\2\0029\0\2\0B\0\1\1K\0\1\0\nsetup\16pretty-fold\frequire\0", "config", "pretty-fold.nvim")
 time([[Config for pretty-fold.nvim]], false)
+-- Config for: neorg
+time([[Config for neorg]], true)
+try_loadstring("\27LJ\2\nµ\3\0\0\a\0\26\0%6\0\0\0'\2\1\0B\0\2\0029\0\2\0005\2\24\0005\3\3\0004\4\0\0=\4\4\0035\4\6\0005\5\5\0=\5\a\4=\4\b\0034\4\0\0=\4\t\0034\4\0\0=\4\n\0034\4\0\0=\4\v\0035\4\r\0005\5\f\0=\5\a\4=\4\14\0035\4\16\0005\5\15\0=\5\a\4=\4\17\0034\4\0\0=\4\18\0035\4\22\0005\5\20\0005\6\19\0=\6\21\5=\5\a\4=\4\23\3=\3\25\2B\0\2\1K\0\1\0\tload\1\0\0\16core.dirman\1\0\0\15workspaces\1\0\0\1\0\1\nnotes\f~/notes\23core.looking-glass\20core.highlights\1\0\0\1\0\1\27todo_items_match_color\ball\25core.export.markdown\1\0\0\1\0\1\15extensions\ball\16core.export\15core.promo\15core.itero\20core..concealer\vconfig\1\0\0\1\0\1\16icon_preset\nbasic\18core.defaults\1\0\0\nsetup\nneorg\frequire\0", "config", "neorg")
+time([[Config for neorg]], false)
+-- Config for: trim.nvim
+time([[Config for trim.nvim]], true)
+try_loadstring("\27LJ\2\n6\0\0\3\0\3\0\a6\0\0\0'\2\1\0B\0\2\0029\0\2\0004\2\0\0B\0\2\1K\0\1\0\nsetup\ttrim\frequire\0", "config", "trim.nvim")
+time([[Config for trim.nvim]], false)
+-- Config for: true-zen.nvim
+time([[Config for true-zen.nvim]], true)
+try_loadstring("\27LJ\2\n:\0\0\3\0\3\0\a6\0\0\0'\2\1\0B\0\2\0029\0\2\0004\2\0\0B\0\2\1K\0\1\0\nsetup\rtrue-zen\frequire\0", "config", "true-zen.nvim")
+time([[Config for true-zen.nvim]], false)
 
 _G._packer.inside_compile = false
 if _G._packer.needs_bufread == true then

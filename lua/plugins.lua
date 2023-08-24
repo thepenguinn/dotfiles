@@ -8,7 +8,14 @@ return require('packer').startup(function()
 	use 'norcalli/nvim-colorizer.lua'
 	use 'wbthomason/packer.nvim'
 	use 'nvim-lua/plenary.nvim'
+	use 'ThePrimeagen/harpoon'
 	use 'nvim-treesitter/nvim-treesitter'
+	use({
+		"cappyzawa/trim.nvim",
+		config = function()
+			require("trim").setup({})
+		end
+	})
 	use({
 		"Pocco81/true-zen.nvim",
 		config = function()
@@ -30,22 +37,22 @@ return require('packer').startup(function()
 		requires = { 'kyazdani42/nvim-web-devicons', opt = true }
 	}
 	--use {
-		--	"folke/zen-mode.nvim",
-		--	config = function()
-			--		require("zen-mode").setup {
-				--			-- your configuration comes here
-				--			-- or leave it empty to use the default settings
-				--			-- refer to the configuration section below
-				--		}
-				--	end
-				--}
+	--	"folke/zen-mode.nvim",
+	--	config = function()
+	--		require("zen-mode").setup {
+	--			-- your configuration comes here
+	--			-- or leave it empty to use the default settings
+	--			-- refer to the configuration section below
+	--		}
+	--	end
+	--}
 	use {
 		"nvim-neorg/neorg",
 		config = function()
 			require('neorg').setup {
 				load = {
 					["core.defaults"] = {}, -- Loads default behaviour
-					["core.norg.concealer"] = {
+					["core..concealer"] = {
 						config = {
 							icon_preset = "basic",
 						},
@@ -64,17 +71,17 @@ return require('packer').startup(function()
 						},
 					},
 					["core.looking-glass"] = {},
-					["core.norg.dirman"] = { -- Manages Neorg workspaces
-					config = {
-						workspaces = {
-							notes = "~/notes",
+					["core.dirman"] = { -- Manages Neorg workspaces
+						config = {
+							workspaces = {
+								notes = "~/notes",
+							},
 						},
 					},
 				},
-			},
-		}
-	end,
-	--run = ":Neorg sync-parsers",
-	requires = "nvim-lua/plenary.nvim",
-}
-		end)
+			}
+		end,
+		--run = ":Neorg sync-parsers",
+		requires = "nvim-lua/plenary.nvim",
+	}
+end)
