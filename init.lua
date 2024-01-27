@@ -13,6 +13,8 @@ vim.opt.scrolloff=6
 vim.opt.tabstop=4
 vim.opt.softtabstop=4
 vim.opt.shiftwidth=4
+vim.opt.laststatus=3
+vim.opt.expandtab=true
 --vim.opt.listchars="tab:\|\ "
 --vim.opt.list=true
 vim.opt.termguicolors=true
@@ -33,6 +35,21 @@ vim.api.nvim_create_user_command(
 	{ nargs = 0 }
 )
 
+-- Testing --
+
+-- require('noteconverter').testing()
+
+vim.api.nvim_create_user_command(
+	'NotesTesting',
+	function () require('neorg.modules.external.notes.module').public.ok() end,
+	{ nargs = 0 }
+)
+
+vim.api.nvim_create_user_command(
+	'AddNode',
+	function () require('neorg.modules.external.notes.module').public.read_config() end,
+	{ nargs = 0 }
+)
 -- Keymaps --
 
 -- Harpoon --
@@ -74,7 +91,7 @@ require('lualine').setup{
 
 
 require 'nvim-treesitter.configs'.setup {
-	ensure_installed = { 'c', 'markdown', 'python', 'cpp', 'norg', 'bash', 'lua', 'make', 'latex' },
+	ensure_installed = { 'c', 'kotlin', 'markdown', 'python', 'java', 'cpp', 'norg', 'bash', 'lua', 'make', 'latex' },
 	highlight = {
 		enable = true,
 		additional_vim_regex_highlighting = true,
