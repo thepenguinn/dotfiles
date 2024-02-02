@@ -31,8 +31,6 @@ export PATH=${ANDROID_HOME}/cmdline-tools/latest/bin:${ANDROID_HOME}/platform-to
 
 # SOURCES
 
-# TODO: REMOVE THIS FROM HERE
-
 export JF_MAC_ADDR="00:0a:f5:89:89:ff"
 export JF_USER_NAME="u0_a246"
 
