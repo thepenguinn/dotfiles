@@ -1,0 +1,26 @@
+[user]
+	name = Daniel V Mathew
+	email = danielvmathew27@gmail.com
+[core]
+	editor = "TERM=screen-256color nvim"
+[safe]
+	directory = /storage/emulated/0/notes
+	directory = /storage/emulated/0/src/scripts/kdb
+	directory = /storage/emulated/0src/scripts/epubconv
+	directory = /storage/emulated/0/src/scripts/epubconv
+	directory = /storage/emulated/0/src/scripts/hai
+	directory = /storage/emulated/0/src/dots/nvim
+	directory = /storage/emulated/0/src/git
+	directory = /storage/emulated/0/src/matrix
+	directory = /storage/emulated/0/oldsrc/src/dmenu
+	directory = /storage/emulated/0/oldsrc/src/st
+	directory = /storage/emulated/0/src/fuck/matrix
+	directory = /storage/emulated/0/src/st
+	directory = /storage/emulated/0/src/project/ec
+	directory = /storage/emulated/0/src/scripts/splitpdf
+	directory = /storage/emulated/0/src/nvim/notes
+	directory = /storage/emulated/0/src/project/sust/soldering-station
+	directory = /storage/emulated/0/src/project/sust/crystal-radio
+	directory = /storage/emulated/0/src/project/alu
+	directory = /storage/emulated/0/oldsrc/src/dwm
+	directory = /storage/emulated/0/src/dots/dotfiles
