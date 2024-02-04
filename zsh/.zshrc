@@ -40,7 +40,7 @@ ssh() {
 	local user_name="$JF_USER_NAME"
 	local jf_mac_addr="$JF_MAC_ADDR"
 
-	ssh-add -l > /dev/null 2>&1 || ssh-add
+	ssh-add -l | grep "root@localhost" > /dev/null 2>&1 || ssh-add
 
 	if [[ "$1" == "jf" ]]; then
 		if [[ "$#" -gt 1 ]]; then
@@ -64,7 +64,7 @@ rsync() {
 	local i
 	local lastarg=${@[$#]}
 
-	ssh-add -l > /dev/null 2>&1 || ssh-add
+	ssh-add -l | grep "root@localhost" > /dev/null 2>&1 || ssh-add
 
 	if [[ "$1" =~ "^ *jf:" ]]; then
 		remote="$user_name@$(ip neigh | grep "$jf_mac_addr" | grep "\." | cut -d" " -f1)"
