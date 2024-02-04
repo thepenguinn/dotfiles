@@ -34,6 +34,8 @@ export PATH=${ANDROID_HOME}/cmdline-tools/latest/bin:${ANDROID_HOME}/platform-to
 export JF_MAC_ADDR="00:0a:f5:89:89:ff"
 export JF_USER_NAME="u0_a246"
 
+export KINDLE_MAC_ADDR="f4:03:2a:d5:42:6c"
+
 ssh() {
 	local user_name="$JF_USER_NAME"
 	local jf_mac_addr="$JF_MAC_ADDR"
