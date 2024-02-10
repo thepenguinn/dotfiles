@@ -40,3 +40,5 @@ require('colorizer')
 
 -- TODO: SEPERATE KEYBINDINGS TO SOME OTHER FILE --
 vim.cmd('noremap <leader><leader> /<++><return>c4l')
+
+require("slides")
