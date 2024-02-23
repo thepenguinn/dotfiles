@@ -24,7 +24,8 @@ local function create_graph()
             for _, line in ia, ib, 1 do
                 cmd_str = cmd_str .. line .. "\n"
             end
-            cmd_str = cmd_str .. "\" | graph-easy --as=boxart"
+            cmd_str = cmd_str .. "\" | graph-easy --ascii 2>&1"
+            -- cmd_str = cmd_str .. "\" | graph-easy --as=boxart 2>&1"
 
             fd = io.popen(cmd_str)
             graph_str = fd:read("a")
