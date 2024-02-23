@@ -94,6 +94,19 @@ rsync() {
 	fi
 }
 
+# In $HOME/.bashrc file
+
+function gradlew {
+    file="./gradlew"
+    if test -f "$file" ; then
+        bash $file -Pandroid.aapt2FromMavenOverride=$HOME/./android-sdk/build-tools/34.0.4/aapt2 $@
+    else
+        echo "Invoke this command from a project's root directory."
+    fi
+}
+
+export -f gradlew
+
 # BLINKY BLANKY LINES
 
 eval "$(starship init zsh)"
