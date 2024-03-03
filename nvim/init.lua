@@ -41,4 +41,23 @@ require('colorizer')
 -- TODO: SEPERATE KEYBINDINGS TO SOME OTHER FILE --
 vim.cmd('noremap <leader><leader> /<++><return>c4l')
 
-require("slides")
+-- REMOVE THIS FROM HERE
+--
+
+local slides_group = vim.api.nvim_create_augroup("SlidesGroup", {clear = true})
+
+vim.api.nvim_create_autocmd({"BufEnter"}, {
+    pattern = {"*.md"},
+    callback = function()
+        vim.keymap.set("n", "<leader>og", require("slides").create_graph)
+    end,
+    group = slides_group,
+})
+
+vim.api.nvim_create_autocmd({"BufLeave"}, {
+    pattern = {"*.md"},
+    callback = function()
+        vim.keymap.del("n", "<leader>og")
+    end,
+    group = slides_group,
+})
