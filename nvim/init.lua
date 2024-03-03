@@ -46,10 +46,13 @@ vim.cmd('noremap <leader><leader> /<++><return>c4l')
 
 local slides_group = vim.api.nvim_create_augroup("SlidesGroup", {clear = true})
 
+require("slides")
+
 vim.api.nvim_create_autocmd({"BufEnter"}, {
     pattern = {"*.md"},
     callback = function()
         vim.keymap.set("n", "<leader>og", require("slides").create_graph)
+        vim.api.nvim_create_user_command("ExportGraph", require("slides").export_graph, {})
     end,
     group = slides_group,
 })
@@ -58,6 +61,7 @@ vim.api.nvim_create_autocmd({"BufLeave"}, {
     pattern = {"*.md"},
     callback = function()
         vim.keymap.del("n", "<leader>og")
+        vim.api.nvim_del_user_command("ExportGraph")
     end,
     group = slides_group,
 })
