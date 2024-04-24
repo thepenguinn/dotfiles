@@ -21,7 +21,7 @@ return {
             -- Generic asm parser for tree-sitter
             require('nvim-treesitter.parsers').get_parser_configs().asm = {
                 install_info = {
-                    url = 'https://github.com/rush-rs/tree-sitter-asm.git',
+                    url = 'https://github.com/thepenguinn/tree-sitter-mc51.git',
                     files = { 'src/parser.c' },
                     branch = 'main',
                 },
