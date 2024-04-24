@@ -5,6 +5,10 @@
 # (_)___|___/_| |_|_|  \___|
 #
 
+if [[ $(whoami) != "daniel" ]] && [[ -z $TMUX ]] && ! tmux has-session -t general 2>/dev/null; then
+    ~/.local/bin/tss gen
+fi
+
 autoload -U compinit && compinit
 zmodload -i zsh/complist
 
@@ -105,12 +109,19 @@ function gradlew {
     fi
 }
 
-export -f gradlew
+export gradlew
+
+function dg () {
+
+    local query=$(echo "${@}" | tr ' ' ''+)
+
+    w3m "https://lite.duckduckgo.com/lite/?q=${query}"
+}
 
 # BLINKY BLANKY LINES
 
-eval "$(starship init zsh)"
-eval "$(ssh-agent -s)"
+eval "$(starship init zsh)" > /dev/null
+eval "$(ssh-agent -s)" > /dev/null
 
 clear
 pfetch
