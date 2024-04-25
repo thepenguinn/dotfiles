@@ -1,0 +1,7 @@
+#!/bin/bash
+
+tmux send-keys -t ily:0 "proot-distro login archlinux --termux-home --user daniel" Enter
+tmux send-keys -t ily:0 "cd ~/projects/ily" Enter
+tmux new-window -t ily
+tmux send-keys -t ily:1 "cd ~/projects/ily" Enter "nvim" Enter " hf"
+tmux new-window -t ily "python && zsh"
