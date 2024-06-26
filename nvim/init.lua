@@ -39,7 +39,10 @@ require("lazy").setup( "plugins" )
 require('colorizer')
 
 -- TODO: SEPERATE KEYBINDINGS TO SOME OTHER FILE --
-vim.cmd('noremap <leader><leader> /<++><return>c4l')
+vim.keymap.set('n', '<leader><leader>', '/<++><return>c4l', { noremap = true })
+vim.keymap.set('n', '<C-d>', '<C-d>zz', { noremap = true })
+vim.keymap.set('n', '<C-u>', '<C-u>zz', { noremap = true })
+vim.keymap.set('v', '<leader>p', '\"_dP', nil)
 
 -- REMOVE THIS FROM HERE
 --
