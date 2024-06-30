@@ -1,0 +1,14 @@
+#!/bin/bash
+
+tmux send-keys -t sdl:0 "cd ~/projects/sdl" Enter
+tmux split-window -t sdl:0
+tmux send-keys -t sdl:0.1 "cd ~/projects/sdl" Enter "clear" Enter "python" Enter
+tmux resize-pane -t sdl:0.0 -Z
+
+tmux new-window -t sdl
+tmux send-keys -t sdl:1 "cd ~/projects/sdl" Enter "nvim" Enter " hf"
+
+tmux new-window -t sdl
+tmux send-keys -t sdl:2 "w3m duckduckgo.com" Enter
+
+tmux switch-client -t sdl:1
