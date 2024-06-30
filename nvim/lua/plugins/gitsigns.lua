@@ -30,16 +30,13 @@ return {
                     -- U+25CD	◍	Circle with vertical fill
                     -- U+25CE	◎	Bullseye
                     -- U+25CF	●	Black
-                    -- Notes
-                    -- 1.^ As of Unicode version 15.1
-                    --
-                    --
-                    --
                     add          = { text = '┃' },
                     change       = { text = '┃' },
-                    delete       = { text = '╻' },
+                    -- delete       = { text = '╻' },
+                    delete       = { text = '▼' },
                     topdelete    = { text = '●' },
-                    changedelete = { text = '╹' },
+                    -- changedelete = { text = '╹' },
+                    changedelete = { text = '▲' },
                     untracked    = { text = '┇' },
                 },
                 signcolumn = true,  -- Toggle with `:Gitsigns toggle_signs`
