@@ -21,10 +21,11 @@ alias nvim="TERM=screen-256color nvim"
 
 # EXPORTS
 
-export "PATH=${PATH}:${HOME}/.local/bin:${HOME}/go/bin:${HOME}/.cargo/bin"
-export "GTYPIST_PATH=/data/data/com.termux/files/usr/share/gtypist:"
-export "MATHLIB=m"
-export "TERM=xterm-256color"
+export PATH="${PATH}:${HOME}/.local/bin:${HOME}/go/bin:${HOME}/.cargo/bin"
+export GTYPIST_PATH="/data/data/com.termux/files/usr/share/gtypist:"
+export MATHLIB="m"
+export TERM="xterm-256color"
+export EDITOR="TERM=screen-256color nvim"
 
 export ANDROID_SDK_ROOT=${HOME}/android-sdk
 export ANDROID_HOME=${HOME}/android-sdk
