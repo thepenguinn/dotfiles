@@ -1,12 +1,16 @@
-
 palette = "catppuccin_mocha"
 
 
 [character]
 # Note the use of Catppuccin color 'maroon'
-success_symbol = "[❯](green)"
-error_symbol = "[❯](red)"
-vicmd_symbol = "[❮](maroon)"
+# success_symbol = "[❯](green)"
+# error_symbol = "[❯](red)"
+# vicmd_symbol = "[❮](maroon)"
+
+# ❰❱
+success_symbol = "[❱](green)"
+error_symbol = "[❱](red)"
+vicmd_symbol = "[❰](maroon)"
 
 [directory]
 truncation_length = 4
