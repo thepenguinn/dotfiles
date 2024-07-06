@@ -18,6 +18,8 @@ vim.opt.expandtab = true
 
 vim.opt.termguicolors = true
 
+vim.opt.inccommand = "split"
+
 -- SETTING UP LAZY --
 
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"

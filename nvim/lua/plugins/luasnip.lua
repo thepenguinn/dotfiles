@@ -26,10 +26,14 @@ return {
                 end
             end, {silent = true})
 
+            ls.config.set_config({
+                updateevents = "TextChanged,TextChangedI",
+            })
+
             -- TESTING SNIPPETS --
 
             local s = ls.snippet
-            -- local sn = ls.snippet_node
+            local sn = ls.snippet_node
             local t = ls.text_node
             local i = ls.insert_node
             local f = ls.function_node
@@ -37,6 +41,7 @@ return {
             -- local d = ls.dynamic_node
             -- local r = ls.restore_node
             local fmt = require("luasnip.extras.fmt").fmt
+            local rep = require("luasnip.extras").rep
             --
             local function copy (st)
                 return st[0]
@@ -125,6 +130,61 @@ return {
                     class_body = i(0)
 
                 })),
+
+            })
+
+            ls.add_snippets("tex", {
+
+                s("bl", fmt(
+                    "\\begin{{{block_name_begin}}}{optional_args}\n"
+                    .. "\t{block_body}\n"
+                    .. "\\end{{{block_name_end}}}"
+                    , {
+                        block_name_begin = i(1),
+                        optional_args = c(2, {
+                            t(""),
+                            sn(nil, { t(" ["), i(1), t("]") })
+                        }),
+                        block_body = i(0),
+                        block_name_end = rep(1),
+                    })),
+
+                s("sctk", fmt(
+                    "\\ctikzsubcircuitdef{{{subctk_def_name}}} {{\n"
+                    .. "\torigin{subctk_anchors}%\n"
+                    .. "}} {{\n"
+                    .. "\tcoordinate (#1-origin)\n"
+                    .. "\t{subctk_body}\n"
+                    .. "}}\n"
+                    .. "\n"
+                    .. "\\ctikzsubcircuitactivate{{{subctk_act_name}}}\n"
+                    , {
+                        subctk_def_name = i(1),
+                        subctk_anchors = i(2),
+                        subctk_body = i(0),
+                        subctk_act_name = rep(1)
+                    })),
+
+                s("wtin", fmt(
+                    "node ({node_name}) [{optional_node_args}] {{\n"
+                    .. "\t\\begin{{tikzpicture}} [{optional_tikz_args}]\n"
+                    .. "\t\t\\draw [{optional_draw_args}]\n"
+                    .. "\t\t{draw_body}\n"
+                    .. "\t\t;\n"
+                    .. "\t\\end{{tikzpicture}}\n"
+                    .. "}}"
+                    , {
+                        node_name = i(1, "#1"),
+                        optional_node_args = c(2, {
+                            sn(nil, fmt("inner sep = {inner_sep}, anchor = center", {
+                                inner_sep = i(1, "0pt"),
+                            })),
+                            i(nil),
+                        }),
+                        optional_tikz_args = i(3),
+                        optional_draw_args = i(4),
+                        draw_body = i(0),
+                    })),
 
             })
 
