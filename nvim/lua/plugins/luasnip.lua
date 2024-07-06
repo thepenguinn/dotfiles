@@ -18,7 +18,6 @@ return {
                 {silent = true}
             )
 
-            -- vim.keymap.set({"i", "s"}, "<C-L>", function() ls.jump( 1) end, {silent = true})
             vim.keymap.set({"i", "s"}, "<C-J>", function() ls.jump(-1) end, {silent = true})
 
             vim.keymap.set({"i", "s"}, "<C-L>", function()
@@ -34,10 +33,10 @@ return {
             local t = ls.text_node
             local i = ls.insert_node
             local f = ls.function_node
-            -- local c = ls.choice_node
+            local c = ls.choice_node
             -- local d = ls.dynamic_node
             -- local r = ls.restore_node
-            --
+            local fmt = require("luasnip.extras.fmt").fmt
             --
             local function copy (st)
                 return st[0]
@@ -84,22 +83,35 @@ return {
                 return ""
             end
 
-            ls.add_snippets("all", {
-                s("def", {
-                    t("def "),
-                    i(1),
+            ls.add_snippets("python", {
 
-                    t(" ("),
-                    f(get_first_arg, nil),
+                s("shit", fmt("just something \nelse {here}", {
+                    here = t("hai")
+                })),
 
-                    i(2),
-                    t(") -> "),
-                    i(3, "None"),
-                    t({":", "\t"}),
-                    i(0),
-                    t({"", "\t"}),
-                    t("return"),
-                }),
+                s("adef", fmt(
+                    "async def {func_name} ({first_arg}{more_args}) -> {return_type}:\n\t{func_body}\n\t{return_statement}",
+                    {
+                        func_name = i(1),
+                        first_arg = f(get_first_arg, nil),
+                        more_args = i(2),
+                        return_type = i(3, "None"),
+                        func_body = i(0),
+                        return_statement = c(4, {t("return"), t("")})
+                    }
+                )),
+
+                s("def", fmt(
+                    "def {func_name} ({first_arg}{more_args}) -> {return_type}:\n\t{func_body}\n\t{return_statement}",
+                    {
+                        func_name = i(1),
+                        first_arg = f(get_first_arg, nil),
+                        more_args = i(2),
+                        return_type = i(3, "None"),
+                        func_body = i(0),
+                        return_statement = c(4, {t("return"), t("")})
+                    }
+                )),
 
                 s("vr", {
                     i(1),
@@ -107,13 +119,12 @@ return {
                     i(0),
                 }),
 
-                s("cls", {
-                    t("class "),
-                    i(1),
-                    t(" ("),
-                    i(0),
-                    t("):"),
-                }),
+                s("cls", fmt("class {class_name} ({super_classes}):\n\t{class_body}", {
+                    class_name = i(1),
+                    super_classes = i(2),
+                    class_body = i(0)
+
+                })),
 
             })
 
