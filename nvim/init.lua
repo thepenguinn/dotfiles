@@ -44,8 +44,8 @@ vim.keymap.set('n', '<C-d>', '<C-d>zz', { noremap = true })
 vim.keymap.set('n', '<C-u>', '<C-u>zz', { noremap = true })
 vim.keymap.set('v', '<leader>p', '\"_dP', nil)
 
-vim.keymap.set("v", "<C-j>", ":m '>+1<CR>gv=gv")
-vim.keymap.set("v", "<C-k>", ":m '<-2<CR>gv=gv")
+vim.keymap.set("x", "<C-j>", ":m '>+1<CR>gv=gv")
+vim.keymap.set("x", "<C-k>", ":m '<-2<CR>gv=gv")
 
 -- REMOVE THIS FROM HERE
 --
