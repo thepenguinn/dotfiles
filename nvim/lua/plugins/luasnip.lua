@@ -138,8 +138,8 @@ return {
                 s("bl", fmt(
                     "\\begin{{{block_name_begin}}}{optional_args}\n"
                     .. "\t{block_body}\n"
-                    .. "\\end{{{block_name_end}}}"
-                    , {
+                    .. "\\end{{{block_name_end}}}",
+                    {
                         block_name_begin = i(1),
                         optional_args = c(2, {
                             t(""),
@@ -157,8 +157,8 @@ return {
                     .. "\t{subctk_body}\n"
                     .. "}}\n"
                     .. "\n"
-                    .. "\\ctikzsubcircuitactivate{{{subctk_act_name}}}\n"
-                    , {
+                    .. "\\ctikzsubcircuitactivate{{{subctk_act_name}}}\n",
+                    {
                         subctk_def_name = i(1),
                         subctk_anchors = i(2),
                         subctk_body = i(0),
@@ -172,8 +172,8 @@ return {
                     .. "\t\t{draw_body}\n"
                     .. "\t\t;\n"
                     .. "\t\\end{{tikzpicture}}\n"
-                    .. "}}"
-                    , {
+                    .. "}}",
+                    {
                         node_name = i(1, "#1"),
                         optional_node_args = c(2, {
                             sn(nil, fmt("inner sep = {inner_sep}, anchor = center", {
@@ -184,6 +184,16 @@ return {
                         optional_tikz_args = i(3),
                         optional_draw_args = i(4),
                         draw_body = i(0),
+                    })),
+
+                s("ncmd", fmt(
+                    "\\newcommand\\{command_name} [{arg_count}] {{\n"
+                    .. "\t{command_body}\n"
+                    .. "}}",
+                    {
+                        command_name = i(1),
+                        arg_count = i(2, "1"),
+                        command_body = i(0),
                     })),
 
             })
