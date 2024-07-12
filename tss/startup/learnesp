@@ -4,7 +4,7 @@ tmux send-keys -t learnesp:0 "cd ~/projects/learnesp" Enter
 tmux new-window -t learnesp
 tmux send-keys -t learnesp:1 "cd ~/projects/learnesp" Enter "nvim" Enter
 tmux new-window -t learnesp
-tmux send-keys -t learnesp:2 "proot-distro login archlinux --termux-home --user daniel" Enter
+tmux send-keys -t learnesp:2 "ssh arch" Enter
 tmux send-keys -t learnesp:2 "cd ~/projects/learnesp" Enter
 tmux new-window -t learnesp
 tmux send-keys -t learnesp:3 "w3m duckduckgo.com" Enter
