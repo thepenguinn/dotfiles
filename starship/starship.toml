@@ -20,6 +20,15 @@ vicmd_symbol = "[❰](maroon)"
 ## error_symbol = "[❱](red)"
 ## vicmd_symbol = "[❰](gold)"
 
+[username]
+style_user = 'rosewater bold'
+style_root = 'red bold'
+format = '[$user]($style) '
+disabled = false
+
+[hostname]
+disabled = true
+
 [directory]
 truncation_length = 4
 
