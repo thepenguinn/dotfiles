@@ -23,7 +23,7 @@ vicmd_symbol = "[❰](maroon)"
 [username]
 style_user = 'rosewater bold'
 style_root = 'red bold'
-format = '[$user]($style) '
+format = '[$user]($style) in '
 disabled = false
 
 [hostname]
