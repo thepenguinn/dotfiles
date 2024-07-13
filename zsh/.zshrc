@@ -45,9 +45,9 @@ ssh() {
 	local user_name="$JF_USER_NAME"
 	local jf_mac_addr="$JF_MAC_ADDR"
 
-	ssh-add -l | grep "root@localhost" > /dev/null 2>&1 || ssh-add
 
 	if [[ "$1" == "jf" ]]; then
+        ssh-add -l | grep "root@localhost" > /dev/null 2>&1 || ssh-add
 		if [[ "$#" -gt 1 ]]; then
 			command ssh -o StrictHostKeyChecking=no -p 8022 ${user_name}@$(ip neigh | grep "${jf_mac_addr}" | grep "\." | cut -d" " -f1) $(printf "$@" | sed "s/^jf//")
 		else
