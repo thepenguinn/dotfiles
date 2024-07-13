@@ -1,6 +1,6 @@
 #!/bin/bash
 
-tmux send-keys -t ily:0 "ssh-add ~/.ssh/id_ed25519_only_proot" Enter "ssh arch" Enter
+tmux send-keys -t ily:0 "ssh arch" Enter
 tmux send-keys -t ily:0 "cd ~/projects/ily" Enter
 tmux new-window -t ily
 tmux send-keys -t ily:1 "cd ~/projects/ily" Enter "nvim" Enter " hf"
