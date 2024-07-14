@@ -1,8 +1,0 @@
-#!/bin/bash
-
-tmux send-keys -t adws:0 "cd ~/projects/adws" Enter
-tmux new-window -t adws
-tmux send-keys -t adws:1 "cd ~/projects/adws" Enter "nvim" Enter " hf"
-tmux new-window -t adws
-tmux send-keys -t adws:2  "w3m duckduckgo.com" Enter
-tmux new-window -t adws "python && zsh"

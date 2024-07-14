@@ -1,8 +1,0 @@
-#!/bin/bash
-
-tmux send-keys -t learnmcu:0 "ssh arch" Enter "cd ~/projects/learnmcu" Enter
-tmux new-window -t learnmcu
-tmux send-keys -t learnmcu:1 "cd ~/projects/learnmcu" Enter "nvim" Enter
-tmux new-window -t learnmcu
-tmux send-keys -t learnmcu:2 "w3m duckduckgo.com" Enter
-tmux new-window -t learnmcu "python && zsh"
