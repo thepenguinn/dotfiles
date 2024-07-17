@@ -17,9 +17,9 @@ return {
                     ["core.promo"] = {},
                     ["core.export"] = {},
                     ["core.esupports.metagen"] = {
-                        config = {
-                            type = "auto"
-                        },
+                        -- config = {
+                        --     type = "auto"
+                        -- },
                     },
                     ["core.export.markdown"] = {
                         config = {

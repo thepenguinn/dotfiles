@@ -45,7 +45,7 @@ return {
             local rep = require("luasnip.extras").rep
             --
             local function copy (st)
-                return st[0]
+                return st[1]
             end
 
             local function get_first_arg ()
@@ -117,6 +117,14 @@ return {
                     vim.fn.mkdir(parent_dir .. "/" .. rel_dir, "p")
 
                 end
+            end
+
+            local function norg_meta_get_date()
+                return os.date("%Y-%m-%dT%H:%M:%S+0530")
+            end
+
+            local function norg_create_desc(args)
+                return string.lower(args[1][1])
             end
 
             ls.add_snippets("python", {
@@ -239,14 +247,32 @@ return {
                         link_name = i(2),
                         link_end = i(0),
                     })
-                    -- {
-                    --     callbacks = {
-                    --         [2] = {
-                    --             [events.leave] = create_norg_dir
-                    --         }
-                    --     }
-                    -- }
-                )
+                ),
+
+                s("meta", fmt(
+                    "@document.meta\n"
+                    .. "title: {title}\n"
+                    .. "description: {description}\n"
+                    .. "authors: Daniel\n"
+                    .. "categories: [\n"
+                    .. "\t{categories}\n"
+                    .. "]\n"
+                    .. "created: {created}\n"
+                    .. "updated: {updated}\n"
+                    .. "version: 1.1.1\n"
+                    .. "@end\n\n{snip_end}"
+                    ,
+                    {
+                        title = i(1),
+                        description = c(2, {
+                            f(norg_create_desc, { 1 }), i(nil)
+                        }),
+                        categories = i(3),
+                        created = f(norg_meta_get_date, nil),
+                        updated = f(norg_meta_get_date, nil),
+                        snip_end = i(0),
+                    })
+                ),
 
             })
 
