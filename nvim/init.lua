@@ -49,6 +49,22 @@ vim.keymap.set('v', '<leader>p', '\"_dP', nil)
 vim.keymap.set("x", "<C-j>", ":m '>+1<CR>gv=gv")
 vim.keymap.set("x", "<C-k>", ":m '<-2<CR>gv=gv")
 
+-- REMOVE THIS --
+
+vim.api.nvim_create_user_command("W", function()
+
+    local parent_dir = vim.api.nvim_buf_get_name(0)
+
+    if parent_dir ~= nil and parent_dir ~= "" then
+        parent_dir = string.gsub(parent_dir, "/[^/]+$", "")
+
+        vim.fn.mkdir(parent_dir, "p")
+    end
+
+    vim.cmd("w")
+
+end, {})
+
 -- REMOVE THIS FROM HERE
 --
 

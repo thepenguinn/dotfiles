@@ -38,6 +38,7 @@ return {
             local i = ls.insert_node
             local f = ls.function_node
             local c = ls.choice_node
+            local events = require("luasnip.util.events")
             -- local d = ls.dynamic_node
             -- local r = ls.restore_node
             local fmt = require("luasnip.extras.fmt").fmt
@@ -86,6 +87,36 @@ return {
                 end
 
                 return ""
+            end
+
+            -- Apparently we don't need this
+            local function create_norg_dir()
+                local node = vim.treesitter.get_node()
+                node = node:parent()
+                node = node:child(0)
+                node = node:named_child(0)
+
+                if node:type() == "link_file_text" then
+
+                    local line, col_start = node:start()
+                    local _, col_end = node:end_()
+
+                    local rel_file_name = vim.api.nvim_buf_get_text(
+                        0, line, col_start, line, col_end, {}
+                    )[1]
+
+                    local parent_dir = vim.api.nvim_buf_get_name(0)
+
+                    if string.match(rel_file_name, "^/.*") or parent_dir == nil or parent_dir == "" then
+                        return
+                    end
+
+                    parent_dir = string.gsub(parent_dir, "/[^/]+$", "")
+                    local rel_dir = string.gsub(rel_file_name, "/[^/]+$", "")
+
+                    vim.fn.mkdir(parent_dir .. "/" .. rel_dir, "p")
+
+                end
             end
 
             ls.add_snippets("python", {
@@ -195,6 +226,27 @@ return {
                         arg_count = i(2, "1"),
                         command_body = i(0),
                     })),
+
+            })
+
+            ls.add_snippets("norg", {
+
+                s("ncl", fmt(
+                    "{{:{dirctory_name}/index:}}[{link_name}] notes\n"
+                    .. "{link_end}",
+                    {
+                        dirctory_name = i(1),
+                        link_name = i(2),
+                        link_end = i(0),
+                    })
+                    -- {
+                    --     callbacks = {
+                    --         [2] = {
+                    --             [events.leave] = create_norg_dir
+                    --         }
+                    --     }
+                    -- }
+                )
 
             })
 
