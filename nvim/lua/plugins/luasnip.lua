@@ -124,7 +124,35 @@ return {
             end
 
             local function norg_create_desc(args)
-                return string.lower(args[1][1])
+                local title = string.lower(args[1][1])
+
+                local all_cate = {}
+                local cat = ""
+
+                for _, line in ipairs(args[2]) do
+                    local tcate = string.gsub(line, "^ *", "")
+                    tcate = string.gsub(tcate, " *$", "")
+                    tcate = string.gsub(tcate, " +", " ")
+                    tcate = vim.split(tcate , " ", {plain = true})
+
+                    for _, cate in ipairs(tcate) do
+                        all_cate[#all_cate + 1] = cate
+                    end
+                end
+
+                if #all_cate == 1 then
+                    cat = " " .. all_cate[1]
+                elseif #all_cate == 2 then
+                    cat = " " .. all_cate[1] .. ", and " .. all_cate[2]
+                elseif #all_cate > 2 then
+                    cat = " " .. all_cate[1]
+                    for i = 2, #all_cate - 1 do
+                        cat = cat .. ", " .. all_cate[i]
+                    end
+                    cat = cat .. ", and " .. all_cate[#all_cate]
+                end
+
+                return title .. cat
             end
 
             ls.add_snippets("python", {
@@ -265,7 +293,7 @@ return {
                     {
                         title = i(1),
                         description = c(2, {
-                            f(norg_create_desc, { 1 }), i(nil)
+                            f(norg_create_desc, { 1, 3 }), i(nil)
                         }),
                         categories = i(3),
                         created = f(norg_meta_get_date, nil),
