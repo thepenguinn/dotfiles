@@ -293,7 +293,9 @@ return {
                     {
                         title = i(1),
                         description = c(2, {
-                            f(norg_create_desc, { 1, 3 }), i(nil)
+                            f(norg_create_desc, { 1, 3 }),
+                            f(function(args) return string.lower(args[1][1]) end, { 1 }),
+                            i(nil)
                         }),
                         categories = i(3),
                         created = f(norg_meta_get_date, nil),
