@@ -136,7 +136,9 @@ return {
                     tcate = vim.split(tcate , " ", {plain = true})
 
                     for _, cate in ipairs(tcate) do
-                        all_cate[#all_cate + 1] = cate
+                        if not string.match(cate, "^ *$") then
+                            all_cate[#all_cate + 1] = cate
+                        end
                     end
                 end
 
@@ -150,6 +152,10 @@ return {
                         cat = cat .. ", " .. all_cate[i]
                     end
                     cat = cat .. ", and " .. all_cate[#all_cate]
+                end
+
+                if cat ~= "" then
+                    cat = " (" .. cat .. " )"
                 end
 
                 return title .. cat
