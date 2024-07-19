@@ -161,6 +161,47 @@ return {
                 return title .. cat
             end
 
+            local function norg_get_mod_num()
+                local node = vim.treesitter.get_node()
+
+                if node:type() == "document" then
+                    return "1"
+                elseif node:type() == "heading1" then
+                    node = node:named_child(3) -- paragraph
+                    if node == nil then return "" end
+
+                    node = node:named_child(0) -- paragraph_segment
+                    if node == nil then return "" end
+                    node = node:named_child(0) -- link
+                    if node == nil then return "" end
+                    node = node:named_child(0) -- link_location
+                    if node == nil then return "" end
+                    node = node:named_child(0) -- link_file_text
+                    if node == nil then return "" end
+
+                    if node:type() == "link_file_text" then
+                        local line, col_start = node:start()
+                        local _, col_end = node:end_()
+
+                        local pre_idx = vim.api.nvim_buf_get_text(
+                            0, line, col_start, line, col_end, {}
+                        )[1]
+
+                        pre_idx = vim.split(pre_idx, "_")
+                        pre_idx = pre_idx[#pre_idx]
+
+                        if pre_idx then
+                            -- hopefull it will be a number
+                            -- notes_mod_<number>
+                            pre_idx = tonumber(pre_idx)
+                            return tostring(pre_idx + 1)
+                        end
+
+                    end
+
+                end
+            end
+
             ls.add_snippets("python", {
 
                 s("shit", fmt("just something \nelse {here}", {
@@ -307,6 +348,30 @@ return {
                         created = f(norg_meta_get_date, nil),
                         updated = f(norg_meta_get_date, nil),
                         snip_end = i(0),
+                    })
+                ),
+
+                s("mod", fmt(
+                    "* {module_number}\n"
+                    .. "\n"
+                    .. "** Syllabus\n"
+                    .. "\n"
+                    .. "   {{:syllabus_mod_{smodule_number}:}}[{smodule_name}] syllabus\n"
+                    .. "\n"
+                    .. "   ---\n"
+                    .. "\n"
+                    .. "  {{:notes_mod_{nmodule_number}:}}[{nmodule_name}] notes\n"
+                    .. "\n"
+                    .. "{snip_end}"
+                    ,
+                    {
+                        module_number = i(1),
+                        smodule_number = f(norg_get_mod_num, nil),
+                        smodule_name = rep(1),
+                        nmodule_number = f(norg_get_mod_num, nil),
+                        nmodule_name = rep(1),
+                        snip_end = i(0),
+
                     })
                 ),
 
