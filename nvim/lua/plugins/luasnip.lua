@@ -375,6 +375,17 @@ return {
                     })
                 ),
 
+                s("cb", fmt(
+                    "@code {lang}\n"
+                    .. "{snip_end}\n"
+                    .. "@end\n"
+                    ,
+                    {
+                        lang = i(1),
+                        snip_end = i(0),
+                    })
+                ),
+
             })
 
         end
