@@ -39,6 +39,12 @@ blockquote {
     padding-left: 12pt;
 }
 
+img {
+    max-width: 90%;
+    padding-left: 5%;
+    padding-right: 5%;
+}
+
 h1,
 h2,
 h3,
