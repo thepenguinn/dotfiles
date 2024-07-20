@@ -34,6 +34,11 @@ pre {
     padding: 1.5em;
 }
 
+blockquote {
+    border-left: 3pt solid #000;
+    padding-left: 12pt;
+}
+
 h1,
 h2,
 h3,
