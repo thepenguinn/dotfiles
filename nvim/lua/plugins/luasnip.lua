@@ -386,6 +386,15 @@ return {
                     })
                 ),
 
+                s("mb", fmt(
+                    "@math\n"
+                    .. "{snip_end}\n"
+                    .. "@end\n"
+                    ,
+                    {
+                        snip_end = i(0),
+                    })
+                ),
             })
 
         end
