@@ -21,6 +21,12 @@ alias nvim="TERM=screen-256color nvim"
 
 # EXPORTS
 
+# if we are inside a proot environment
+if [[ $(whoami) == "daniel" && -d /data/data/com.termux/files/usr/bin ]]; then
+    export PATH="${PATH}:/data/data/com.termux/files/usr/bin"
+    cd
+fi
+
 export PATH="${PATH}:${HOME}/.local/bin:${HOME}/go/bin:${HOME}/.cargo/bin"
 export GTYPIST_PATH="/data/data/com.termux/files/usr/share/gtypist:"
 export MATHLIB="m"
