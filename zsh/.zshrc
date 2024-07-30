@@ -48,6 +48,48 @@ export JF_USER_NAME="u0_a246"
 export KINDLE_MAC_ADDR="f4:03:2a:d5:42:6c"
 export LOCAL_KINDLE_DIR="$HOME/storage/shared/kindle"
 
+stm() {
+    if [[ $1 != "nh" ]]; then
+        rish /data/local/tmp/bin/hotspot on
+    fi
+
+    local jf_mac_addr=$JF_MAC_ADDR
+    local user_name=$JF_USER_NAME
+    local jf_ip_address
+    local got_him=0
+
+    ssh-add -l | grep "root@localhost" > /dev/null 2>&1 || ssh-add
+
+	printf "Waiting for Samsung Jf to connect...\n"
+	for i in $(seq 1 8)
+	do
+		jf_ip_address=$(ip neigh | grep "${jf_mac_addr}" | grep "\." | cut -d" " -f1)
+		# ip neigh could return jf's ip address even after jf got disconnected after
+		# once connecting, until resarting hotspot. Hence, jf_ip_address could contain
+		# an invalid ip address, so dry running ssh with a 2 second timeout
+        if timeout 2 ssh -o StrictHostKeyChecking=no -p 8022 \
+            $user_name@$jf_ip_address echo > /dev/null 2>&1; then
+
+            printf "Ladies and Gentlemen, we got him...\n"
+            got_him=1
+            break
+        fi
+		# if timeout spend 2 seconds, we are not sleeping
+		# just to keep the wait close to 16 seconds...
+		[[ $? != 124 ]] && sleep 2
+	done
+
+    if [[ $got_him == 0 ]]; then
+        printf "Couldn't find Samsung Jf...\n"
+        printf "Bailing out...\n"
+        return 1
+    elif [[ $got_him == 1 ]]; then
+        command ssh -o StrictHostKeyChecking=no -p 8022 \
+            "${user_name}@${jf_ip_address}" -t tmux attach
+        return 0
+    fi
+}
+
 ssh() {
 	local user_name="$JF_USER_NAME"
 	local jf_mac_addr="$JF_MAC_ADDR"
@@ -56,7 +98,7 @@ ssh() {
 	if [[ "$1" == "jf" ]]; then
         ssh-add -l | grep "root@localhost" > /dev/null 2>&1 || ssh-add
 		if [[ "$#" -gt 1 ]]; then
-			command ssh -o StrictHostKeyChecking=no -p 8022 ${user_name}@$(ip neigh | grep "${jf_mac_addr}" | grep "\." | cut -d" " -f1) $(printf "$@" | sed "s/^jf//")
+			command ssh -o StrictHostKeyChecking=no -p 8022 "${user_name}@$(ip neigh | grep "${jf_mac_addr}" | grep "\." | cut -d" " -f1)" $(echo "$@" | sed "s/^jf//")
 		else
 			command ssh -o StrictHostKeyChecking=no -p 8022 ${user_name}@$(ip neigh | grep "${jf_mac_addr}" | grep "\." | cut -d" " -f1)
 		fi
