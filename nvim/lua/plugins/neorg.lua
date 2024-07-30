@@ -21,6 +21,11 @@ return {
                         --     type = "auto"
                         -- },
                     },
+                    ["core.keybinds"] = {
+                        config = {
+                            default_keybinds = true,
+                        },
+                    },
                     ["core.export.markdown"] = {
                         config = {
                             extensions = "all",
@@ -46,6 +51,12 @@ return {
                     -- },
                 },
             }
+            vim.api.nvim_create_autocmd("Filetype", {
+                pattern = "norg",
+                callback = function()
+                    vim.keymap.set("n", "<leader>lg", "<Plug>(neorg.looking-glass.magnify-code-block)", { buffer = true })
+                end,
+            })
         end,
         run = ":Neorg sync-parsers",
         -- requires = {
