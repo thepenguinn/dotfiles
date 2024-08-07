@@ -1,9 +1,17 @@
 return {
     {
         Math = function (display_math)
+
             local cleaned = display_math.text:gsub("\\mathhfill", "\\;\\;")
             cleaned = cleaned:gsub("\\hfill", "\\;\\;")
+
+            -- TODO: make this general, this only works for pNiceMatrix
+            cleaned = cleaned:gsub("\\begin[ \t]*{pNiceMatrix}[ \t]*%[.-%]", "\\begin{bmatrix}")
+            cleaned = cleaned:gsub("\\begin[ \t]*{pNiceMatrix}", "\\begin{bmatrix}")
+            cleaned = cleaned:gsub("\\end[ \t]*{pNiceMatrix}", "\\end{bmatrix}")
+
             display_math.text = cleaned
+
             return display_math
         end,
 
