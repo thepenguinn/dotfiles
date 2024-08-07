@@ -202,6 +202,16 @@ return {
                 end
             end
 
+            local function norg_tangle_file(arg)
+                local splited_path
+                if arg[1] ~= "" then
+                    splited_path = vim.split(arg[1][1] , "/", {plain = true})
+                    return splited_path[#splited_path]
+                end
+
+                return ""
+            end
+
             ls.add_snippets("python", {
 
                 s("shit", fmt("just something \nelse {here}", {
@@ -382,6 +392,20 @@ return {
                     ,
                     {
                         lang = i(1),
+                        snip_end = i(0),
+                    })
+                ),
+
+                s("cbp", fmt(
+                    "%{tangle_rel_path}%\n"
+                    .. "#tangle {tangle_file}\n"
+                    .. "@code python\n"
+                    .. "{snip_end}\n"
+                    .. "@end\n"
+                    ,
+                    {
+                        tangle_file = f(norg_tangle_file, {1}),
+                        tangle_rel_path = i(1),
                         snip_end = i(0),
                     })
                 ),
