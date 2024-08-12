@@ -67,6 +67,7 @@ end, {})
 
 -- REMOVE THIS FROM HERE
 --
+-- SLIDES
 
 local slides_group = vim.api.nvim_create_augroup("SlidesGroup", {clear = true})
 
@@ -90,5 +91,28 @@ vim.api.nvim_create_autocmd({"BufLeave"}, {
     group = slides_group,
 })
 
+-- PYEXEC
+
+local pyexec_group = vim.api.nvim_create_augroup("PyExecGroup", {clear = true})
+
+require("pyexec")
+
+vim.api.nvim_create_autocmd({"BufEnter"}, {
+    pattern = {"*.norg"},
+    callback = function()
+        vim.keymap.set("n", "<leader>og", require("pyexec").exec_at_cursor)
+        -- vim.api.nvim_create_user_command("ExportGraph", require("slides").export_graph, {})
+    end,
+    group = pyexec_group,
+})
+
+-- vim.api.nvim_create_autocmd({"BufLeave"}, {
+--     pattern = {"*.md"},
+--     callback = function()
+--         vim.keymap.del("n", "<leader>og")
+--         vim.api.nvim_del_user_command("ExportGraph")
+--     end,
+--     group = slides_group,
+-- })
 --
 --
