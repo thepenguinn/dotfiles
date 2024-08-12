@@ -13,7 +13,7 @@ M._get_text = function (node)
     return text
 end
 
-M.exec = function ()
+M.exec_at_cursor = function ()
     local node
     local prenode
     local content_node
@@ -31,6 +31,13 @@ M.exec = function ()
     if not node then
         return
     end
+
+    M.exec(node)
+
+end
+
+M.exec = function (node)
+    local content_node
 
     content_node = node:named_child(0)
 
