@@ -8,7 +8,7 @@ return {
                 ensure_installed = { 'c', 'kotlin', 'markdown',
                     'python', 'java', 'cpp', 'norg', 'bash',
                     'lua', 'make', 'latex', 'verilog', 'scheme',
-                    'asm', 'cmake', 'tcl',
+                    'asm', 'cmake', 'tcl', 'matlab'
                 },
                 highlight = {
                     enable = true,
