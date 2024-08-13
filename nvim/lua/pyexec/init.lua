@@ -137,8 +137,11 @@ M.exec = function (node)
     local pyexec = io.popen("pyexec \"" .. tangle_file .. "\"")
     local stdout = pyexec:read("a")
 
+    local stdout_file_exists = false
+
     tmp = io.open(stdout_file)
     if tmp then
+        stdout_file_exists = true
         tmp:close()
         tmp = io.popen(
             "stat --printf \"%.Y\" \""
@@ -149,7 +152,15 @@ M.exec = function (node)
         tmp:close()
     end
 
-    if nmodt <= lmodt then
+    if not stdout_file_exists then
+        -- remove the output block if exists
+        M._remove_output_block(node)
+        return
+    elseif nmodt <= lmodt then
+        -- simply return
+        -- this could mean the exec has failed,
+        -- and in that case we won't be removing the previous
+        -- output
         return
     end
 
@@ -157,6 +168,57 @@ M.exec = function (node)
     stdout = vim.split(stdout, "\n", {plain = true})
     M._add_output_block(node, stdout)
 
+end
+
+M._remove_output_block = function(code_node)
+
+    local output_head_level = ""
+    local parent_node = code_node:parent()
+
+    if parent_node:type():match("document") then
+        output_head_level = "*"
+    elseif parent_node:type():match("heading[1-6]") then
+        output_head_level = M._get_text(parent_node:named_child(0))[1]
+
+        output_head_level = output_head_level:gsub("^ *", "")
+        output_head_level = output_head_level:gsub(" *$", "") .. "*"
+    end
+
+    local code_end = code_node:end_()
+    local node = code_node:next_named_sibling()
+
+    if node and node:type():match("heading[1-6]") then
+
+        local next_head_level
+        local next_head_title
+
+        next_head_level = M._get_text(node:named_child(0))[1]
+
+        next_head_level = next_head_level:gsub("^ *", "")
+        next_head_level = next_head_level:gsub(" *$", "")
+
+        next_head_title = M._get_text(node:named_child(1))[1]
+
+        if next_head_level == output_head_level
+            and next_head_title == "Output" then
+
+            -- look for the output code block, if we find it
+            -- just remove till the end of it
+
+            node = node:named_child(2)
+            local output_code_end
+
+            if node and node:type() == "ranged_verbatim_tag" then
+
+                output_code_end = node:end_()
+
+                vim.api.nvim_buf_set_lines(
+                    0, code_end + 1, output_code_end + 1, {strict_indexing = true}, {nil}
+                )
+
+            end
+        end
+    end
 end
 
 M._add_output_block = function(code_node, stdout)
