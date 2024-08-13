@@ -184,7 +184,7 @@ M._remove_output_block = function(code_node)
         output_head_level = output_head_level:gsub(" *$", "") .. "*"
     end
 
-    local code_end = code_node:end_()
+    local code_end = code_node:end_() + 1
     local node = code_node:next_named_sibling()
 
     if node and node:type():match("heading[1-6]") then
@@ -206,17 +206,25 @@ M._remove_output_block = function(code_node)
             -- just remove till the end of it
 
             node = node:named_child(2)
-            local output_code_end
-
-            if node and node:type() == "ranged_verbatim_tag" then
-
-                output_code_end = node:end_()
-
-                vim.api.nvim_buf_set_lines(
-                    0, code_end + 1, output_code_end + 1, {strict_indexing = true}, {nil}
-                )
-
+            if not node or node:type() ~= "ranged_verbatim_tag" then
+                return
             end
+
+            local output_code_end
+            local output_code_node = node
+
+            node = node:next_named_sibling()
+
+            if node and node:type() == "weak_paragraph_delimiter" then
+                output_code_end = node:end_()
+            else
+                output_code_end = output_code_node:end_() + 1
+            end
+
+            vim.api.nvim_buf_set_lines(
+                0, code_end, output_code_end, {strict_indexing = true}, {nil}
+            )
+
         end
     end
 end
@@ -269,6 +277,8 @@ M._add_output_block = function(code_node, stdout)
                     "",
                     padding .. "@code",
                     padding .. "@end",
+                    "",
+                    padding .. "---",
 
                 }
             )
@@ -288,6 +298,8 @@ M._add_output_block = function(code_node, stdout)
                 "",
                 padding .. "@code",
                 padding .. "@end",
+                "",
+                padding .. "---",
             }
         )
 
@@ -315,6 +327,8 @@ M._add_output_block = function(code_node, stdout)
                 "",
                 padding .. "@code",
                 padding .. "@end",
+                "",
+                padding .. "---",
             }
         )
 
