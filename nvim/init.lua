@@ -101,18 +101,18 @@ vim.api.nvim_create_autocmd({"BufEnter"}, {
     pattern = {"*.norg"},
     callback = function()
         vim.keymap.set("n", "<leader>og", require("pyexec").exec_at_cursor)
-        -- vim.api.nvim_create_user_command("ExportGraph", require("slides").export_graph, {})
+        vim.api.nvim_create_user_command("PyexecAall", require("pyexec").exec_all, {})
     end,
     group = pyexec_group,
 })
 
--- vim.api.nvim_create_autocmd({"BufLeave"}, {
---     pattern = {"*.md"},
---     callback = function()
---         vim.keymap.del("n", "<leader>og")
---         vim.api.nvim_del_user_command("ExportGraph")
---     end,
---     group = slides_group,
--- })
+vim.api.nvim_create_autocmd({"BufLeave"}, {
+    pattern = {"*.norg"},
+    callback = function()
+        vim.keymap.del("n", "<leader>og")
+        vim.api.nvim_del_user_command("PyexecAall")
+    end,
+    group = pyexec_group,
+})
 --
 --

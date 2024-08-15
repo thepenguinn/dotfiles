@@ -13,6 +13,38 @@ M._get_text = function (node)
     return text
 end
 
+M.exec_all = function ()
+
+    print("wip")
+
+    for i = 1, 4 do
+        print(i)
+    end
+
+    if true then return end
+
+    local query = vim.treesitter.query.parse("norg",
+        [[
+        (ranged_verbatim_tag
+            (tag_parameters) @tag_param
+            (#eq? @tag_param "python")
+            ) @python_rverb_tag
+        ]]
+    )
+
+    local ltree = vim.treesitter.get_parser(0, "norg")
+    local troot = ltree:parse()[1]:root()
+
+
+    local count = 0
+    for _, cnode in query:iter_captures(troot, 0) do
+        if cnode:type() == "ranged_verbatim_tag" then
+            M.exec(cnode)
+        end
+    end
+
+end
+
 M.exec_at_cursor = function ()
     local node
     local prenode
