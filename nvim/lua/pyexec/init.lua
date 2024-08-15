@@ -192,7 +192,8 @@ M.exec = function (node)
         -- simply return
         -- this could mean the exec has failed,
         -- and in that case we won't be removing the previous
-        -- output
+        -- output, and simply prints the exceptions generated
+        vim.api.nvim_echo({{stdout}}, true, {})
         return
     end
 
