@@ -184,7 +184,7 @@ M.exec = function (node)
         tmp:close()
     end
 
-    if not stdout_file_exists then
+    if not stdout_file_exists and stdout == "" then
         -- remove the output block if exists
         M._remove_output_block(node)
         return
