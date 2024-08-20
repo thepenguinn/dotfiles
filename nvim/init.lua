@@ -20,6 +20,8 @@ vim.opt.termguicolors = true
 
 vim.opt.inccommand = "split"
 
+vim.g.tex_flavor = "latex"
+
 -- SETTING UP LAZY --
 
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
