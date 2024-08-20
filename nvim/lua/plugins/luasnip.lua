@@ -361,6 +361,22 @@ return {
                         chapter_end = i(0),
                     })),
 
+                s("bsyl", fmt(
+                    "\\documentclass[../course]{{subfiles}}\n"
+                    .. "\n"
+                    .. "\\begin{{document}}\n"
+                    .. "\n"
+                    .. "\\section{{{syllabus_title}}}\n"
+                    .. "\n"
+                    .. "{syllabus_end}\n"
+                    .. "\n"
+                    .. "\\end{{document}}\n"
+                    ,
+                    {
+                        syllabus_title = i(1, "Syllabus"),
+                        syllabus_end = i(0),
+                    })),
+
             })
 
             ls.add_snippets("norg", {
