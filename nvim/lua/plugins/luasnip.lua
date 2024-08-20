@@ -377,6 +377,22 @@ return {
                         syllabus_end = i(0),
                     })),
 
+                s("bsec", fmt(
+                    "\\documentclass[../../course]{{subfiles}}\n"
+                    .. "\n"
+                    .. "\\begin{{document}}\n"
+                    .. "\n"
+                    .. "\\section{{{section_title}}}\n"
+                    .. "\n"
+                    .. "{section_end}\n"
+                    .. "\n"
+                    .. "\\end{{document}}\n"
+                    ,
+                    {
+                        section_title = i(1),
+                        section_end = i(0),
+                    })),
+
             })
 
             ls.add_snippets("norg", {
