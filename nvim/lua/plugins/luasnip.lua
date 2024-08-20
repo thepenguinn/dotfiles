@@ -342,6 +342,25 @@ return {
 
                     })),
 
+
+                s("bchp", fmt(
+                    "\\documentclass[../course]{{subfiles}}\n"
+                    .. "\n"
+                    .. "\\begin{{document}}\n"
+                    .. "\n"
+                    .. "\\chapter{{{chapter_title}}}\n"
+                    .. "\n"
+                    .. "\\subfile{{syllabus.tex}}\n"
+                    .. "\n"
+                    .. "{chapter_end}\n"
+                    .. "\n"
+                    .. "\\end{{document}}\n"
+                    ,
+                    {
+                        chapter_title = i(1, "An Interesting Title"),
+                        chapter_end = i(0),
+                    })),
+
             })
 
             ls.add_snippets("norg", {
