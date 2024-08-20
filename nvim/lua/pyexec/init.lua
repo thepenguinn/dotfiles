@@ -39,13 +39,72 @@ M.exec_all = function ()
     local count = 0
     for _, cnode in query:iter_captures(troot, 0) do
         if cnode:type() == "ranged_verbatim_tag" then
-            M.exec(cnode)
+            M._exec_from_norg(cnode)
         end
     end
 
 end
 
 M.exec_at_cursor = function ()
+
+    if vim.bo.filetype == "norg" then
+        M.exec_at_cursor_from_norg()
+    elseif vim.bo.filetype == "tex" then
+        M.exec_at_cursor_from_tex()
+    end
+
+end
+
+M.exec_at_cursor_from_tex = function()
+    -- get the code block
+
+    local node
+    local prenode
+
+    node = vim.treesitter.get_node()
+
+    if not node then
+        print("got nothing")
+        return
+    end
+
+    if node:type() == "line_comment" then
+        -- if the current node the cursor is at is an line_comment
+        -- then there is a chance that we are just above the minted env
+        -- btw, this line_comment is used to denote the tangle file
+        prenode = node
+        node = node:next_named_sibling()
+
+        print(M._get_text(prenode)[1])
+
+        if true then return end
+
+        if node and node:type() == "minted_environment" then
+            goto got_node
+        end
+        node = prenode
+    end
+
+    while node do
+        prenode = node
+        node = node:parent()
+        if node and node:type() == "minted_environment" then
+            break
+        end
+    end
+
+    if not node then
+        print("got nothing")
+        return
+    end
+
+    ::got_node::
+    print(node)
+
+end
+
+M.exec_at_cursor_from_norg = function()
+
     local node
     local prenode
     local content_node
@@ -64,74 +123,17 @@ M.exec_at_cursor = function ()
         return
     end
 
-    M.exec(node)
+    M._exec_from_norg(node)
 
 end
 
-M.exec = function (node)
-    local content_node
 
-    content_node = node:named_child(0)
+M._tangle_to_file = function (tangle_file, code_block)
 
-    while content_node do
-        if content_node:type() == "ranged_verbatim_tag_content" then
-            break
-        end
+    -- tangle_file: string? absolute file path
+    -- code_block: table? table of code lines
 
-        content_node = content_node:next_named_sibling()
-    end
-
-    if not content_node then
-        return
-    end
-
-    local tmp
-
-    local tangle_file
-
-    local start_row, start_col, end_row, end_col
-
-    tmp = node:prev_named_sibling()
-    if not tmp or tmp:type() ~= "paragraph" then
-        return
-    end
-
-    tmp = tmp:named_child(0)
-    if not tmp or tmp:type() ~= "paragraph_segment" then
-        return
-    end
-
-    tmp = tmp:named_child(0)
-    if not tmp or tmp:type() ~= "inline_comment" then
-        return
-    end
-
-    start_row, start_col, end_row, end_col = tmp:range()
-    tangle_file = vim.api.nvim_buf_get_text(
-        0, start_row, start_col, end_row, end_col, {}
-    )
-    tangle_file = tangle_file[1]:sub(2, -2)
-
-    local parent_dir = vim.api.nvim_buf_get_name(0)
-    if not parent_dir or parent_dir == "" then
-        return
-    end
-    parent_dir = string.gsub(parent_dir, "/[^/]+$", "")
-    tangle_file = parent_dir .. "/" .. tangle_file
-
-    start_row, start_col, end_row, end_col = content_node:range()
-
-    local code_block = vim.api.nvim_buf_get_text(
-        0, start_row, start_col, end_row, end_col, {}
-    )
-
-    if #code_block > 2 then
-        for i = 2, #code_block do
-            code_block[i] = code_block[i]:sub(start_col + 1, -1)
-        end
-    end
-
-    tmp = code_block
+    local tmp = code_block
     code_block = ""
 
     for _, line in ipairs(tmp) do
@@ -145,6 +147,15 @@ M.exec = function (node)
     tangle_file_fd = io.open(tangle_file, "w")
     tangle_file_fd:write(code_block)
     tangle_file_fd:close()
+
+end
+
+M._pyexec_file = function (tangle_file, code_node, add_output_callback, remove_output_callback)
+
+    -- tangle_file: string? absolute file path
+    -- code_node: tsnode? this will be passed to the callbacks as the first arg
+    -- add_output_callback: callable? callback to call to add the output
+    -- remove_output_callback: callable? callback to call to remove the output
 
     local lmodt = 0
     local nmodt = 0
@@ -186,7 +197,7 @@ M.exec = function (node)
 
     if not stdout_file_exists and stdout == "" then
         -- remove the output block if exists
-        M._remove_output_block(node)
+        remove_output_callback(code_node)
         return
     elseif nmodt <= lmodt then
         -- simply return
@@ -199,11 +210,11 @@ M.exec = function (node)
 
     -- insert the output
     stdout = vim.split(stdout, "\n", {plain = true})
-    M._add_output_block(node, stdout)
+    add_output_callback(code_node, stdout)
 
 end
 
-M._remove_output_block = function(code_node)
+M._remove_output_block_from_norg = function(code_node)
 
     local output_head_level = ""
     local parent_node = code_node:parent()
@@ -262,7 +273,7 @@ M._remove_output_block = function(code_node)
     end
 end
 
-M._add_output_block = function(code_node, stdout)
+M._add_output_block_from_norg = function(code_node, stdout)
 
     local output_head_level = ""
     local parent_node = code_node:parent()
@@ -387,6 +398,77 @@ M._add_output_block = function(code_node, stdout)
 
     vim.api.nvim_buf_set_lines(
         0, stdout_start, stdout_end, {strict_indexing = true}, stdout
+    )
+
+end
+
+M._exec_from_norg = function (node)
+
+    local content_node
+
+    content_node = node:named_child(0)
+
+    while content_node do
+        if content_node:type() == "ranged_verbatim_tag_content" then
+            break
+        end
+
+        content_node = content_node:next_named_sibling()
+    end
+
+    if not content_node then
+        return
+    end
+
+    local tmp
+    local tangle_file
+    local start_row, start_col, end_row, end_col
+
+    tmp = node:prev_named_sibling()
+    if not tmp or tmp:type() ~= "paragraph" then
+        return
+    end
+
+    tmp = tmp:named_child(0)
+    if not tmp or tmp:type() ~= "paragraph_segment" then
+        return
+    end
+
+    tmp = tmp:named_child(0)
+    if not tmp or tmp:type() ~= "inline_comment" then
+        return
+    end
+
+    start_row, start_col, end_row, end_col = tmp:range()
+    tangle_file = vim.api.nvim_buf_get_text(
+        0, start_row, start_col, end_row, end_col, {}
+    )
+    tangle_file = tangle_file[1]:sub(2, -2)
+
+    local parent_dir = vim.api.nvim_buf_get_name(0)
+    if not parent_dir or parent_dir == "" then
+        return
+    end
+    parent_dir = string.gsub(parent_dir, "/[^/]+$", "")
+    tangle_file = parent_dir .. "/" .. tangle_file
+
+    start_row, start_col, end_row, end_col = content_node:range()
+
+    local code_block = vim.api.nvim_buf_get_text(
+        0, start_row, start_col, end_row, end_col, {}
+    )
+
+    if #code_block > 2 then
+        for i = 2, #code_block do
+            code_block[i] = code_block[i]:sub(start_col + 1, -1)
+        end
+    end
+
+    M._tangle_to_file(tangle_file, code_block)
+
+    M._pyexec_file(
+        tangle_file, node,
+        M._add_output_block_from_norg, M._remove_output_block_from_norg
     )
 
 end
