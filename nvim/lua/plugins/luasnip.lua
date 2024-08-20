@@ -320,6 +320,28 @@ return {
                         command_body = i(0),
                     })),
 
+                s("bcrs", fmt(
+                    "\\documentclass[11pt] {{report}}\n"
+                    .. "\n"
+                    .. "\\input{{preamble.tex}}\n"
+                    .. "\n"
+                    .. "\\title{{{course_title}}}\n"
+                    .. "\n"
+                    .. "\\begin{{document}}\n"
+                    .. "\n"
+                    .. "%% \\maketitle\n"
+                    .. "%% \\tableofcontents\n"
+                    .. "\n"
+                    .. "{course_end}\n"
+                    .. "\n"
+                    .. "\\end{{document}}\n"
+                    ,
+                    {
+                        course_title = i(1, "An Interesting Title"),
+                        course_end = i(0),
+
+                    })),
+
             })
 
             ls.add_snippets("norg", {
