@@ -99,8 +99,6 @@ end
 
 M._add_output_block_to_tex = function(code_node, stdout)
 
-    stdout = {"a", "new", "beginning"}
-
     local code_end
 
     local stdout_start
@@ -301,14 +299,10 @@ M._exec_from_tex = function(node)
 
     M._tangle_to_file(tangle_file, code_block)
 
-    -- M._add_output_block_to_tex(node, nil)
-
-    M._remove_output_block_from_tex(node)
-
-    -- M._pyexec_file(
-    --     tangle_file, node,
-    --     M._add_output_block_to_norg, M._remove_output_block_from_norg
-    -- )
+    M._pyexec_file(
+        tangle_file, node,
+        M._add_output_block_to_tex, M._remove_output_block_from_tex
+    )
 
 end
 
@@ -420,6 +414,9 @@ M._pyexec_file = function (tangle_file, code_node, add_output_callback, remove_o
 
     -- insert the output
     stdout = vim.split(stdout, "\n", {plain = true})
+    if stdout[#stdout] == "" then
+        stdout[#stdout] = nil
+    end
     add_output_callback(code_node, stdout)
 
 end
@@ -597,10 +594,6 @@ M._add_output_block_to_norg = function(code_node, stdout)
     stdout_end = output_verbatim_node:end_()
 
     ::insert_stdout::
-
-    if stdout[#stdout] == "" then
-        stdout[#stdout] = nil
-    end
 
     for idx in ipairs(stdout) do
         stdout[idx] = padding .. stdout[idx]
