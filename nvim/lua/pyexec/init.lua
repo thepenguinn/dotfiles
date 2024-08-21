@@ -64,7 +64,6 @@ M.exec_at_cursor_from_tex = function()
     node = vim.treesitter.get_node()
 
     if not node then
-        print("got nothing")
         return
     end
 
@@ -74,10 +73,6 @@ M.exec_at_cursor_from_tex = function()
         -- btw, this line_comment is used to denote the tangle file
         prenode = node
         node = node:next_named_sibling()
-
-        print(M._get_text(prenode)[1])
-
-        if true then return end
 
         if node and node:type() == "minted_environment" then
             goto got_node
@@ -94,12 +89,75 @@ M.exec_at_cursor_from_tex = function()
     end
 
     if not node then
-        print("got nothing")
         return
     end
 
     ::got_node::
-    print(node)
+    M._exec_from_tex(node)
+
+end
+
+M._exec_from_tex = function(node)
+
+    local lang_node = node:named_child(0)
+
+    lang_node = lang_node:field("language")
+    if not lang_node then
+        return
+    end
+
+    lang_node = lang_node[1]
+    if not lang_node then
+        return
+    end
+
+    lang_node = lang_node:named_child(0)
+    if not lang_node then
+        return
+    end
+
+    if M._get_text(lang_node)[1] ~= "python" then
+        return
+    end
+
+    local tangle_file = node:prev_named_sibling()
+    if not tangle_file or tangle_file:type() ~= "line_comment" then
+        return
+    end
+
+    tangle_file = M._get_text(tangle_file)[1]
+    tangle_file = tangle_file:sub(2, -2)
+    if not tangle_file or tangle_file == "" then
+        return
+    end
+
+    local parent_dir = vim.api.nvim_buf_get_name(0)
+    if not parent_dir or parent_dir == "" then
+        return
+    end
+    parent_dir = string.gsub(parent_dir, "/[^/]+$", "")
+    tangle_file = parent_dir .. "/" .. tangle_file
+
+    local content_node = node:field("code")[1]
+    local code_block = M._get_text(content_node)
+
+    if code_block[1] == "" then
+        table.remove(code_block, 1)
+    end
+
+    local trim_size = code_block[1]:match("^[ \t]*")
+    trim_size = #trim_size
+
+    for i = 1, #code_block do
+        code_block[i] = code_block[i]:sub(trim_size + 1, -1)
+    end
+
+    M._tangle_to_file(tangle_file, code_block)
+
+    -- M._pyexec_file(
+    --     tangle_file, node,
+    --     M._add_output_block_from_norg, M._remove_output_block_from_norg
+    -- )
 
 end
 
@@ -134,13 +192,14 @@ M._tangle_to_file = function (tangle_file, code_block)
     -- code_block: table? table of code lines
 
     local tmp = code_block
+    local tangle_parent_dir
+    local tangle_file_fd
     code_block = ""
 
     for _, line in ipairs(tmp) do
         code_block = code_block .. line .. "\n"
     end
 
-    local tangle_parent_dir
     tangle_parent_dir = string.gsub(tangle_file, "/[^/]+$", "")
     vim.fn.mkdir(tangle_parent_dir, "p")
 
