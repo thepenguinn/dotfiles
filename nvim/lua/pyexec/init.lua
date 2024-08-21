@@ -190,6 +190,60 @@ M._add_output_block_to_tex = function(code_node, stdout)
 
 end
 
+M._remove_output_block_from_tex = function (code_node)
+
+    local paragraph_node
+    local paragraph_title
+    local minted_node
+    local source_node
+    local node
+
+    paragraph_node = code_node:next_named_sibling()
+    if not paragraph_node or paragraph_node:type() ~= "paragraph" then
+        return
+    end
+
+    node = paragraph_node:named_child(0)
+    if not node or node:type() ~= "curly_group" then
+        return
+    end
+
+    paragraph_title = M._get_text(node)[1]
+    if paragraph_title ~= "{Output}" then
+        return
+    end
+
+    minted_node = paragraph_node:named_child(1)
+    if not minted_node or minted_node:type() ~= "minted_environment" then
+        return
+    end
+
+    node = minted_node:named_child(0)
+    node = node:field("language")[1]
+    if not node then
+        return
+    end
+
+    if M._get_text(node)[1] ~= "{text}" then
+        return
+    end
+
+    source_node = minted_node:field("code")[1]
+    if not source_node then
+        return
+    end
+
+    -- if we reach here then we need to remove the output block
+
+    local code_end = code_node:end_() + 1
+    local output_code_end = minted_node:end_() + 1
+
+    vim.api.nvim_buf_set_lines(
+        0, code_end, output_code_end, {strict_indexing = true}, {nil}
+    )
+
+end
+
 M._exec_from_tex = function(node)
 
     local lang_node = node:named_child(0)
@@ -247,7 +301,9 @@ M._exec_from_tex = function(node)
 
     M._tangle_to_file(tangle_file, code_block)
 
-    M._add_output_block_to_tex(node, nil)
+    -- M._add_output_block_to_tex(node, nil)
+
+    M._remove_output_block_from_tex(node)
 
     -- M._pyexec_file(
     --     tangle_file, node,
