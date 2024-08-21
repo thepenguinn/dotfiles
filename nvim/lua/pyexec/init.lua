@@ -97,6 +97,99 @@ M.exec_at_cursor_from_tex = function()
 
 end
 
+M._add_output_block_to_tex = function(code_node, stdout)
+
+    stdout = {"a", "new", "beginning"}
+
+    local code_end
+
+    local stdout_start
+    local stdout_end
+
+    local paragraph_node
+    local paragraph_title
+    local minted_node
+    local source_node
+    local node
+
+    local padding
+    local code_node_start_col
+
+    _, code_node_start_col =  code_node:start()
+    padding = string.rep(" ", code_node_start_col)
+
+    paragraph_node = code_node:next_named_sibling()
+    if not paragraph_node or paragraph_node:type() ~= "paragraph" then
+        goto insert_new
+    end
+
+    node = paragraph_node:named_child(0)
+    if not node or node:type() ~= "curly_group" then
+        goto insert_new
+    end
+
+    paragraph_title = M._get_text(node)[1]
+    if paragraph_title ~= "{Output}" then
+        goto insert_new
+    end
+
+    minted_node = paragraph_node:named_child(1)
+    if not minted_node or minted_node:type() ~= "minted_environment" then
+        goto insert_new
+    end
+
+    node = minted_node:named_child(0)
+    node = node:field("language")[1]
+    if not node then
+        goto insert_new
+    end
+
+    if M._get_text(node)[1] ~= "{text}" then
+        goto insert_new
+    end
+
+    source_node = minted_node:field("code")[1]
+    if not source_node then
+        goto insert_new
+    end
+
+    stdout_start = source_node:start() + 1
+    stdout_end = source_node:end_()
+
+    goto insert_stdout
+
+    ::insert_new::
+
+    code_end = code_node:end_()
+
+    vim.api.nvim_buf_set_lines(
+        0, code_end + 1, code_end + 1, {strict_indexing = true}, {
+            "",
+            padding .. "\\paragraph{Output}",
+            "",
+            padding .. "\\begin{minted}[breaklines] {text}",
+            padding .. "\\end{minted}",
+        }
+    )
+
+    stdout_start = code_end + 5
+    stdout_end = stdout_start
+
+    ::insert_stdout::
+
+    -- padding of the parent node plus padding of 4
+    padding = padding .. string.rep(" ", 4)
+
+    for idx in ipairs(stdout) do
+        stdout[idx] = padding .. stdout[idx]
+    end
+
+    vim.api.nvim_buf_set_lines(
+        0, stdout_start, stdout_end, {strict_indexing = true}, stdout
+    )
+
+end
+
 M._exec_from_tex = function(node)
 
     local lang_node = node:named_child(0)
@@ -153,6 +246,8 @@ M._exec_from_tex = function(node)
     end
 
     M._tangle_to_file(tangle_file, code_block)
+
+    M._add_output_block_to_tex(node, nil)
 
     -- M._pyexec_file(
     --     tangle_file, node,
