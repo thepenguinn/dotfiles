@@ -156,7 +156,7 @@ M._exec_from_tex = function(node)
 
     -- M._pyexec_file(
     --     tangle_file, node,
-    --     M._add_output_block_from_norg, M._remove_output_block_from_norg
+    --     M._add_output_block_to_norg, M._remove_output_block_from_norg
     -- )
 
 end
@@ -332,7 +332,7 @@ M._remove_output_block_from_norg = function(code_node)
     end
 end
 
-M._add_output_block_from_norg = function(code_node, stdout)
+M._add_output_block_to_norg = function(code_node, stdout)
 
     local output_head_level = ""
     local parent_node = code_node:parent()
@@ -527,7 +527,7 @@ M._exec_from_norg = function (node)
 
     M._pyexec_file(
         tangle_file, node,
-        M._add_output_block_from_norg, M._remove_output_block_from_norg
+        M._add_output_block_to_norg, M._remove_output_block_from_norg
     )
 
 end
