@@ -165,7 +165,7 @@ M._add_output_block_to_tex = function(code_node, stdout)
             "",
             padding .. "\\paragraph{Output}",
             "",
-            padding .. "\\begin{minted}[breaklines] {text}",
+            padding .. "\\begin{minted}[breaklines, autogobble] {text}",
             padding .. "\\end{minted}",
         }
     )
