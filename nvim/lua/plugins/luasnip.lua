@@ -393,6 +393,19 @@ return {
                         section_end = i(0),
                     })),
 
+                s("cbp", fmt(
+                    "%{minted_tangle_file}%\n"
+                    .. "\\begin{{minted}}[{minted_optionals}] {{python}}\n"
+                    .. "    {minted_end}\n"
+                    .. "\\end{{minted}}\n"
+                    ,
+                    {
+                        minted_tangle_file = i(1),
+                        minted_optionals = i(2, "breaklines"),
+                        minted_end = i(0),
+
+                    })),
+
             })
 
             ls.add_snippets("norg", {
