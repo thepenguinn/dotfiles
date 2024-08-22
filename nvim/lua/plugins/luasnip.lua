@@ -212,6 +212,14 @@ return {
                 return ""
             end
 
+            local function tex_get_figure_options(args)
+                if args[1][1] == "figure" then
+                    return { "    \\centering", ""}
+                else
+                    return ""
+                end
+            end
+
             ls.add_snippets("python", {
 
                 s("shit", fmt("just something \nelse {here}", {
@@ -415,6 +423,50 @@ return {
                         math_end = i(0),
 
                     })),
+
+                s("igx", { c(1, {
+                    sn(nil, fmt(
+                        "\\begin{{{wrap_begin}}}\n"
+                        .. "{figure_options}"
+                        .. "    \\adjustbox{{max width = {max_width}}}\n"
+                        .. "        \\includegraphics[height = {max_height}] {{{image}}}\n"
+                        .. "    }}\n"
+                        .. "    \\captionof {{figure}} {{{caption}}}\n"
+                        .. "\\end{{{wrap_end}}}\n"
+                        .. "\n"
+                        .. "{include_end}"
+                        ,
+                        {
+                            wrap_begin = c(1, {i(nil, "center"), i(nil,  "figure"), i(nil)}),
+                            figure_options = f(tex_get_figure_options, { 1 }),
+                            max_width = c(2, {
+                                i(nil, "0.7\\textwidth"),
+                                sn(nil, {i(1, "0.7"), t("\\textwidth")}),
+                                i(nil),
+                            }),
+                            max_height = c(3, {
+                                i(nil, "0.8\\textheight"),
+                                sn(nil, {i(1, "0.8"), t("\\textheight")}),
+                                i(nil),
+                            }),
+                            image = i(4),
+                            caption = i(5),
+                            wrap_end = rep(1),
+                            include_end = i(0)
+
+                        })),
+                    sn(nil, fmt(
+                        "\\includegraphics[{options}] {{{image}}}\n"
+                        .. "\n"
+                        .. "{include_end}"
+                        ,
+                        {
+                            options = i(1),
+                            image = i(2),
+                            include_end = i(0),
+                        })),
+                })
+                }),
 
             })
 
