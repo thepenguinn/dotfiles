@@ -409,7 +409,7 @@ return {
                     ,
                     {
                         minted_tangle_file = i(1),
-                        minted_optionals = i(2, "breaklines"),
+                        minted_optionals = i(2, "breaklines, autogobble"),
                         minted_end = i(0),
 
                     })),
