@@ -100,7 +100,7 @@ local pyexec_group = vim.api.nvim_create_augroup("PyExecGroup", {clear = true})
 require("pyexec")
 
 vim.api.nvim_create_autocmd({"BufEnter"}, {
-    pattern = {"*.norg"},
+    pattern = {"*.norg", "*.tex"},
     callback = function()
         vim.keymap.set("n", "<leader>og", require("pyexec").exec_at_cursor)
         vim.api.nvim_create_user_command("PyexecAall", require("pyexec").exec_all, {})
@@ -109,7 +109,7 @@ vim.api.nvim_create_autocmd({"BufEnter"}, {
 })
 
 vim.api.nvim_create_autocmd({"BufLeave"}, {
-    pattern = {"*.norg"},
+    pattern = {"*.norg", "*.tex"},
     callback = function()
         vim.keymap.del("n", "<leader>og")
         vim.api.nvim_del_user_command("PyexecAall")
