@@ -406,6 +406,16 @@ return {
 
                     })),
 
+                s("mb", fmt(
+                    "\\begin{{align}}\n"
+                    .. "    {math_end}\n"
+                    .. "\\end{{align}}\n"
+                    ,
+                    {
+                        math_end = i(0),
+
+                    })),
+
             })
 
             ls.add_snippets("norg", {
