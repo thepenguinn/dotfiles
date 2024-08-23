@@ -414,6 +414,19 @@ return {
 
                     })),
 
+                s("cb", fmt(
+                    "%{minted_tangle_file}%\n"
+                    .. "\\begin{{minted}}[{minted_optionals}] {{{minted_language}}}\n"
+                    .. "    {minted_end}\n"
+                    .. "\\end{{minted}}\n"
+                    ,
+                    {
+                        minted_tangle_file = i(1),
+                        minted_optionals = i(2, "breaklines, autogobble"),
+                        minted_language = i(3),
+                        minted_end = i(0),
+                })),
+
                 s("mb", fmt(
                     "\\begin{{align}}\n"
                     .. "    {math_end}\n"
