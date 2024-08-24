@@ -505,7 +505,7 @@ return {
                     sn(nil, fmt(
                         "\\begin{{{wrap_begin}}}\n"
                         .. "{figure_options}"
-                        .. "    \\adjustbox{{max width = {max_width}}}\n"
+                        .. "    \\adjustbox{{max width = {max_width}}} {{\n"
                         .. "        \\includegraphics[height = {max_height}] {{{image}}}\n"
                         .. "    }}\n"
                         .. "    \\captionof {{figure}} {{{caption}}}\n"
