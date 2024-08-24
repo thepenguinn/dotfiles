@@ -1,0 +1,21 @@
+# a simple Makefile
+
+SENDER = termux-share -a send
+VIEWER = viewpdf
+
+build: section.pdf view
+
+force:
+	pdflatex -shell-escape -halt-on-error section.tex
+	$(VIEWER) section.pdf
+
+section.pdf: section.tex ../../preamble.tex
+	pdflatex -shell-escape -halt-on-error section.tex
+
+view:
+	$(VIEWER) section.pdf
+
+send:
+	$(SENDER) section.pdf
+
+.PHONY: view build force
