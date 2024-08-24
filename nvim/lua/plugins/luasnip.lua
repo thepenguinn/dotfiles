@@ -475,7 +475,7 @@ return {
                     ,
                     {
                         minted_tangle_file = i(1),
-                        minted_optionals = i(2, "breaklines, autogobble"),
+                        minted_optionals = i(2, "breaklines, autogobble, mathescape"),
                         minted_end = i(0),
 
                     })),
