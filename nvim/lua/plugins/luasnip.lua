@@ -379,7 +379,7 @@ return {
                     .. "{{0pt}}{{3.5ex plus 1ex minus .2ex}}{{2.3ex plus .2ex}}\n"
                     .. "\n"
 
-                    .. "\\renewcommand\\thesection{{\\arabic{{section}}}}"
+                    .. "\\renewcommand\\thesection{{\\arabic{{section}}}}\n"
                     .. "\n"
 
                     .. "\\def\\author{{{work_author}}}\n"
@@ -451,6 +451,8 @@ return {
 
                 s("bsec", fmt(
                     "\\documentclass[../../course]{{subfiles}}\n"
+                    .. "\n"
+                    .. "\\renewcommand\\thesection{{\\arabic{{section}}}}\n"
                     .. "\n"
                     .. "\\begin{{document}}\n"
                     .. "\n"
