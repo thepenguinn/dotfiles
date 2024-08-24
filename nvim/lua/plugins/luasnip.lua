@@ -369,6 +369,70 @@ return {
                         chapter_end = i(0),
                     })),
 
+                s("bwrk", fmt(
+                    "\\documentclass[../course]{{subfiles}}\n"
+                    .. "\n"
+
+                    .. "\\titleformat{{\\chapter}}\n"
+                    .. "{{\\normalfont\\LARGE\\bfseries}}{{\\thechapter}}{{1em}}{{}}\n"
+                    .. "\\titlespacing*{{\\chapter}}\n"
+                    .. "{{0pt}}{{3.5ex plus 1ex minus .2ex}}{{2.3ex plus .2ex}}\n"
+                    .. "\n"
+
+                    .. "\\renewcommand\\thesection{{\\arabic{{section}}}}"
+                    .. "\n"
+
+                    .. "\\def\\author{{{work_author}}}\n"
+                    .. "\\def\\supervisor{{{work_supervisor}}}\n"
+                    .. "\\def\\title{{{work_title}}}\n"
+                    .. "\\def\\subtitle{{{work_subtitle}}}\n"
+                    .. "\\def\\subsubtitle{{{work_subsubtitle}}}\n"
+                    .. "\n"
+
+                    .. "\\def\\authordesc {{\n"
+                    .. "    {work_authordesc}\n"
+                    .. "}}\n"
+                    .. "\n"
+
+                    .. "\\def\\supervisordesc {{\n"
+                    .. "    {work_supervisordesc}\n"
+                    .. "}}\n"
+                    .. "\n"
+
+                    .. "\\def\\abstractcontent {{\n"
+                    .. "    {work_abstract}\n"
+                    .. "}}\n"
+                    .. "\n"
+
+                    .. "\\begin{{document}}\n"
+                    .. "\n"
+
+                    .. "\\ifSubfilesClassLoaded {{\n"
+                    .. "    \\input{{abstract.tex}}\n"
+                    .. "    \\chapter{{{work_chapter_subfile}}}\n"
+                    .. "}} {{\n"
+                    .. "    \\chapter{{{work_chapter_nosubfile}}}\n"
+                    .. "}}\n"
+                    .. "\n"
+
+                    .. "{work_end}\n"
+                    .. "\n"
+                    .. "\\end{{document}}\n"
+                    ,
+                    {
+                        work_author = i(1, "Daniel V Mathew"),
+                        work_supervisor = i(2),
+                        work_title = f(function(args) return string.upper(args[1][1]) end, { 3 }),
+                        work_subtitle = i(4, "COURSE NAME"),
+                        work_subsubtitle = i(5, "TYPE OF WORK"),
+                        work_authordesc = i(6),
+                        work_supervisordesc = i(7),
+                        work_abstract = i(8),
+                        work_chapter_subfile = i(9, "Introduction"),
+                        work_chapter_nosubfile = i(3),
+                        work_end = i(0),
+                    })),
+
                 s("bsyl", fmt(
                     "\\documentclass[../course]{{subfiles}}\n"
                     .. "\n"
