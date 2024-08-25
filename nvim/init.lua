@@ -116,5 +116,28 @@ vim.api.nvim_create_autocmd({"BufLeave"}, {
     end,
     group = pyexec_group,
 })
+
+local tex_notes_group = vim.api.nvim_create_augroup("TexNotesGroup", {clear = true})
+
+require("texnotes")
+
+vim.api.nvim_create_autocmd({"BufEnter"}, {
+    pattern = {"*.tex"},
+    callback = function()
+        vim.keymap.set("n", "<cr>", require("texnotes").jump)
+        -- vim.api.nvim_create_user_command("Tex", require("texnotes").exec_all, {})
+    end,
+    group = tex_notes_group,
+})
+
+vim.api.nvim_create_autocmd({"BufLeave"}, {
+    pattern = {"*.tex"},
+    callback = function()
+        vim.keymap.del("n", "<cr>")
+        -- vim.api.nvim_del_user_command("PyexecAall")
+    end,
+    group = tex_notes_group,
+})
+
 --
 --
