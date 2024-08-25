@@ -24,7 +24,7 @@ M._init_chapter = function(parent_dir, file_base)
     local tmp = io.open(parent_dir .. "/chapter.tex", "r")
     if tmp then
         tmp:close()
-        M._jump_to_file(parent_dir, file_base)
+        vim.cmd("e " .. parent_dir .. "/chapter.tex")
         return
     end
 
@@ -59,7 +59,7 @@ M._init_work = function(parent_dir, file_base)
     local tmp = io.open(parent_dir .. "/work.tex", "r")
     if tmp then
         tmp:close()
-        M._jump_to_file(parent_dir, file_base)
+        vim.cmd("e " .. parent_dir .. "/work.tex")
         return
     end
 
@@ -84,7 +84,35 @@ M._init_work = function(parent_dir, file_base)
 end
 
 M._init_section = function(parent_dir, file_base)
-    print("from _init_section", parent_dir, file_base)
+
+    -- files to copy
+    -- create the parent directory
+    -- section_makefile, section.tex
+    -- directories to create
+    -- plots, tikzpics, data
+
+    local tmp = io.open(parent_dir .. "/section.tex", "r")
+    if tmp then
+        tmp:close()
+        vim.cmd("e " .. parent_dir .. "/section.tex")
+        return
+    end
+
+    -- init the section dir
+
+    local path = require("pathlib")
+
+    vim.fn.mkdir(parent_dir .. "/plots", "p")
+    vim.fn.mkdir(parent_dir .. "/tikzpics", "p")
+    vim.fn.mkdir(parent_dir .. "/data", "p")
+
+    tmp = path("~/.config/notes/section_makefile")
+    tmp:copy(path(parent_dir .. "/Makefile"))
+
+    vim.cmd("e " .. parent_dir .. "/section.tex")
+    -- snippet for beginning the section
+    vim.cmd("norm ibsec")
+
 end
 
 M._init_syllabus = function(parent_dir, file_base)
