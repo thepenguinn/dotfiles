@@ -42,15 +42,45 @@ M._init_chapter = function(parent_dir, file_base)
     tmp = path(parent_dir .. "/syllabus.tex")
     tmp:touch()
 
-    tmp = path(parent_dir .. "/chapter.tex")
-    tmp:touch()
+    vim.cmd("e " .. parent_dir .. "/chapter.tex")
+    -- snippet for beginning the chapter
+    vim.cmd("norm ibchp")
 
-    print("that worked")
-    -- print("from _init_chapter", parent_dir, file_base)
 end
 
 M._init_work = function(parent_dir, file_base)
-    print("from _init_work", parent_dir, file_base)
+
+    -- files to copy
+    -- create the parent directory
+    -- work_makefile, abstract.tex, work.tex
+    -- directories to create
+    -- plots, tikzpics, data
+
+    local tmp = io.open(parent_dir .. "/work.tex", "r")
+    if tmp then
+        tmp:close()
+        M._jump_to_file(parent_dir, file_base)
+        return
+    end
+
+    -- init the chapter dir
+
+    local path = require("pathlib")
+
+    vim.fn.mkdir(parent_dir .. "/plots", "p")
+    vim.fn.mkdir(parent_dir .. "/tikzpics", "p")
+    vim.fn.mkdir(parent_dir .. "/data", "p")
+
+    tmp = path("~/.config/notes/work_makefile")
+    tmp:copy(path(parent_dir .. "/Makefile"))
+
+    tmp = path("~/.config/notes/abstract.tex")
+    tmp:copy(path(parent_dir .. "/abstract.tex"))
+
+    vim.cmd("e " .. parent_dir .. "/work.tex")
+    -- snippet for beginning the work
+    vim.cmd("norm ibwrk")
+
 end
 
 M._init_section = function(parent_dir, file_base)
@@ -62,6 +92,15 @@ M._init_syllabus = function(parent_dir, file_base)
 end
 
 M._jump_to_file = function(parent_dir, file_base)
+
+    local path = require("pathlib")
+    local tmp
+
+    tmp = path(parent_dir .. "/" .. file_base .. ".tex")
+    tmp:touch(nil, true)
+
+    vim.cmd("e " .. parent_dir .. "/" .. file_base .. ".tex")
+
     print("from _jump_to_file", parent_dir, file_base)
 end
 
