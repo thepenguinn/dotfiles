@@ -493,6 +493,19 @@ return {
 
                     })),
 
+                s("nsec", fmt(
+                    "%{section_title}%\n"
+                    .. "\\subfile{{{section_dir}_section/section.tex}}\n"
+                    .. "\n"
+                    .. "{section_end}"
+                    ,
+                    {
+                        section_title = i(1, "Section Name"),
+                        section_dir = f(tex_convert_title_to_dir, { 1 }),
+                        section_end = i(0),
+
+                    })),
+
                 s("cbp", fmt(
                     "%{minted_tangle_file}%\n"
                     .. "\\begin{{minted}}[{minted_optionals}] {{python}}\n"
