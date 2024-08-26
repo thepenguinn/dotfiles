@@ -573,9 +573,7 @@ return {
 
                 s("nchp", fmt(
                     "%{chapter_title}%\n"
-                    .. "\\subfileinclude{{{chapter_dir}_chapter/chapter.tex}}\n"
-                    .. "\n"
-                    .. "{chapter_end}"
+                    .. "\\subfileinclude{{chapter_{chapter_dir}/chapter.tex}}{chapter_end}"
                     ,
                     {
                         chapter_title = i(1, "Chapter Name"),
@@ -586,9 +584,7 @@ return {
 
                 s("nwrk", fmt(
                     "%{work_title}%\n"
-                    .. "\\subfileinclude{{{work_dir}_work/work.tex}}\n"
-                    .. "\n"
-                    .. "{work_end}"
+                    .. "\\subfileinclude{{work_{work_dir}/work.tex}}{work_end}"
                     ,
                     {
                         work_title = i(1, "Work Name"),
@@ -599,9 +595,7 @@ return {
 
                 s("nsec", fmt(
                     "%{section_title}%\n"
-                    .. "\\subfile{{{section_dir}_section/section.tex}}\n"
-                    .. "\n"
-                    .. "{section_end}"
+                    .. "\\subfile{{section_{section_dir}/section.tex}}{section_end}"
                     ,
                     {
                         section_title = i(1, "Section Name"),
