@@ -373,13 +373,7 @@ return {
                     "\\documentclass[../course]{{subfiles}}\n"
                     .. "\n"
 
-                    .. "\\titleformat{{\\chapter}}\n"
-                    .. "{{\\normalfont\\LARGE\\bfseries}}{{\\thechapter}}{{1em}}{{}}\n"
-                    .. "\\titlespacing*{{\\chapter}}\n"
-                    .. "{{0pt}}{{3.5ex plus 1ex minus .2ex}}{{2.3ex plus .2ex}}\n"
-                    .. "\n"
-
-                    .. "\\renewcommand\\thesection{{\\arabic{{section}}}}\n"
+                    .. "\\input{{work_header.tex}}\n"
                     .. "\n"
 
                     .. "\\def\\author{{{work_author}}}\n"
@@ -452,8 +446,10 @@ return {
                 s("bsec", fmt(
                     "\\documentclass[../../course]{{subfiles}}\n"
                     .. "\n"
-                    .. "\\renewcommand\\thesection{{\\arabic{{section}}}}\n"
+
+                    .. "\\input{{section_header.tex}}\n"
                     .. "\n"
+
                     .. "\\begin{{document}}\n"
                     .. "\n"
                     .. "\\section{{{section_title}}}\n"

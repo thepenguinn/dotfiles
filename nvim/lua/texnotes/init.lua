@@ -62,6 +62,9 @@ M._init_work = function(parent_dir)
     tmp = path("~/.config/notes/work_makefile")
     tmp:copy(path(parent_dir .. "/Makefile"))
 
+    tmp = path("~/.config/notes/work_header.tex")
+    tmp:copy(path(parent_dir .. "/work_header.tex"))
+
     tmp = path("~/.config/notes/abstract.tex")
     tmp:copy(path(parent_dir .. "/abstract.tex"))
 
@@ -92,6 +95,9 @@ M._init_section = function(parent_dir)
 
     tmp = path("~/.config/notes/section_makefile")
     tmp:copy(path(parent_dir .. "/Makefile"))
+
+    tmp = path("~/.config/notes/section_header.tex")
+    tmp:copy(path(parent_dir .. "/section_header.tex"))
 
     if vim.fn.bufloaded(parent_dir .. "/section.tex") == 0 then
         vim.cmd("e " .. parent_dir .. "/section.tex")
