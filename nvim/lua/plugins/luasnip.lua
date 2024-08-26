@@ -248,7 +248,17 @@ return {
                 ctex_dir_name = ptex_file_parent:gsub("^.*/", "")
                 ptex_file_parent = ptex_file_parent:gsub("/[^/]*$", "")
 
-                local ptex_bufnr = vim.fn.bufadd(ptex_file_parent .. "/" .. pfile_type .. ".tex")
+                local ptex_file_name = ptex_file_parent .. "/" .. pfile_type .. ".tex"
+                local tmp
+
+                -- make sures there's a parent tex file
+                tmp = io.open(ptex_file_name, "r")
+                if not tmp then
+                    return default
+                end
+                tmp:close()
+
+                local ptex_bufnr = vim.fn.bufadd(ptex_file_name)
 
                 local ltree = vim.treesitter.get_parser(ptex_bufnr)
 
