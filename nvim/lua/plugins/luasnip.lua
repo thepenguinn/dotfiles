@@ -455,7 +455,7 @@ return {
                     .. "\n"
                     .. "\\begin{{document}}\n"
                     .. "\n"
-                    .. "\\chapter{{{chapter_title}}}\n"
+                    .. "\\chapter{{{chapter_title}}} \\label{{chp:{chapter_label}}}\n"
                     .. "\n"
                     .. "\\subfile{{syllabus.tex}}\n"
                     .. "\n"
@@ -468,6 +468,7 @@ return {
                             f(tex_find_chapter_title, {}),
                             i(nil, "Chapter Title")
                         }),
+                        chapter_label = i(2),
                         chapter_end = i(0),
                     })),
 
