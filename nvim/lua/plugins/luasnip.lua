@@ -480,6 +480,19 @@ return {
 
                     })),
 
+                s("nwrk", fmt(
+                    "%{work_title}%\n"
+                    .. "\\subfileinclude{{{work_dir}_work/work.tex}}\n"
+                    .. "\n"
+                    .. "{work_end}"
+                    ,
+                    {
+                        work_title = i(1, "Work Name"),
+                        work_dir = f(tex_convert_title_to_dir, { 1 }),
+                        work_end = i(0),
+
+                    })),
+
                 s("cbp", fmt(
                     "%{minted_tangle_file}%\n"
                     .. "\\begin{{minted}}[{minted_optionals}] {{python}}\n"
