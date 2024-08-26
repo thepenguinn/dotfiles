@@ -237,31 +237,42 @@ return {
 
             local function tex_get_include_number(include_type, file_type)
 
-                local node = vim.treesitter.get_node()
-                local number
+                local ltree = vim.treesitter.get_parser(0)
 
-                while node do
-                    if node:type() == "latex_include" then
+                local query = vim.treesitter.query.parse("latex",
+                    [[
+                    (latex_include
+                      path: (curly_group_path
+                        path: (path)
+                            )
+                        ) @includes
+                    ]]
+                )
 
-                        number = get_text_from_node(
-                            0, node)[1]:match(
+                local troot = ltree:parse()[1]:root()
+                local max_number = 0
+
+                for _, cnode in query:iter_captures(troot, 0) do
+
+                    if cnode:type() == "latex_include" then
+                        number = get_text_from_node(0, cnode)[1]
+
+                        number = number:match(
                             "\\" .. include_type .. "[ \t]*{" .. file_type .. "_([0-9][0-9])"
                         )
 
                         if number then
-                            break
+                            number = tonumber(number)
+                            if number > max_number then
+                                max_number = number
+                            end
                         end
 
                     end
-
-                    node = node:prev_named_sibling()
                 end
 
-                if node and number then
-                    return string.format("%02d", tonumber(number) + 1)
-                end
+                return string.format("%02d", tonumber(max_number) + 1)
 
-                return "01"
             end
 
             local function tex_convert_title_to_dir(args)
@@ -620,7 +631,7 @@ return {
                         chapter_title = i(1, "Chapter Name"),
                         chapter_dir = f(
                             function () return tex_get_include_number("subfileinclude", "chapter") end,
-                            { 1 }
+                            { }
                         ),
                         chapter_end = i(0),
 
@@ -632,7 +643,10 @@ return {
                     ,
                     {
                         work_title = i(1, "Work Name"),
-                        work_dir = f(tex_convert_title_to_dir, { 1 }),
+                        work_dir = f(
+                            function () return tex_get_include_number("subfileinclude", "work") end,
+                            { }
+                        ),
                         work_end = i(0),
 
                     })),
@@ -643,7 +657,10 @@ return {
                     ,
                     {
                         section_title = i(1, "Section Name"),
-                        section_dir = f(tex_convert_title_to_dir, { 1 }),
+                        section_dir = f(
+                            function () return tex_get_include_number("subfile", "section") end,
+                            { }
+                        ),
                         section_end = i(0),
 
                     })),
