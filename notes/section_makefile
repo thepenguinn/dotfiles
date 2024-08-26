@@ -3,13 +3,17 @@
 SENDER = termux-share -a send
 VIEWER = viewpdf
 
+TIKZPICS := $(wildcard */**/tikzpics/*.tex)
+
 build: section.pdf view
 
 force:
+	lunatikz build section.tex
 	pdflatex -shell-escape -halt-on-error section.tex
 	$(VIEWER) section.pdf
 
-section.pdf: section.tex ../../preamble.tex
+section.pdf: section.tex ../../preamble.tex $(TIKZPICS)
+	lunatikz build section.tex
 	pdflatex -shell-escape -halt-on-error section.tex
 
 view:

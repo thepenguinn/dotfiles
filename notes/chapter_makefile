@@ -5,13 +5,17 @@ VIEWER = viewpdf
 
 SECTIONS := $(wildcard section_*/section.tex)
 
+TIKZPICS := $(wildcard */**/tikzpics/*.tex)
+
 build: chapter.pdf view
 
 force:
+	lunatikz build chapter.tex
 	pdflatex -shell-escape -halt-on-error chapter.tex
 	$(VIEWER) chapter.pdf
 
-chapter.pdf: chapter.tex ../preamble.tex syllabus.tex $(SECTIONS)
+chapter.pdf: chapter.tex ../preamble.tex syllabus.tex $(SECTIONS) $(TIKZPICS)
+	lunatikz build chapter.tex
 	pdflatex -shell-escape -halt-on-error chapter.tex
 
 view:
