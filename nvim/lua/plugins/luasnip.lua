@@ -557,7 +557,7 @@ return {
 
                     .. "\\begin{{document}}\n"
                     .. "\n"
-                    .. "\\section{{{section_title}}}\n"
+                    .. "\\section{{{section_title}}} \\label{{sec:{section_label}}}\n"
                     .. "\n"
                     .. "{section_end}\n"
                     .. "\n"
@@ -568,6 +568,7 @@ return {
                             f(tex_find_section_title, {}),
                             i(nil, "Section Name"),
                         }),
+                        section_label = i(2),
                         section_end = i(0),
                     })),
 
