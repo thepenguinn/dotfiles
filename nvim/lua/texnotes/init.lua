@@ -13,13 +13,7 @@ M._get_text = function (node)
     return text
 end
 
-M._init_chapter = function(parent_dir, file_base)
-
-    -- files to copy
-    -- create the parent directory
-    -- chapter_makefile, syllabus.tex, chapter.tex
-    -- directories to create
-    -- plots, tikzpics, data
+M._init_chapter = function(parent_dir)
 
     local tmp = io.open(parent_dir .. "/chapter.tex", "r")
     if tmp then
@@ -27,8 +21,6 @@ M._init_chapter = function(parent_dir, file_base)
         vim.cmd("e " .. parent_dir .. "/chapter.tex")
         return
     end
-
-    -- init the chapter dir
 
     local path = require("pathlib")
 
@@ -42,19 +34,17 @@ M._init_chapter = function(parent_dir, file_base)
     tmp = path(parent_dir .. "/syllabus.tex")
     tmp:touch()
 
-    vim.cmd("e " .. parent_dir .. "/chapter.tex")
-    -- snippet for beginning the chapter
-    vim.cmd("norm ibchp")
+    if vim.fn.bufloaded(parent_dir .. "/chapter.tex") == 0 then
+        vim.cmd("e " .. parent_dir .. "/chapter.tex")
+        vim.cmd("norm ibchp ")
+        require("luasnip").expand()
+    else
+        vim.cmd("e " .. parent_dir .. "/chapter.tex")
+    end
 
 end
 
-M._init_work = function(parent_dir, file_base)
-
-    -- files to copy
-    -- create the parent directory
-    -- work_makefile, abstract.tex, work.tex
-    -- directories to create
-    -- plots, tikzpics, data
+M._init_work = function(parent_dir)
 
     local tmp = io.open(parent_dir .. "/work.tex", "r")
     if tmp then
@@ -62,8 +52,6 @@ M._init_work = function(parent_dir, file_base)
         vim.cmd("e " .. parent_dir .. "/work.tex")
         return
     end
-
-    -- init the chapter dir
 
     local path = require("pathlib")
 
@@ -77,19 +65,17 @@ M._init_work = function(parent_dir, file_base)
     tmp = path("~/.config/notes/abstract.tex")
     tmp:copy(path(parent_dir .. "/abstract.tex"))
 
-    vim.cmd("e " .. parent_dir .. "/work.tex")
-    -- snippet for beginning the work
-    vim.cmd("norm ibwrk")
+    if vim.fn.bufloaded(parent_dir .. "/work.tex") == 0 then
+        vim.cmd("e " .. parent_dir .. "/work.tex")
+        vim.cmd("norm ibwrk ")
+        require("luasnip").expand()
+    else
+        vim.cmd("e " .. parent_dir .. "/work.tex")
+    end
 
 end
 
-M._init_section = function(parent_dir, file_base)
-
-    -- files to copy
-    -- create the parent directory
-    -- section_makefile, section.tex
-    -- directories to create
-    -- plots, tikzpics, data
+M._init_section = function(parent_dir)
 
     local tmp = io.open(parent_dir .. "/section.tex", "r")
     if tmp then
@@ -97,8 +83,6 @@ M._init_section = function(parent_dir, file_base)
         vim.cmd("e " .. parent_dir .. "/section.tex")
         return
     end
-
-    -- init the section dir
 
     local path = require("pathlib")
 
@@ -109,24 +93,32 @@ M._init_section = function(parent_dir, file_base)
     tmp = path("~/.config/notes/section_makefile")
     tmp:copy(path(parent_dir .. "/Makefile"))
 
-    vim.cmd("e " .. parent_dir .. "/section.tex")
-    -- snippet for beginning the section
-    vim.cmd("norm ibsec")
+    if vim.fn.bufloaded(parent_dir .. "/section.tex") == 0 then
+        vim.cmd("e " .. parent_dir .. "/section.tex")
+        vim.cmd("norm ibsec ")
+        require("luasnip").expand()
+    else
+        vim.cmd("e " .. parent_dir .. "/section.tex")
+    end
 
 end
 
-M._init_syllabus = function(parent_dir, file_base)
+M._init_syllabus = function(parent_dir)
 
     local tmp = io.open(parent_dir .. "/syllabus.tex", "r")
     if tmp then
+        local content = tmp:read()
         tmp:close()
-        vim.cmd("e " .. parent_dir .. "/syllabus.tex")
-        return
+        if content and content ~= "" then
+            vim.cmd("e " .. parent_dir .. "/syllabus.tex")
+            return
+        end
     end
 
     if vim.fn.bufloaded(parent_dir .. "/syllabus.tex") == 0 then
         vim.cmd("e " .. parent_dir .. "/syllabus.tex")
-        vim.cmd("norm ibsyl")
+        vim.cmd("norm ibsyl ")
+        require("luasnip").expand()
     else
         vim.cmd("e " .. parent_dir .. "/syllabus.tex")
     end
@@ -223,19 +215,19 @@ M.jump = function()
 
         if cur_file_base == "course" then
             if sub_file_base == "chapter" then
-                M._init_chapter(sub_file_parent, sub_file_base)
+                M._init_chapter(sub_file_parent)
             elseif sub_file_base == "work" then
-                M._init_work(sub_file_parent, sub_file_base)
+                M._init_work(sub_file_parent)
             end
         elseif cur_file_base == "chapter" then
             if sub_file_base == "section" then
-                M._init_section(sub_file_parent, sub_file_base)
+                M._init_section(sub_file_parent)
             elseif sub_file_base == "syllabus" then
-                M._init_syllabus(sub_file_parent, sub_file_base)
+                M._init_syllabus(sub_file_parent)
             end
         elseif cur_file_parent == "work" then
             if sub_file_base == "section" then
-                M._init_section(sub_file_parent, sub_file_base)
+                M._init_section(sub_file_parent)
             end
         else
             M._jump_to_file(sub_file_parent, sub_file_base)
