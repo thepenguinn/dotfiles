@@ -507,7 +507,7 @@ return {
                     .. "    \\input{{abstract.tex}}\n"
                     .. "    \\chapter{{{work_chapter_subfile}}}\n"
                     .. "}} {{\n"
-                    .. "    \\chapter{{{work_chapter_nosubfile}}}\n"
+                    .. "    \\chapter{{{work_chapter_nosubfile}}} \\label{{chp:{work_chapter_label}}}\n"
                     .. "}}\n"
                     .. "\n"
 
@@ -519,16 +519,17 @@ return {
                         work_author = i(1, "Daniel V Mathew"),
                         work_supervisor = i(2),
                         work_title = f(function(args) return string.upper(args[1][1]) end, { 3 }),
-                        work_subtitle = i(4, "COURSE NAME"),
-                        work_subsubtitle = i(5, "TYPE OF WORK"),
-                        work_authordesc = i(6),
-                        work_supervisordesc = i(7),
-                        work_abstract = i(8),
-                        work_chapter_subfile = i(9, "Introduction"),
+                        work_subtitle = i(5, "COURSE NAME"),
+                        work_subsubtitle = i(6, "TYPE OF WORK"),
+                        work_authordesc = i(7),
+                        work_supervisordesc = i(8),
+                        work_abstract = i(9),
+                        work_chapter_subfile = i(10, "Introduction"),
                         work_chapter_nosubfile = c(3, {
                             f(tex_find_work_title, {}),
                             i(nil, "Course Work Title"),
                         }),
+                        work_chapter_label = i(4),
                         work_end = i(0),
                     })),
 
