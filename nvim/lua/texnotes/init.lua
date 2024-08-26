@@ -13,6 +13,23 @@ M._get_text = function (node)
     return text
 end
 
+M._init_tikzpic = function(file_path)
+
+    local tmp
+
+    tmp = io.open(file_path, "r")
+    if tmp then
+        tmp:close()
+        vim.cmd("e " .. file_path)
+    else
+        print("Intializing: Spawning Rexes, Wrapping Raptors, Polishing Ceratops...")
+        vim.cmd("e " .. file_path)
+        vim.cmd("norm ibpic ")
+        require("luasnip").expand()
+    end
+
+end
+
 M._init_chapter = function(parent_dir)
 
     local tmp = io.open(parent_dir .. "/chapter.tex", "r")
@@ -245,9 +262,34 @@ M.jump = function()
         print("Teleporting: Here we go...")
         M._jump_to_file(sub_file_parent, sub_file_base)
         -- chapter.tex, section.tex, work.tex, syllabus.tex, abstract.tex
+        return
     end
 
     if cur_node:type() == "graphics_include" then
+
+        local file_name = cur_node:field("path")[1]
+
+        if file_name and file_name:type() == "curly_group_path" then
+            file_name = file_name:named_child(0)
+        end
+
+        if file_name then
+
+            file_name = M._get_text(file_name)[1]
+
+            if file_name:sub(-4, -1) == ".pdf" then
+
+                local parent_dir = vim.fn.expand("%:p")
+
+                parent_dir = parent_dir:gsub("/[^/]*$", "")
+
+                file_name = file_name:sub(1, -4) .. "tex"
+
+                M._init_tikzpic(parent_dir .. "/" .. file_name)
+            end
+
+        end
+
         -- do the thing
         -- then return
     end
