@@ -289,6 +289,12 @@ return {
 
             end
 
+            local function tex_find_work_title()
+
+                return tex_find_title("course", "work", "Couldn't Find Work Title")
+
+            end
+
             local function tex_find_section_title()
 
                 local parent_dir = vim.api.nvim_buf_get_name(0)
@@ -300,16 +306,16 @@ return {
                 tmp = io.open(parent_dir .. "/chapter.tex", "r")
                 if tmp then
                     tmp:close()
-                    return tex_find_title("chapter", "section", "Section Name")
+                    return tex_find_title("chapter", "section", "Couldn't Find Section Name")
                 end
 
                 tmp = io.open(parent_dir .. "/work.tex", "r")
                 if tmp then
                     tmp:close()
-                    return tex_find_title("work", "section", "Section Name")
+                    return tex_find_title("work", "section", "Couldn't Find Section Name")
                 end
 
-                return "Couldn't Find Title"
+                return "Couldn't Find Section Name"
 
             end
 
@@ -460,7 +466,7 @@ return {
                     {
                         chapter_title = c(1, {
                             f(tex_find_chapter_title, {}),
-                            i(nil, "An Intersting Title")
+                            i(nil, "Chapter Title")
                         }),
                         chapter_end = i(0),
                     })),
@@ -519,7 +525,10 @@ return {
                         work_supervisordesc = i(7),
                         work_abstract = i(8),
                         work_chapter_subfile = i(9, "Introduction"),
-                        work_chapter_nosubfile = i(3),
+                        work_chapter_nosubfile = c(3, {
+                            f(tex_find_work_title, {}),
+                            i(nil, "Course Work Title"),
+                        }),
                         work_end = i(0),
                     })),
 
