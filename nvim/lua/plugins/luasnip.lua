@@ -669,7 +669,7 @@ return {
                             }),
                             image = i(6),
                             caption = i(4),
-                            label = i(5)
+                            label = i(5),
                             wrap_end = rep(1),
                             include_end = i(0)
 
