@@ -235,6 +235,35 @@ return {
                 end
             end
 
+            local function tex_get_include_number(include_type, file_type)
+
+                local node = vim.treesitter.get_node()
+                local number
+
+                while node do
+                    if node:type() == "latex_include" then
+
+                        number = get_text_from_node(
+                            0, node)[1]:match(
+                            "\\" .. include_type .. "[ \t]*{" .. file_type .. "_([0-9][0-9])"
+                        )
+
+                        if number then
+                            break
+                        end
+
+                    end
+
+                    node = node:prev_named_sibling()
+                end
+
+                if node and number then
+                    return string.format("%02d", tonumber(number) + 1)
+                end
+
+                return "01"
+            end
+
             local function tex_convert_title_to_dir(args)
                 return args[1][1]:lower():gsub(" ", "_")
             end
@@ -589,7 +618,10 @@ return {
                     ,
                     {
                         chapter_title = i(1, "Chapter Name"),
-                        chapter_dir = f(tex_convert_title_to_dir, { 1 }),
+                        chapter_dir = f(
+                            function () return tex_get_include_number("subfileinclude", "chapter") end,
+                            { 1 }
+                        ),
                         chapter_end = i(0),
 
                     })),
