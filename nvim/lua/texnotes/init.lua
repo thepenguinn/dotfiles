@@ -231,8 +231,9 @@ M.jump = function()
             elseif sub_file_base == "syllabus" then
                 M._init_syllabus(sub_file_parent)
             end
-        elseif cur_file_parent == "work" then
+        elseif cur_file_base == "work" then
             if sub_file_base == "section" then
+                print("wwowo")
                 M._init_section(sub_file_parent)
             end
         else
