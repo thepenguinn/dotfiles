@@ -647,13 +647,14 @@ return {
                         .. "    \\adjustbox{{max width = {max_width}}} {{\n"
                         .. "        \\includegraphics[height = {max_height}] {{{image}}}\n"
                         .. "    }}\n"
-                        .. "    \\captionof {{figure}} {{{caption}}}\n"
+                        .. "    \\captionof{{figure}} {{{caption}}}\n"
+                        .. "    \\label{{fig:{label}}}\n"
                         .. "\\end{{{wrap_end}}}\n"
                         .. "\n"
                         .. "{include_end}"
                         ,
                         {
-                            wrap_begin = c(1, {i(nil, "center"), i(nil,  "figure"), i(nil)}),
+                            wrap_begin = c(1, {i(nil, "figure"), i(nil, "center"), i(nil)}),
                             figure_options = f(tex_get_figure_options, { 1 }),
                             max_width = c(2, {
                                 i(nil, "0.7\\textwidth"),
@@ -665,8 +666,9 @@ return {
                                 sn(nil, {i(1, "0.8"), t("\\textheight")}),
                                 i(nil),
                             }),
-                            image = i(4),
-                            caption = i(5),
+                            image = i(6),
+                            caption = i(4),
+                            label = i(5)
                             wrap_end = rep(1),
                             include_end = i(0)
 
