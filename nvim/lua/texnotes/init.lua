@@ -140,8 +140,6 @@ M._jump_to_file = function(parent_dir, file_base)
     tmp:touch(nil, true)
 
     vim.cmd("e " .. parent_dir .. "/" .. file_base .. ".tex")
-
-    print("from _jump_to_file", parent_dir, file_base)
 end
 
 M.get_node = function()
@@ -224,24 +222,28 @@ M.jump = function()
         if cur_file_base == "course" then
             if sub_file_base == "chapter" then
                 M._init_chapter(sub_file_parent)
+                return
             elseif sub_file_base == "work" then
                 M._init_work(sub_file_parent)
+                return
             end
         elseif cur_file_base == "chapter" then
             if sub_file_base == "section" then
                 M._init_section(sub_file_parent)
+                return
             elseif sub_file_base == "syllabus" then
                 M._init_syllabus(sub_file_parent)
+                return
             end
         elseif cur_file_base == "work" then
             if sub_file_base == "section" then
                 M._init_section(sub_file_parent)
+                return
             end
-        else
-            print("Teleporting: Here we go...")
-            M._jump_to_file(sub_file_parent, sub_file_base)
         end
 
+        print("Teleporting: Here we go...")
+        M._jump_to_file(sub_file_parent, sub_file_base)
         -- chapter.tex, section.tex, work.tex, syllabus.tex, abstract.tex
     end
 
