@@ -283,6 +283,12 @@ return {
                 return default
             end
 
+            local function tex_find_chapter_title()
+
+                return tex_find_title("course", "chapter", "Couldn't Find Chapter Title")
+
+            end
+
             local function tex_find_section_title()
 
                 local parent_dir = vim.api.nvim_buf_get_name(0)
@@ -452,7 +458,10 @@ return {
                     .. "\\end{{document}}\n"
                     ,
                     {
-                        chapter_title = i(1, "An Interesting Title"),
+                        chapter_title = c(1, {
+                            f(tex_find_chapter_title, {}),
+                            i(nil, "An Intersting Title")
+                        }),
                         chapter_end = i(0),
                     })),
 
