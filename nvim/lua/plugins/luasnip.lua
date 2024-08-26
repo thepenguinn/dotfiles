@@ -48,6 +48,21 @@ return {
                 return st[1]
             end
 
+            local function get_text_from_node(bufnr, node)
+
+                local start_row, start_col, end_row, end_col
+
+                start_row, start_col, end_row, end_col = node:range()
+
+                -- print(start_row, start_col, end_row, end_col)
+
+                local text = vim.api.nvim_buf_get_text(
+                    bufnr, start_row, start_col, end_row, end_col, {}
+                )
+
+                return text
+            end
+
             local function get_first_arg ()
 
                 local pnode
@@ -222,6 +237,53 @@ return {
 
             local function tex_convert_title_to_dir(args)
                 return args[1][1]:lower():gsub(" ", "_")
+            end
+
+            local function tex_find_section_title()
+
+                local chap_file_parent = vim.fn.expand("%:p")
+                local section_name
+
+                chap_file_parent = chap_file_parent:gsub("/[^/]*$", "")
+                section_name = chap_file_parent:gsub("^.*/", "")
+                chap_file_parent = chap_file_parent:gsub("/[^/]*$", "")
+
+                local chap_bufnr = vim.fn.bufadd(chap_file_parent .. "/chapter.tex")
+
+                local ltree = vim.treesitter.get_parser(chap_bufnr)
+
+                local query = vim.treesitter.query.parse("latex",
+                    [[
+                    (latex_include
+                      path: (curly_group_path
+                        path: (path) @_path
+                            )
+                        (#eq? @_path "]] .. section_name .. [[/section.tex" )
+                        ) @section_includes
+                    ]]
+                )
+
+                local troot = ltree:parse()[1]:root()
+                local node
+                local chap_name
+
+                vim.fn.bufload(chap_bufnr)
+
+                for _, cnode in query:iter_captures(troot, chap_bufnr) do
+
+
+                    if cnode:type() == "latex_include" then
+                        node = cnode:prev_named_sibling()
+                        if node:type() == "line_comment" then
+                            chap_name = get_text_from_node(chap_bufnr, node)[1]
+                            chap_name = chap_name:sub(2, -2)
+                            return chap_name
+                        end
+                        break
+                    end
+                end
+
+                return "Section Name"
             end
 
             ls.add_snippets("python", {
@@ -463,7 +525,10 @@ return {
                     .. "\\end{{document}}\n"
                     ,
                     {
-                        section_title = i(1),
+                        section_title = c(1, {
+                            f(tex_find_section_title, {}),
+                            i(nil, "Section Name"),
+                        }),
                         section_end = i(0),
                     })),
 
