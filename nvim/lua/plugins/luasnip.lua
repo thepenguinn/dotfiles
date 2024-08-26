@@ -537,7 +537,7 @@ return {
                     .. "\n"
                     .. "\\begin{{document}}\n"
                     .. "\n"
-                    .. "\\section{{{syllabus_title}}}\n"
+                    .. "\\section{{{syllabus_title}}} \\label{{sec:{section_label}}}\n"
                     .. "\n"
                     .. "{syllabus_end}\n"
                     .. "\n"
@@ -545,6 +545,7 @@ return {
                     ,
                     {
                         syllabus_title = i(1, "Syllabus"),
+                        section_label = i(2),
                         syllabus_end = i(0),
                     })),
 
