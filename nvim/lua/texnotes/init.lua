@@ -219,6 +219,8 @@ M.jump = function()
         sub_file_base = sub_file_parent:gsub("^.*/", "")
         sub_file_parent = sub_file_parent:gsub("/[^/]-$", "")
 
+        print("Intializing: Spawning Rexes, Wrapping Raptors, Polishing Ceratops...")
+
         if cur_file_base == "course" then
             if sub_file_base == "chapter" then
                 M._init_chapter(sub_file_parent)
@@ -233,10 +235,10 @@ M.jump = function()
             end
         elseif cur_file_base == "work" then
             if sub_file_base == "section" then
-                print("wwowo")
                 M._init_section(sub_file_parent)
             end
         else
+            print("Teleporting: Here we go...")
             M._jump_to_file(sub_file_parent, sub_file_base)
         end
 
