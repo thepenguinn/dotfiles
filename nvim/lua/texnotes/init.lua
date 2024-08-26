@@ -116,7 +116,21 @@ M._init_section = function(parent_dir, file_base)
 end
 
 M._init_syllabus = function(parent_dir, file_base)
-    print("from _init_syllabus", parent_dir, file_base)
+
+    local tmp = io.open(parent_dir .. "/syllabus.tex", "r")
+    if tmp then
+        tmp:close()
+        vim.cmd("e " .. parent_dir .. "/syllabus.tex")
+        return
+    end
+
+    if vim.fn.bufloaded(parent_dir .. "/syllabus.tex") == 0 then
+        vim.cmd("e " .. parent_dir .. "/syllabus.tex")
+        vim.cmd("norm ibsyl")
+    else
+        vim.cmd("e " .. parent_dir .. "/syllabus.tex")
+    end
+
 end
 
 M._jump_to_file = function(parent_dir, file_base)
@@ -199,25 +213,13 @@ M.jump = function()
         sub_file_parent = sub_file_parent:gsub("^[ \t]*", "")
         sub_file_parent = sub_file_parent:gsub("[ \t]*$", "")
 
-        sub_file_parent = sub_file_parent:gsub("%.tex$", "")
-        sub_file_base = sub_file_parent:gsub("^.*/", "")
-        sub_file_parent = sub_file_parent:gsub("/[^/]-$", "")
-
-        print(sub_file_parent, sub_file_base)
-
         sub_file_parent = vim.fn.resolve(
             cur_file_parent .. "/" .. sub_file_parent
         )
 
-        -- local l = {}
-        --
-        -- for _, buf in ipairs(vim.fn.getbufinfo()) do
-        --     l[#l + 1] = buf.name
-        -- end
-        --
-        -- vim.api.nvim_buf_set_lines(
-        --     0, -1, -1, {strict_indexing = true}, l
-        -- )
+        sub_file_parent = sub_file_parent:gsub("%.tex$", "")
+        sub_file_base = sub_file_parent:gsub("^.*/", "")
+        sub_file_parent = sub_file_parent:gsub("/[^/]-$", "")
 
         if cur_file_base == "course" then
             if sub_file_base == "chapter" then
