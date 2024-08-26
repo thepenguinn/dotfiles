@@ -239,18 +239,18 @@ return {
                 return args[1][1]:lower():gsub(" ", "_")
             end
 
-            local function tex_find_section_title()
+            local function tex_find_title(pfile_type, cfile_type, default)
 
-                local chap_file_parent = vim.fn.expand("%:p")
-                local section_name
+                local ptex_file_parent = vim.fn.expand("%:p")
+                local ctex_dir_name
 
-                chap_file_parent = chap_file_parent:gsub("/[^/]*$", "")
-                section_name = chap_file_parent:gsub("^.*/", "")
-                chap_file_parent = chap_file_parent:gsub("/[^/]*$", "")
+                ptex_file_parent = ptex_file_parent:gsub("/[^/]*$", "")
+                ctex_dir_name = ptex_file_parent:gsub("^.*/", "")
+                ptex_file_parent = ptex_file_parent:gsub("/[^/]*$", "")
 
-                local chap_bufnr = vim.fn.bufadd(chap_file_parent .. "/chapter.tex")
+                local ptex_bufnr = vim.fn.bufadd(ptex_file_parent .. "/" .. pfile_type .. ".tex")
 
-                local ltree = vim.treesitter.get_parser(chap_bufnr)
+                local ltree = vim.treesitter.get_parser(ptex_bufnr)
 
                 local query = vim.treesitter.query.parse("latex",
                     [[
@@ -258,32 +258,33 @@ return {
                       path: (curly_group_path
                         path: (path) @_path
                             )
-                        (#eq? @_path "]] .. section_name .. [[/section.tex" )
-                        ) @section_includes
+                        (#eq? @_path "]] .. ctex_dir_name .. "/" .. cfile_type .. [[.tex" )
+                        ) @cfile_includes
                     ]]
                 )
 
                 local troot = ltree:parse()[1]:root()
                 local node
-                local chap_name
+                local title
 
-                vim.fn.bufload(chap_bufnr)
-
-                for _, cnode in query:iter_captures(troot, chap_bufnr) do
-
+                for _, cnode in query:iter_captures(troot, ptex_bufnr) do
 
                     if cnode:type() == "latex_include" then
                         node = cnode:prev_named_sibling()
                         if node:type() == "line_comment" then
-                            chap_name = get_text_from_node(chap_bufnr, node)[1]
-                            chap_name = chap_name:sub(2, -2)
-                            return chap_name
+                            title = get_text_from_node(ptex_bufnr, node)[1]
+                            title = title:sub(2, -2)
+                            return title
                         end
                         break
                     end
                 end
 
-                return "Section Name"
+                return default
+            end
+
+            local function tex_find_section_title_from_chapter()
+                return tex_find_title("chapter", "section", "something Section Name")
             end
 
             ls.add_snippets("python", {
@@ -526,7 +527,7 @@ return {
                     ,
                     {
                         section_title = c(1, {
-                            f(tex_find_section_title, {}),
+                            f(tex_find_section_title_from_chapter, {}),
                             i(nil, "Section Name"),
                         }),
                         section_end = i(0),
