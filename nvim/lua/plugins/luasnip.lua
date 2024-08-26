@@ -505,9 +505,8 @@ return {
 
                     .. "\\ifSubfilesClassLoaded {{\n"
                     .. "    \\input{{abstract.tex}}\n"
-                    .. "    \\chapter{{{work_chapter_subfile}}}\n"
                     .. "}} {{\n"
-                    .. "    \\chapter{{{work_chapter_nosubfile}}} \\label{{chp:{work_chapter_label}}}\n"
+                    .. "    \\chapter{{{work_chapter}}} \\label{{chp:{work_chapter_label}}}\n"
                     .. "}}\n"
                     .. "\n"
 
@@ -524,8 +523,7 @@ return {
                         work_authordesc = i(7),
                         work_supervisordesc = i(8),
                         work_abstract = i(9),
-                        work_chapter_subfile = i(10, "Introduction"),
-                        work_chapter_nosubfile = c(3, {
+                        work_chapter = c(3, {
                             f(tex_find_work_title, {}),
                             i(nil, "Course Work Title"),
                         }),
