@@ -220,6 +220,10 @@ return {
                 end
             end
 
+            local function tex_convert_title_to_dir(args)
+                return args[1][1]:lower():gsub(" ", "_")
+            end
+
             ls.add_snippets("python", {
 
                 s("shit", fmt("just something \nelse {here}", {
@@ -461,6 +465,19 @@ return {
                     {
                         section_title = i(1),
                         section_end = i(0),
+                    })),
+
+                s("nchp", fmt(
+                    "%{chapter_title}%\n"
+                    .. "\\subfileinclude{{{chapter_dir}_chapter/chapter.tex}}\n"
+                    .. "\n"
+                    .. "{chapter_end}"
+                    ,
+                    {
+                        chapter_title = i(1, "Chapter Name"),
+                        chapter_dir = f(tex_convert_title_to_dir, { 1 }),
+                        chapter_end = i(0),
+
                     })),
 
                 s("cbp", fmt(
