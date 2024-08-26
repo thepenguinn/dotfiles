@@ -283,8 +283,28 @@ return {
                 return default
             end
 
-            local function tex_find_section_title_from_chapter()
-                return tex_find_title("chapter", "section", "something Section Name")
+            local function tex_find_section_title()
+
+                local parent_dir = vim.api.nvim_buf_get_name(0)
+                local tmp
+
+                parent_dir = parent_dir:gsub("/[^/]-$", "")
+                parent_dir = parent_dir:gsub("/[^/]-$", "")
+
+                tmp = io.open(parent_dir .. "/chapter.tex", "r")
+                if tmp then
+                    tmp:close()
+                    return tex_find_title("chapter", "section", "Section Name")
+                end
+
+                tmp = io.open(parent_dir .. "/work.tex", "r")
+                if tmp then
+                    tmp:close()
+                    return tex_find_title("work", "section", "Section Name")
+                end
+
+                return "Couldn't Find Title"
+
             end
 
             ls.add_snippets("python", {
@@ -527,7 +547,7 @@ return {
                     ,
                     {
                         section_title = c(1, {
-                            f(tex_find_section_title_from_chapter, {}),
+                            f(tex_find_section_title, {}),
                             i(nil, "Section Name"),
                         }),
                         section_end = i(0),
