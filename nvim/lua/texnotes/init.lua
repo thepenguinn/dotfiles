@@ -297,4 +297,45 @@ M.jump = function()
 
 end
 
+M.view_binary = function()
+
+    local cur_node = M.get_node()
+
+    if not cur_node then
+        print("Not in graphics_include")
+        return
+    end
+
+    if cur_node:type() == "graphics_include" then
+
+        local file_name = cur_node:field("path")[1]
+        local tmp
+
+        if file_name and file_name:type() == "curly_group_path" then
+            file_name = file_name:named_child(0)
+        end
+
+        if file_name then
+
+            file_name = M._get_text(file_name)[1]
+
+            if file_name ~= "" then
+
+                tmp = io.open(file_name)
+                if tmp then
+                    tmp:close()
+                    vim.system({"termux-share", "-d", file_name})
+                    print("Opening " .. file_name)
+                else
+                    print("File doesn't exist: " .. file_name)
+                end
+
+            end
+
+        end
+
+    end
+
+end
+
 return M
