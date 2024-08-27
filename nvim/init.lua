@@ -125,8 +125,9 @@ vim.api.nvim_create_autocmd({"BufEnter"}, {
     pattern = {"*.tex"},
     callback = function()
         vim.keymap.set("n", "<cr>", require("texnotes").jump)
-        vim.keymap.set("n", "M", require("texnotes").view_binary)
+        vim.keymap.set("n", "<leader>tm", require("texnotes").view_binary)
         vim.keymap.set("n", "<leader>tn", require("texnotes").new_tikzpic)
+        vim.keymap.set("n", "<leader>tb", require("texnotes").build_and_view_tikzpic)
         -- vim.api.nvim_create_user_command("Tex", require("texnotes").exec_all, {})
     end,
     group = tex_notes_group,
@@ -136,8 +137,9 @@ vim.api.nvim_create_autocmd({"BufLeave"}, {
     pattern = {"*.tex"},
     callback = function()
         vim.keymap.del("n", "<cr>")
-        vim.keymap.del("n", "M")
+        vim.keymap.del("n", "<leader>tm")
         vim.keymap.del("n", "<leader>tn")
+        vim.keymap.del("n", "<leader>tb")
         -- vim.api.nvim_del_user_command("PyexecAall")
     end,
     group = tex_notes_group,

@@ -419,4 +419,63 @@ M.new_tikzpic = function ()
 
 end
 
+M.build_and_view_tikzpic = function()
+
+    local cur_node = M.get_node()
+
+    if not cur_node or cur_node:type() ~= "graphics_include" then
+        print("Not inside graphics_include")
+        return
+    end
+
+    local file_name = cur_node:field("path")[1]
+    local tex_file_name
+
+
+    if file_name and file_name:type() == "curly_group_path" then
+        file_name = file_name:named_child(0)
+    end
+
+    if file_name then
+
+        file_name = M._get_text(file_name)[1]
+
+        if file_name:sub(-4, -1) == ".pdf" then
+
+            local parent_dir = vim.fn.expand("%:p")
+
+            parent_dir = parent_dir:gsub("/[^/]*$", "")
+
+            tex_file_name = file_name:sub(1, -4) .. "tex"
+
+            -- build the entire tex file and then view the current file
+            local cur_file_dir = vim.fn.expand("%:p")
+
+            -- assuming we are not in a tikzpic file
+            cur_file_dir = cur_file_dir:gsub("/[^/]*$", "")
+            -- if we need this to work, we should add the default build-entry for the cur_file_dir
+            print("Building pics for " .. cur_file_dir .. "...")
+            vim.system(
+                {"lunatikz", "build"},
+                {cwd = cur_file_dir, text = true},
+                function (obj)
+
+                    if obj.code == 0 then
+                        print("Lunatikz ran successfully, opening " .. parent_dir .. "/" .. file_name)
+                        vim.system({"termux-share", "-d", parent_dir .. "/" .. file_name})
+                    else
+                        vim.schedule(function ()
+                            vim.api.nvim_echo({{obj.stdout .. obj.stderr}}, true, {})
+                        end)
+                    end
+
+                end
+            )
+
+        end
+
+    end
+
+end
+
 return M
