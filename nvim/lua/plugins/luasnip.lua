@@ -727,7 +727,7 @@ return {
                         .. "        \\includegraphics[height = {max_height}] {{{image}}}\n"
                         .. "    }}\n"
                         .. "    \\captionof{{figure}} {{{caption}}}\n"
-                        .. "    \\label{{fig:{label}}}\n"
+                        .. "    \\label{{{label}}}\n"
                         .. "\\end{{{wrap_end}}}\n"
                         .. "\n"
                         .. "{include_end}"
@@ -747,7 +747,10 @@ return {
                             }),
                             image = i(6),
                             caption = i(4),
-                            label = i(5),
+                            label = c(5, {
+                                sn(nil, {t("fig:"), i(1)}),
+                                sn(nil, {t("plt:"), i(1)}),
+                            }),
                             wrap_end = rep(1),
                             include_end = i(0)
 
