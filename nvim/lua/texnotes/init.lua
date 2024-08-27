@@ -91,34 +91,45 @@ end
 
 M._init_work = function(parent_dir)
 
-    local tmp = io.open(parent_dir .. "/work.tex", "r")
-    if tmp then
-        tmp:close()
-        vim.cmd("e " .. parent_dir .. "/work.tex")
-        return
+    local path = require("pathlib")
+    local wrk = io.open(parent_dir .. "/work.tex", "r")
+    local tmp
+    local content
+
+    if not wrk then
+
+        vim.fn.mkdir(parent_dir .. "/plots", "p")
+        vim.fn.mkdir(parent_dir .. "/tikzpics", "p")
+        vim.fn.mkdir(parent_dir .. "/data", "p")
+
+        tmp = path("~/.config/notes/work_makefile")
+        tmp:copy(path(parent_dir .. "/Makefile"))
+
+        tmp = path("~/.config/notes/work_header.tex")
+        tmp:copy(path(parent_dir .. "/work_header.tex"))
+
+        tmp = path("~/.config/notes/abstract.tex")
+        tmp:copy(path(parent_dir .. "/abstract.tex"))
+
+        tmp = path(parent_dir .. "/work.tex")
+        tmp:touch()
+
+        vim.system(
+            {"lunatikz", "add", "--build-entry", "work.tex"},
+            {cwd = parent_dir}
+        )
+
+    else
+        content = wrk:read()
+        wrk:close()
     end
 
-    local path = require("pathlib")
+    print("") -- clears the msg
+    vim.cmd("e " .. parent_dir .. "/work.tex")
 
-    vim.fn.mkdir(parent_dir .. "/plots", "p")
-    vim.fn.mkdir(parent_dir .. "/tikzpics", "p")
-    vim.fn.mkdir(parent_dir .. "/data", "p")
-
-    tmp = path("~/.config/notes/work_makefile")
-    tmp:copy(path(parent_dir .. "/Makefile"))
-
-    tmp = path("~/.config/notes/work_header.tex")
-    tmp:copy(path(parent_dir .. "/work_header.tex"))
-
-    tmp = path("~/.config/notes/abstract.tex")
-    tmp:copy(path(parent_dir .. "/abstract.tex"))
-
-    if vim.fn.bufloaded(parent_dir .. "/work.tex") == 0 then
-        vim.cmd("e " .. parent_dir .. "/work.tex")
+    if not content then
         vim.cmd("norm ibwrk ")
         require("luasnip").expand()
-    else
-        vim.cmd("e " .. parent_dir .. "/work.tex")
     end
 
 end
