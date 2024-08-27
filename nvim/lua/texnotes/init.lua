@@ -13,19 +13,34 @@ M._get_text = function (node)
     return text
 end
 
-M._init_tikzpic = function(file_path)
+M._init_tikzpic = function(parent_dir, file_name)
 
-    local tmp
+    local path = require("pathlib")
+    local file_path = parent_dir .. "/" .. file_name
 
-    tmp = io.open(file_path, "r")
-    if tmp then
-        tmp:close()
-        vim.cmd("e " .. file_path)
-    else
+    local file = path(file_path)
+
+    if not file:is_file() then
+
+        file:touch(nil, true)
+
+        local pre_cwd = vim.loop.cwd()
+        local cur_file_dir = vim.fn.expand("%:p")
+        cur_file_dir = cur_file_dir:gsub("/[^/]*$", "")
+
+        vim.loop.chdir(vim.fn.resolve(cur_file_dir))
+
+        print("Adding file to Lunatikz: " .. file_name)
+        vim.system({"lunatikz", "add", file_path})
+
+        vim.loop.chdir(pre_cwd)
+
         print("Intializing: Spawning Rexes, Wrapping Raptors, Polishing Ceratops...")
         vim.cmd("e " .. file_path)
         vim.cmd("norm ibpic ")
         require("luasnip").expand()
+    else
+        vim.cmd("e " .. file_path)
     end
 
 end
@@ -285,7 +300,7 @@ M.jump = function()
 
                 file_name = file_name:sub(1, -4) .. "tex"
 
-                M._init_tikzpic(parent_dir .. "/" .. file_name)
+                M._init_tikzpic(parent_dir, file_name)
             end
 
         end
