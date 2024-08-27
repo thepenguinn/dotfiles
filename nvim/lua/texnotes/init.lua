@@ -136,31 +136,42 @@ end
 
 M._init_section = function(parent_dir)
 
-    local tmp = io.open(parent_dir .. "/section.tex", "r")
-    if tmp then
-        tmp:close()
-        vim.cmd("e " .. parent_dir .. "/section.tex")
-        return
+    local path = require("pathlib")
+    local sec = io.open(parent_dir .. "/section.tex", "r")
+    local tmp
+    local content
+
+    if not sec then
+
+        vim.fn.mkdir(parent_dir .. "/plots", "p")
+        vim.fn.mkdir(parent_dir .. "/tikzpics", "p")
+        vim.fn.mkdir(parent_dir .. "/data", "p")
+
+        tmp = path("~/.config/notes/section_makefile")
+        tmp:copy(path(parent_dir .. "/Makefile"))
+
+        tmp = path("~/.config/notes/section_header.tex")
+        tmp:copy(path(parent_dir .. "/section_header.tex"))
+
+        tmp = path(parent_dir .. "/section.tex")
+        tmp:touch()
+
+        vim.system(
+            {"lunatikz", "add", "--build-entry", "section.tex"},
+            {cwd = parent_dir}
+        )
+
+    else
+        content = sec:read()
+        sec:close()
     end
 
-    local path = require("pathlib")
+    print("") -- clears the msg
+    vim.cmd("e " .. parent_dir .. "/section.tex")
 
-    vim.fn.mkdir(parent_dir .. "/plots", "p")
-    vim.fn.mkdir(parent_dir .. "/tikzpics", "p")
-    vim.fn.mkdir(parent_dir .. "/data", "p")
-
-    tmp = path("~/.config/notes/section_makefile")
-    tmp:copy(path(parent_dir .. "/Makefile"))
-
-    tmp = path("~/.config/notes/section_header.tex")
-    tmp:copy(path(parent_dir .. "/section_header.tex"))
-
-    if vim.fn.bufloaded(parent_dir .. "/section.tex") == 0 then
-        vim.cmd("e " .. parent_dir .. "/section.tex")
+    if not content then
         vim.cmd("norm ibsec ")
         require("luasnip").expand()
-    else
-        vim.cmd("e " .. parent_dir .. "/section.tex")
     end
 
 end
