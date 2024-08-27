@@ -49,31 +49,42 @@ end
 
 M._init_chapter = function(parent_dir)
 
-    local tmp = io.open(parent_dir .. "/chapter.tex", "r")
-    if tmp then
-        tmp:close()
-        vim.cmd("e " .. parent_dir .. "/chapter.tex")
-        return
+    local path = require("pathlib")
+    local chp = io.open(parent_dir .. "/chapter.tex", "r")
+    local tmp
+    local content
+
+    if not chp then
+
+        vim.fn.mkdir(parent_dir .. "/plots", "p")
+        vim.fn.mkdir(parent_dir .. "/tikzpics", "p")
+        vim.fn.mkdir(parent_dir .. "/data", "p")
+
+        tmp = path("~/.config/notes/chapter_makefile")
+        tmp:copy(path(parent_dir .. "/Makefile"))
+
+        tmp = path(parent_dir .. "/syllabus.tex")
+        tmp:touch()
+
+        tmp = path(parent_dir .. "/chapter.tex")
+        tmp:touch()
+
+        vim.system(
+            {"lunatikz", "add", "--build-entry", "chapter.tex"},
+            {cwd = parent_dir}
+        )
+
+    else
+        content = chp:read()
+        chp:close()
     end
 
-    local path = require("pathlib")
+    print("") -- clears the msg
+    vim.cmd("e " .. parent_dir .. "/chapter.tex")
 
-    vim.fn.mkdir(parent_dir .. "/plots", "p")
-    vim.fn.mkdir(parent_dir .. "/tikzpics", "p")
-    vim.fn.mkdir(parent_dir .. "/data", "p")
-
-    tmp = path("~/.config/notes/chapter_makefile")
-    tmp:copy(path(parent_dir .. "/Makefile"))
-
-    tmp = path(parent_dir .. "/syllabus.tex")
-    tmp:touch()
-
-    if vim.fn.bufloaded(parent_dir .. "/chapter.tex") == 0 then
-        vim.cmd("e " .. parent_dir .. "/chapter.tex")
+    if not content then
         vim.cmd("norm ibchp ")
         require("luasnip").expand()
-    else
-        vim.cmd("e " .. parent_dir .. "/chapter.tex")
     end
 
 end
