@@ -430,7 +430,17 @@ return {
                         block_name_end = rep(1),
                     })),
 
-                s("sctk", fmt(
+                s("bpic", fmt(
+                    "{start_pic}"
+                    ,
+                    {
+                        start_pic = c(1, {
+                            sn(nil, { t("bspic"), i(1) }),
+                            sn(nil, { t("bplot"), i(1) }),
+                        }),
+                    })),
+
+                s("bspic", fmt(
                     "\\ctikzsubcircuitdef{{{subctk_def_name}}} {{\n"
                     .. "\torigin{subctk_anchors}%\n"
                     .. "}} {{\n"
@@ -440,11 +450,19 @@ return {
                     .. "\n"
                     .. "\\ctikzsubcircuitactivate{{{subctk_act_name}}}\n",
                     {
-                        subctk_def_name = i(1),
+                        subctk_def_name = c(1, {
+                            f(
+                                function () return vim.fn.expand("%:p"):gsub("^.*/", ""):gsub("%.tex$", "") end,
+                                { }
+                            ),
+                            i(nil, "Haa, I see... You are own your own, kid...")
+                        }),
                         subctk_anchors = i(2),
                         subctk_body = i(0),
                         subctk_act_name = rep(1)
                     })),
+
+                s("bplot", {t("%% Haa, I've no idea how to properly plot in latex, let's find out...")}),
 
                 s("wtin", fmt(
                     "node ({node_name}) [{optional_node_args}] {{\n"

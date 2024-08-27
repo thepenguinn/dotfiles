@@ -1,5 +1,7 @@
 local M = {}
 
+M.tikzpics_dir = "tikzpics"
+
 M._get_text = function (node)
 
     local start_row, start_col, end_row, end_col
@@ -350,6 +352,70 @@ M.view_binary = function()
         end
 
     end
+
+end
+
+M.new_tikzpic = function ()
+
+    vim.ui.input(
+        { prompt = "Tikzpic Name: " },
+        function (input)
+
+            local path = require("pathlib")
+
+            local parent_dir = vim.fn.expand("%:p")
+            local parent_just_above
+
+            parent_dir = parent_dir:gsub("/[^/]*$", "")
+            parent_just_above = parent_dir:gsub("^.*/", "")
+
+            if not input or input == "" then
+                print("No inputs given, bailing out...")
+                return
+            end
+
+            if not input:match("%.tex$") then
+                input = input .. ".tex"
+            end
+
+            local file
+            local input_parent
+
+            if input:match("/") then
+                -- relative
+                input_parent = input:gsub("/[^/]*$", "")
+                input = input:gsub("^.*/", "")
+                parent_dir = parent_dir .. "/" .. input_parent
+            else
+                if parent_just_above ~= M.tikzpics_dir then
+                    parent_dir = parent_dir .. "/" .. M.tikzpics_dir
+                end
+            end
+
+            parent_dir = vim.fn.resolve(parent_dir)
+            parent_dir = path(parent_dir)
+
+            if not parent_dir:is_dir() then
+                local yes = vim.fn.input("Do you want to create: " .. tostring(parent_dir) .. " ?(y/n): " )
+                if yes ~= "y" then
+                    return
+                end
+
+                parent_dir:mkdir(nil, true)
+
+            end
+
+            file = path(tostring(parent_dir) .. "/" .. input)
+            if not file:is_file() then
+                vim.cmd("e " .. tostring(file))
+                vim.cmd("norm ibpic ")
+                require("luasnip").expand()
+            else
+                vim.cmd("e " .. tostring(file))
+            end
+
+        end
+    )
 
 end
 
