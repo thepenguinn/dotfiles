@@ -458,60 +458,76 @@ end
 
 M.build_and_view_tikzpic = function()
 
-    local cur_node = M.get_node()
+    local file_name
+    local parent_dir
+    local parent_just_above
 
-    if not cur_node or cur_node:type() ~= "graphics_include" then
-        print("Not inside graphics_include")
-        return
-    end
+    file_name = vim.fn.expand("%:p")
+    parent_dir = file_name:gsub("/[^/]*$", "")
 
-    local file_name = cur_node:field("path")[1]
-    local tex_file_name
+    parent_just_above = parent_dir:gsub("^.*/", "")
 
+    if parent_just_above == M.tikzpics_dir then
+        parent_dir = parent_dir:gsub("/[^/]*$", "")
+        file_name = M.tikzpics_dir .. "/" .. file_name:gsub("^.*/", "")
+        file_name = file_name:gsub("%.tex$", ".pdf")
+    else
+        local cur_node = M.get_node()
 
-    if file_name and file_name:type() == "curly_group_path" then
-        file_name = file_name:named_child(0)
-    end
+        if not cur_node or cur_node:type() ~= "graphics_include" then
+            print("Not inside graphics_include")
+            return
+        end
 
-    if file_name then
+        local file_name = cur_node:field("path")[1]
+
+        if file_name and file_name:type() == "curly_group_path" then
+            file_name = file_name:named_child(0)
+        else
+            print("Couldn't find the pdf name.")
+            return
+        end
 
         file_name = M._get_text(file_name)[1]
 
-        if file_name:sub(-4, -1) == ".pdf" then
-
-            local parent_dir = vim.fn.expand("%:p")
-
-            parent_dir = parent_dir:gsub("/[^/]*$", "")
-
-            tex_file_name = file_name:sub(1, -4) .. "tex"
-
-            -- build the entire tex file and then view the current file
-            local cur_file_dir = vim.fn.expand("%:p")
-
-            -- assuming we are not in a tikzpic file
-            cur_file_dir = cur_file_dir:gsub("/[^/]*$", "")
-            -- if we need this to work, we should add the default build-entry for the cur_file_dir
-            print("Building pics for " .. cur_file_dir .. "...")
-            vim.system(
-                {"lunatikz", "build"},
-                {cwd = cur_file_dir, text = true},
-                function (obj)
-
-                    if obj.code == 0 then
-                        print("Lunatikz ran successfully, opening " .. parent_dir .. "/" .. file_name)
-                        vim.system({"termux-share", "-d", parent_dir .. "/" .. file_name})
-                    else
-                        vim.schedule(function ()
-                            vim.api.nvim_echo({{obj.stdout .. obj.stderr}}, true, {})
-                        end)
-                    end
-
-                end
-            )
-
+        if not file_name or file_name == "" or file_name:sub(-4, -1) ~= ".pdf" then
+            print("Not a valid pdf name")
+            return
         end
 
     end
+
+    local file_path = parent_dir .. "/" .. file_name
+
+    -- if we need this to work, we should add the default build-entry for the parent_dir
+    print("Building pics for " .. parent_dir .. "...")
+    vim.system(
+        {"lunatikz", "build"},
+        {cwd = parent_dir, text = true},
+        function (obj)
+
+            local path = require("pathlib")
+            local tmp
+
+            if obj.code == 0 then
+
+                tmp = path(file_path)
+
+                if tmp:is_file() then
+                    print("Lunatikz ran successfully, opening " .. file_path)
+                    vim.system({"termux-share", "-d", file_path})
+                else
+                    print("Lunatikz ran successfully, but pdf doesn't exist " .. file_path)
+                end
+
+            else
+                vim.schedule(function ()
+                    vim.api.nvim_echo({{obj.stdout .. obj.stderr}}, true, {})
+                end)
+            end
+
+        end
+    )
 
 end
 
