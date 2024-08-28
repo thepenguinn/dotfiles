@@ -360,6 +360,9 @@ M.view_binary = function()
 
         local file_name = cur_node:field("path")[1]
         local tmp
+        local parent_dir = vim.fn.expand("%:p")
+
+        parent_dir = parent_dir:gsub("/[^/]*$", "")
 
         if file_name and file_name:type() == "curly_group_path" then
             file_name = file_name:named_child(0)
@@ -371,6 +374,7 @@ M.view_binary = function()
 
             if file_name ~= "" then
 
+                file_name = parent_dir .. "/" .. file_name
                 tmp = io.open(file_name)
                 if tmp then
                     tmp:close()
