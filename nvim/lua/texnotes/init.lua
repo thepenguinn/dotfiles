@@ -531,6 +531,4 @@ M.build_and_view_tikzpic = function()
 
 end
 
--- hai
-
 return M
