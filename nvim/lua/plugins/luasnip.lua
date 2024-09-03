@@ -462,6 +462,29 @@ return {
                         subctk_act_name = rep(1)
                     })),
 
+                s("bepic", fmt(
+                    "\\begin{{tikzpicture}}{optionals}\n"
+                    .. "    {end_epic}\n"
+                    .. "\\end{{tikzpicture}}\n"
+                    ,
+                    {
+                        optionals = c(1, {
+                            sn(nil, {t(" ["), i(1), t("]")}),
+                            sn(nil, {t({" [", "        "}), i(1), t({"", "    ]"})}),
+                            sn(nil, {
+                                t({" [",
+                                    "        transform shape,",
+                                    "        rounded corners = 0.3cm,",
+                                    "        every path/.style = {thick, > = latex},",
+                                    "        ",
+                                }),
+                                i(1),
+                                t({"", "    ]"}),
+                            }),
+                        }),
+                        end_epic = i(0),
+                    })),
+
                 s("bplot", {t("%% Haa, I've no idea how to properly plot in latex, let's find out...")}),
 
                 s("wtin", fmt(
