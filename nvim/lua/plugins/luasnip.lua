@@ -435,8 +435,9 @@ return {
                     ,
                     {
                         start_pic = c(1, {
-                            sn(nil, { t("bspic"), i(1) }),
+                            sn(nil, { t("bepic"), i(1) }),
                             sn(nil, { t("bplot"), i(1) }),
+                            sn(nil, { t("bspic"), i(1) }),
                         }),
                     })),
 
