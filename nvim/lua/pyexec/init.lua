@@ -117,37 +117,53 @@ M._add_output_block_to_tex = function(code_node, stdout)
     padding = string.rep(" ", code_node_start_col)
 
     paragraph_node = code_node:next_named_sibling()
+
+    -- that latex parser is weird, or I'm an idiot
+    if not paragraph_node then
+        paragraph_node = code_node:parent()
+        if paragraph_node then
+            paragraph_node = paragraph_node:next_named_sibling()
+        end
+    end
+
     if not paragraph_node or paragraph_node:type() ~= "paragraph" then
+        print("paragraph " .. code_node:type(), paragraph_node)
         goto insert_new
     end
 
     node = paragraph_node:named_child(0)
     if not node or node:type() ~= "curly_group" then
+        print("curly_group")
         goto insert_new
     end
 
     paragraph_title = M._get_text(node)[1]
     if paragraph_title ~= "{Output}" then
+        print("{Output}")
         goto insert_new
     end
 
     minted_node = paragraph_node:named_child(1)
     if not minted_node or minted_node:type() ~= "minted_environment" then
+        print("minted_environment")
         goto insert_new
     end
 
     node = minted_node:named_child(0)
     node = node:field("language")[1]
     if not node then
+        print("no node")
         goto insert_new
     end
 
     if M._get_text(node)[1] ~= "{text}" then
+        print("{text}")
         goto insert_new
     end
 
     source_node = minted_node:field("code")[1]
     if not source_node then
+        print("not source code")
         goto insert_new
     end
 
@@ -197,6 +213,15 @@ M._remove_output_block_from_tex = function (code_node)
     local node
 
     paragraph_node = code_node:next_named_sibling()
+
+    -- that latex parser is weird, or I'm an idiot
+    if not paragraph_node then
+        paragraph_node = code_node:parent()
+        if paragraph_node then
+            paragraph_node = paragraph_node:next_named_sibling()
+        end
+    end
+
     if not paragraph_node or paragraph_node:type() ~= "paragraph" then
         return
     end
