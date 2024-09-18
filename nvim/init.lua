@@ -103,7 +103,7 @@ vim.api.nvim_create_autocmd({"BufEnter"}, {
     pattern = {"*.norg", "*.tex"},
     callback = function()
         vim.keymap.set("n", "<leader>og", require("pyexec").exec_at_cursor)
-        vim.api.nvim_create_user_command("PyexecAall", require("pyexec").exec_all, {})
+        vim.api.nvim_create_user_command("PyExecAll", require("pyexec").exec_all, {})
     end,
     group = pyexec_group,
 })
@@ -112,7 +112,7 @@ vim.api.nvim_create_autocmd({"BufLeave"}, {
     pattern = {"*.norg", "*.tex"},
     callback = function()
         vim.keymap.del("n", "<leader>og")
-        vim.api.nvim_del_user_command("PyexecAall")
+        vim.api.nvim_del_user_command("PyExecAll")
     end,
     group = pyexec_group,
 })
@@ -140,7 +140,6 @@ vim.api.nvim_create_autocmd({"BufLeave"}, {
         vim.keymap.del("n", "<leader>tm")
         vim.keymap.del("n", "<leader>tn")
         vim.keymap.del("n", "<leader>tb")
-        -- vim.api.nvim_del_user_command("PyexecAall")
     end,
     group = tex_notes_group,
 })

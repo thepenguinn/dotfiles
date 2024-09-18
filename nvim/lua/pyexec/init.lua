@@ -13,7 +13,7 @@ M._get_text = function (node)
     return text
 end
 
-M.exec_all = function ()
+M.exec_all_from_norg = function ()
 
     print("wip")
 
@@ -40,6 +40,85 @@ M.exec_all = function ()
     for _, cnode in query:iter_captures(troot, 0) do
         if cnode:type() == "ranged_verbatim_tag" then
             M._exec_from_norg(cnode)
+        end
+    end
+
+end
+
+M.exec_all = function ()
+
+    if vim.bo.filetype == "tex" then
+        M.exec_all_from_tex()
+    elseif vim.bo.filetype == "norg" then
+        print("Sorry, not implemented yet.")
+    end
+
+end
+
+M.exec_all_from_tex = function ()
+
+    local query = vim.treesitter.query.parse("latex",
+        [[
+            (
+             (minted_environment
+               begin: (begin
+                 language: (curly_group_text
+                   text: (text) @lang
+                   )
+                 )
+               )
+             (#eq? @lang "python")
+             ) @minted_python
+        ]]
+    )
+
+    local start_row = 0
+    local exec_count = 0
+    local total_exec_count = 0
+
+    local ltree = vim.treesitter.get_parser(0, "latex")
+    local troot
+    local iter
+    local cnode
+
+    local troot = ltree:parse({start_row, -1})[1]:root()
+
+    for _, cnode in query:iter_captures(troot, 0) do
+        if cnode:type() == "minted_environment" then
+            total_exec_count = total_exec_count + 1
+        end
+    end
+
+    print(
+        "Exec Count: [0/" .. tostring(total_exec_count) .. "]"
+    )
+
+    for i = 1, total_exec_count do
+        troot = ltree:parse({start_row, -1})[1]:root()
+
+        iter = query:iter_captures(troot, 0)
+
+        local j = exec_count + 1
+        while 0 < j do
+            _, cnode = iter()
+            if cnode then
+                if cnode:type() == "minted_environment" then
+                    j = j - 1
+                end
+            else
+                break
+            end
+        end
+
+        if cnode then
+            start_row = cnode:end_()
+            M._exec_from_tex(cnode)
+            exec_count = exec_count + 1
+            print(
+                "Exec Count: [" .. tostring(exec_count) .. "/" .. tostring(total_exec_count) .. "]"
+            )
+        else
+            break
         end
     end
 
@@ -127,43 +206,43 @@ M._add_output_block_to_tex = function(code_node, stdout)
     end
 
     if not paragraph_node or paragraph_node:type() ~= "paragraph" then
-        print("paragraph " .. code_node:type(), paragraph_node)
+        -- print("paragraph " .. code_node:type(), paragraph_node)
         goto insert_new
     end
 
     node = paragraph_node:named_child(0)
     if not node or node:type() ~= "curly_group" then
-        print("curly_group")
+        -- print("curly_group")
         goto insert_new
     end
 
     paragraph_title = M._get_text(node)[1]
     if paragraph_title ~= "{Output}" then
-        print("{Output}")
+        -- print("{Output}")
         goto insert_new
     end
 
     minted_node = paragraph_node:named_child(1)
     if not minted_node or minted_node:type() ~= "minted_environment" then
-        print("minted_environment")
+        -- print("minted_environment")
         goto insert_new
     end
 
     node = minted_node:named_child(0)
     node = node:field("language")[1]
     if not node then
-        print("no node")
+        -- print("no node")
         goto insert_new
     end
 
     if M._get_text(node)[1] ~= "{text}" then
-        print("{text}")
+        -- print("{text}")
         goto insert_new
     end
 
     source_node = minted_node:field("code")[1]
     if not source_node then
-        print("not source code")
+        -- print("not source code")
         goto insert_new
     end
 
