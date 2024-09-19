@@ -89,9 +89,11 @@ M.exec_all_from_tex = function ()
         end
     end
 
-    print(
-        "Exec Count: [0/" .. tostring(total_exec_count) .. "]"
-    )
+    vim.schedule(function ()
+        vim.api.nvim_echo({{
+            "Exec Count: [0/" .. tostring(total_exec_count) .. "]"
+        }}, true, {})
+    end)
 
     for i = 1, total_exec_count do
         troot = ltree:parse({start_row, -1})[1]:root()
@@ -114,9 +116,16 @@ M.exec_all_from_tex = function ()
             start_row = cnode:end_()
             M._exec_from_tex(cnode)
             exec_count = exec_count + 1
-            print(
-                "Exec Count: [" .. tostring(exec_count) .. "/" .. tostring(total_exec_count) .. "]"
-            )
+
+            vim.schedule(function ()
+                vim.api.nvim_echo({{
+                    "Exec Count: [" .. tostring(exec_count) .. "/" .. tostring(total_exec_count) .. "]"
+                }}, true, {})
+            end)
+
+            -- print(
+            --     "Exec Count: [" .. tostring(exec_count) .. "/" .. tostring(total_exec_count) .. "]"
+            -- )
         else
             break
         end
