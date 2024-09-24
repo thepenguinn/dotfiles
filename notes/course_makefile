@@ -19,7 +19,7 @@ force:
 	pdflatex -shell-escape -halt-on-error course.tex
 	$(VIEWER) course.pdf
 
-course.pdf: course.tex preamble.tex $(CHAPTERS) $(SYLLABUS) $(SECTIONS) $(WORKS) $(TIKZPICS)
+course.pdf: course.tex preamble.tex colorscheme.sty $(CHAPTERS) $(SYLLABUS) $(SECTIONS) $(WORKS) $(TIKZPICS)
 	lunatikz build course.tex
 	pdflatex -shell-escape -halt-on-error course.tex
 
