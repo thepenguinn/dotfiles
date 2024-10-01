@@ -51,6 +51,8 @@ vim.keymap.set('v', '<leader>p', '\"_dP', nil)
 vim.keymap.set("x", "<C-j>", ":m '>+1<CR>gv=gv")
 vim.keymap.set("x", "<C-k>", ":m '<-2<CR>gv=gv")
 
+vim.keymap.set("i", "<C-f>", "<C-g>u<Esc>[s1z=`]a<C-g>U", { noremap = true })
+
 -- REMOVE THIS --
 
 vim.api.nvim_create_user_command("W", function()
