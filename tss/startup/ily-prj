@@ -3,5 +3,5 @@
 tmux send-keys -t ${1}:0 "ssh arch" Enter
 tmux send-keys -t ${1}:0 "cd ~/${2}" Enter
 tmux new-window -t ${1}
-tmux send-keys -t ${1}:1 "cd ~/${2}" Enter "nvim" Enter " hf"
+tmux send-keys -t ${1}:1 "nvim" Enter " hf"
 tmux new-window -t ${1} "python && zsh"

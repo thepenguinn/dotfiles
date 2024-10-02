@@ -1,12 +1,11 @@
 #!/bin/bash
 
-tmux send-keys -t ${1}:0 "cd ~/${2}" Enter
 tmux split-window -t ${1}:0
-tmux send-keys -t ${1}:0.1 "cd ~/${2}" Enter "clear" Enter "python" Enter
+tmux send-keys -t ${1}:0.1 "clear" Enter "python" Enter
 tmux resize-pane -t ${1}:0.0 -Z
 
 tmux new-window -t ${1}
-tmux send-keys -t ${1}:1 "cd ~/${2}" Enter "nvim" Enter " hf"
+tmux send-keys -t ${1}:1 "nvim" Enter " hf"
 
 tmux new-window -t ${1}
 tmux send-keys -t ${1}:2 "w3m duckduckgo.com" Enter
