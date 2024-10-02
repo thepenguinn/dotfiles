@@ -248,12 +248,63 @@ M.get_node = function()
 
 end
 
+M.jump_to_sub_pic = function()
+    local line = vim.api.nvim_get_current_line()
+    -- local cur_node = vim.treesitter.get_node()
+    local tmp_fd
+    local root_dir = vim.fn.expand("%:p"):gsub("/[^/]*$", "")
+    local dep_list
+
+    while root_dir ~= "" do
+        tmp_fd = io.open(root_dir .. "/.lunatikz/dep_list", "r")
+        if tmp_fd then
+            tmp_fd:close()
+            dep_list = dofile(root_dir .. "/.lunatikz/dep_list")
+            break
+        end
+        root_dir = root_dir:gsub("/[^/]*$", "")
+    end
+
+    if not dep_list then
+        return false
+    end
+
+    -- for k, v in pairs(dep_list) do
+    --     print(k, v)
+    -- end
+    local sub_pic_name
+    local sub_pic_parent
+
+    for macro in line:gmatch("\\([%w%-_]*)") do
+        if dep_list[macro] then
+            sub_pic_name = macro
+            sub_pic_parent = dep_list[macro].parent_dir
+            break
+        end
+    end
+
+    if not sub_pic_name then
+        return false
+    end
+
+    local col = line:find(sub_pic_name) - 1
+    local row = vim.api.nvim_win_get_cursor(0)[1]
+
+    vim.api.nvim_win_set_cursor(0, {row, col})
+    print("Opening PROJECT_ROOT:" .. sub_pic_parent .. "/" .. sub_pic_name .. ".tex")
+    vim.cmd("e " .. root_dir .. "/" .. sub_pic_parent .. "/" .. sub_pic_name .. ".tex")
+
+    return true
+end
+
 M.jump = function()
 
     local cur_node = M.get_node()
 
     if not cur_node then
-        print("press <cr>")
+        if not M.jump_to_sub_pic() then
+            print("press <cr>")
+        end
         return
     end
 
