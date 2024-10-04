@@ -489,15 +489,26 @@ M.new_tikzpic = function ()
                     return
                 end
 
-                parent_dir:mkdir(nil, true)
+                parent_dir:mkdir(path.permission("rwx------"), true)
 
             end
 
             file = path(tostring(parent_dir) .. "/" .. input)
             if not file:is_file() then
+
+                vim.system({"touch", tostring(file)})
+
                 vim.cmd("e " .. tostring(file))
+
                 vim.cmd("norm ibpic ")
                 require("luasnip").expand()
+
+                vim.system(
+                    {"lunatikz", "add", tostring(file)},
+                    {cwd = tostring(parent_dir)},
+                    nil
+                )
+
             else
                 vim.cmd("e " .. tostring(file))
             end
