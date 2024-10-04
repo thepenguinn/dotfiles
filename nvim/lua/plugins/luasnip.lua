@@ -442,14 +442,14 @@ return {
                     })),
 
                 s("bspic", fmt(
-                    "\\ctikzsubcircuitdef{{{subctk_def_name}}} {{\n"
+                    "\\subtikzpicturedef{{{subctk_def_name}}} {{\n"
                     .. "\torigin{subctk_anchors}%\n"
                     .. "}} {{\n"
-                    .. "\tcoordinate (#1-origin)\n"
+                    .. "\t\\draw (#1-start) coordinate (#1-origin);\n" -- idk
                     .. "\t{subctk_body}\n"
                     .. "}}\n"
                     .. "\n"
-                    .. "\\ctikzsubcircuitactivate{{{subctk_act_name}}}\n",
+                    .. "\\subtikzpictureactivate{{{subctk_act_name}}}\n",
                     {
                         subctk_def_name = c(1, {
                             f(
