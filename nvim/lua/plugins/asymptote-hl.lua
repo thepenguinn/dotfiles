@@ -1,0 +1,3 @@
+return {
+    "hura/vim-asymptote"
+}
