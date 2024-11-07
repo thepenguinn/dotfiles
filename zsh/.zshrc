@@ -18,6 +18,7 @@ set -o vi
 
 alias ls="exa -laH --group-directories-first"
 alias nvim="TERM=screen-256color nvim"
+alias kdb="kdb syncall"
 
 # EXPORTS
 
