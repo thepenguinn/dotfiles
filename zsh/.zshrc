@@ -5,8 +5,8 @@
 # (_)___|___/_| |_|_|  \___|
 #
 
-if [[ $(whoami) != "daniel" ]] && [[ -z $TMUX ]] && ! tmux has-session -t general 2>/dev/null; then
-    ~/.local/bin/tss gen
+if [[ -z $TMUX ]] && ! tmux has-session -t general 2>/dev/null; then
+    ~/.local/bin/tss utils:proot general
 fi
 
 autoload -U compinit && compinit
@@ -37,6 +37,9 @@ export PATH=${ANDROID_HOME}/cmdline-tools/latest/bin:${ANDROID_HOME}/platform-to
 
 # SOURCES
 
+export MOTO_MAC_ADDR="88:79:7e:be:5e:e4"
+export MOTO_USER_NAME="u0_a152"
+
 export JF_MAC_ADDR="00:0a:f5:89:89:ff"
 export JF_USER_NAME="u0_a246"
 
@@ -44,16 +47,34 @@ export KINDLE_MAC_ADDR="f4:03:2a:d5:42:6c"
 export LOCAL_KINDLE_DIR="$HOME/storage/shared/kindle"
 
 ssh() {
-	local user_name="$JF_USER_NAME"
+	local jf_user_name="$JF_USER_NAME"
 	local jf_mac_addr="$JF_MAC_ADDR"
 
+	local moto_user_name="$MOTO_USER_NAME"
+	local moto_mac_addr="$MOTO_MAC_ADDR"
+
+    local void_user_name="daniel"
 
 	if [[ "$1" == "jf" ]]; then
         ssh-add -l | grep "root@localhost" > /dev/null 2>&1 || ssh-add
 		if [[ "$#" -gt 1 ]]; then
-			command ssh -o StrictHostKeyChecking=no -p 8022 "${user_name}@$(ip neigh | grep "${jf_mac_addr}" | grep "\." | cut -d" " -f1)" $(echo "$@" | sed "s/^jf//")
+			command ssh -o StrictHostKeyChecking=no -p 8022 "${jf_user_name}@$(ip neigh | grep "${jf_mac_addr}" | grep "\." | cut -d" " -f1)" $(echo "$@" | sed "s/^jf//")
 		else
-			command ssh -o StrictHostKeyChecking=no -p 8022 ${user_name}@$(ip neigh | grep "${jf_mac_addr}" | grep "\." | cut -d" " -f1)
+			command ssh -o StrictHostKeyChecking=no -p 8022 ${jf_user_name}@$(ip neigh | grep "${jf_mac_addr}" | grep "\." | cut -d" " -f1)
+		fi
+	elif [[ "$1" == "moto" ]]; then
+        ssh-add -l | grep "root@localhost" > /dev/null 2>&1 || ssh-add
+		if [[ "$#" -gt 1 ]]; then
+			command ssh -o StrictHostKeyChecking=no -p 8022 "${moto_user_name}@$(ip neigh | grep "${moto_mac_addr}" | grep "\." | cut -d" " -f1)" $(echo "$@" | sed "s/^moto//")
+		else
+			command ssh -o StrictHostKeyChecking=no -p 8022 ${moto_user_name}@$(ip neigh | grep "${moto_mac_addr}" | grep "\." | cut -d" " -f1)
+		fi
+	elif [[ "$1" == "void" ]]; then
+        ssh-add -l | grep "root@localhost" > /dev/null 2>&1 || ssh-add
+		if [[ "$#" -gt 1 ]]; then
+			command ssh -o StrictHostKeyChecking=no -p 22 "${void_user_name}@$(ip neigh | grep "${moto_mac_addr}" | grep "\." | cut -d" " -f1)" $(echo "$@" | sed "s/^void//")
+		else
+			command ssh -o StrictHostKeyChecking=no -p 22 ${void_user_name}@$(ip neigh | grep "${moto_mac_addr}" | grep "\." | cut -d" " -f1)
 		fi
 	else
 		command ssh "$@"
@@ -66,7 +87,7 @@ ssh() {
 rsync() {
 	local remote=""
 	local source=""
-	local user_name="$JF_USER_NAME"
+	local jf_user_name="$JF_USER_NAME"
 	local jf_mac_addr="$JF_MAC_ADDR"
 	local i
 	local lastarg=${@[$#]}
@@ -74,7 +95,7 @@ rsync() {
 	ssh-add -l | grep "root@localhost" > /dev/null 2>&1 || ssh-add
 
 	if [[ "$1" =~ "^ *jf:" ]]; then
-		remote="$user_name@$(ip neigh | grep "$jf_mac_addr" | grep "\." | cut -d" " -f1)"
+		remote="$jf_user_name@$(ip neigh | grep "$jf_mac_addr" | grep "\." | cut -d" " -f1)"
 
 		for i in $(seq 1 $((#-1)))
 		do
@@ -85,7 +106,7 @@ rsync() {
 
 	elif [[ "${lastarg}" =~ "^ *jf:" ]]; then
 
-		remote="$user_name@$(ip neigh | grep "$jf_mac_addr" | grep "\." | cut -d" " -f1):$(echo "${lastarg}" | sed 's/^jf://')"
+		remote="$jf_user_name@$(ip neigh | grep "$jf_mac_addr" | grep "\." | cut -d" " -f1):$(echo "${lastarg}" | sed 's/^jf://')"
 
 		[[ ! $remote =~ /$ ]] && remote="${remote}/"
 
