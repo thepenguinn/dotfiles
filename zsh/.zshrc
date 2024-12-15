@@ -149,6 +149,30 @@ rsync() {
 		done
 
 		eval "command rsync -rvuP -e \"ssh -p 8022 -o StrictHostKeyChecking=no\" "${source}" "${remote}""
+	elif [[ "$1" =~ "^ *void:" ]]; then
+        # void
+		remote="$void_user_name@$(ip neigh | grep "$moto_mac_addr" | grep "\." | cut -d" " -f1)"
+
+		for i in $(seq 1 $((#-1)))
+		do
+			source+=" :\"$(echo "${@[$i]}" | sed 's/^void://;s/^://')\""
+		done
+
+		eval "command rsync -rvuP -e \"ssh -p 22 -o StrictHostKeyChecking=no\" "${remote}$(echo ${source} | sed s@^\ @@)" "${lastarg}""
+
+	elif [[ "${lastarg}" =~ "^ *void:" ]]; then
+        # void
+
+		remote="$void_user_name@$(ip neigh | grep "$moto_mac_addr" | grep "\." | cut -d" " -f1):$(echo "${lastarg}" | sed 's/^void://')"
+
+		[[ ! $remote =~ /$ ]] && remote="${remote}/"
+
+		for i in $(seq 1 $((#-1)))
+		do
+			[[ ${@[$i]} =~ ^/ ]] && source+="\"${@[i]}\" " || source+="\"$PWD/${@[i]}\" "
+		done
+
+		eval "command rsync -rvuP -e \"ssh -p 22 -o StrictHostKeyChecking=no\" "${source}" "${remote}""
 
 	else
 		command rsync -rvuP "$@"
