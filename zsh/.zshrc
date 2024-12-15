@@ -87,14 +87,21 @@ ssh() {
 rsync() {
 	local remote=""
 	local source=""
-	local jf_user_name="$JF_USER_NAME"
-	local jf_mac_addr="$JF_MAC_ADDR"
 	local i
 	local lastarg=${@[$#]}
+
+    local jf_user_name="$JF_USER_NAME"
+    local jf_mac_addr="$JF_MAC_ADDR"
+
+	local moto_user_name="$MOTO_USER_NAME"
+	local moto_mac_addr="$MOTO_MAC_ADDR"
+
+    local void_user_name="daniel"
 
 	ssh-add -l | grep "root@localhost" > /dev/null 2>&1 || ssh-add
 
 	if [[ "$1" =~ "^ *jf:" ]]; then
+        # jf
 		remote="$jf_user_name@$(ip neigh | grep "$jf_mac_addr" | grep "\." | cut -d" " -f1)"
 
 		for i in $(seq 1 $((#-1)))
@@ -105,8 +112,34 @@ rsync() {
 		eval "command rsync -rvuP -e \"ssh -p 8022 -o StrictHostKeyChecking=no\" "${remote}$(echo ${source} | sed s@^\ @@)" "${lastarg}""
 
 	elif [[ "${lastarg}" =~ "^ *jf:" ]]; then
+        # jf
 
 		remote="$jf_user_name@$(ip neigh | grep "$jf_mac_addr" | grep "\." | cut -d" " -f1):$(echo "${lastarg}" | sed 's/^jf://')"
+
+		[[ ! $remote =~ /$ ]] && remote="${remote}/"
+
+		for i in $(seq 1 $((#-1)))
+		do
+			[[ ${@[$i]} =~ ^/ ]] && source+="\"${@[i]}\" " || source+="\"$PWD/${@[i]}\" "
+		done
+
+		eval "command rsync -rvuP -e \"ssh -p 8022 -o StrictHostKeyChecking=no\" "${source}" "${remote}""
+
+	elif [[ "$1" =~ "^ *moto:" ]]; then
+        # moto
+		remote="$moto_user_name@$(ip neigh | grep "$moto_mac_addr" | grep "\." | cut -d" " -f1)"
+
+		for i in $(seq 1 $((#-1)))
+		do
+			source+=" :\"$(echo "${@[$i]}" | sed 's/^moto://;s/^://')\""
+		done
+
+		eval "command rsync -rvuP -e \"ssh -p 8022 -o StrictHostKeyChecking=no\" "${remote}$(echo ${source} | sed s@^\ @@)" "${lastarg}""
+
+	elif [[ "${lastarg}" =~ "^ *moto:" ]]; then
+        # moto
+
+		remote="$moto_user_name@$(ip neigh | grep "$moto_mac_addr" | grep "\." | cut -d" " -f1):$(echo "${lastarg}" | sed 's/^moto://')"
 
 		[[ ! $remote =~ /$ ]] && remote="${remote}/"
 
