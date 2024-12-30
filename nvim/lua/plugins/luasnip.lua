@@ -8,6 +8,7 @@ return {
         build = "make install_jsregexp",
 
         config = function ()
+            local path = require("pathlib")
             local ls = require("luasnip")
 
             vim.keymap.set({"i", "s"}, "<C-K>", function()
@@ -47,6 +48,68 @@ return {
             local function copy (st)
                 return st[1]
             end
+
+            local local_config = nil
+            local global_config = nil
+            local config = nil
+            local default_config = {
+                -- base names for different files
+                MAIN_FILE_BASE = "course",
+                CHAPTER_FILE_BASE = "chapter",
+                WORK_FILE_BASE = "work",
+                SECTION_FILE_BASE = "section",
+                SYLLABUS_FILE_BASE = "syllabus",
+                ABSTRACT_FILE_BASE = "abstract",
+            }
+
+            local function load_local_config()
+                local parent_dir = vim.fn.expand("%:p")
+                local local_config_file
+
+                parent_dir = parent_dir:gsub("/[^/]*$", "")
+                parent_dir = path(parent_dir)
+
+                -- first arg --> pathlib dir
+                -- returns --> pathlib config file, else nil
+                local function find_local_config(dir)
+                    local config_file
+
+                    if not dir then
+                        return nil
+                    end
+
+                    -- looking for .lunatikz directory in the parent directories,
+                    -- because, it could the root directory of the project.
+
+                    if dir:child(".lunatikz"):is_dir() then
+                        config_file = dir:child("texno.config")
+                        if config_file:is_file() then
+                            return config_file
+                        else
+                            return nil
+                        end
+                    else
+                        return find_local_config(dir:parent())
+                    end
+                end
+
+                local_config_file = find_local_config(parent_dir)
+
+                if local_config_file then
+                    return dofile(tostring(local_config_file)) or {}
+                else
+                    return {}
+                end
+
+            end
+
+            local_config = load_local_config()
+
+            setmetatable(local_config, {
+                __index = default_config,
+            })
+
+            config = local_config
 
             local function get_text_from_node(bufnr, node)
 
@@ -291,7 +354,7 @@ return {
                 local ptex_file_name = ptex_file_parent .. "/" .. pfile_type .. ".tex"
                 local tmp
 
-                -- make sures there's a parent tex file
+                -- makes sure there's a parent tex file
                 tmp = io.open(ptex_file_name, "r")
                 if not tmp then
                     return default
@@ -335,13 +398,13 @@ return {
 
             local function tex_find_chapter_title()
 
-                return tex_find_title("course", "chapter", "Couldn't Find Chapter Title")
+                return tex_find_title(config.MAIN_FILE_BASE, config.CHAPTER_FILE_BASE, "Couldn't Find Chapter Title")
 
             end
 
             local function tex_find_work_title()
 
-                return tex_find_title("course", "work", "Couldn't Find Work Title")
+                return tex_find_title(config.MAIN_FILE_BASE, config.WORK_FILE_BASE, "Couldn't Find Work Title")
 
             end
 
@@ -353,16 +416,16 @@ return {
                 parent_dir = parent_dir:gsub("/[^/]-$", "")
                 parent_dir = parent_dir:gsub("/[^/]-$", "")
 
-                tmp = io.open(parent_dir .. "/chapter.tex", "r")
+                tmp = io.open(parent_dir .. "/" .. config.CHAPTER_FILE_BASE .. ".tex", "r")
                 if tmp then
                     tmp:close()
-                    return tex_find_title("chapter", "section", "Couldn't Find Section Name")
+                    return tex_find_title(config.CHAPTER_FILE_BASE, config.SECTION_FILE_BASE, "Couldn't Find Section Name")
                 end
 
-                tmp = io.open(parent_dir .. "/work.tex", "r")
+                tmp = io.open(parent_dir .. "/" .. config.WORK_FILE_BASE .. ".tex", "r")
                 if tmp then
                     tmp:close()
-                    return tex_find_title("work", "section", "Couldn't Find Section Name")
+                    return tex_find_title(config.WORK_FILE_BASE, config.SECTION_FILE_BASE, "Couldn't Find Section Name")
                 end
 
                 return "Couldn't Find Section Name"
@@ -543,13 +606,13 @@ return {
 
 
                 s("bchp", fmt(
-                    "\\documentclass[../course]{{subfiles}}\n"
+                    "\\documentclass[../" .. config.MAIN_FILE_BASE .. "]{{subfiles}}\n"
                     .. "\n"
                     .. "\\begin{{document}}\n"
                     .. "\n"
                     .. "\\chapter{{{chapter_title}}} \\label{{chp:{chapter_label}}}\n"
                     .. "\n"
-                    .. "\\subfile{{syllabus.tex}}\n"
+                    .. "\\subfile{{" .. config.SYLLABUS_FILE_BASE ..  ".tex}}\n"
                     .. "\n"
                     .. "{chapter_end}\n"
                     .. "\n"
@@ -565,7 +628,7 @@ return {
                     })),
 
                 s("bwrk", fmt(
-                    "\\documentclass[../course]{{subfiles}}\n"
+                    "\\documentclass[../" .. config.MAIN_FILE_BASE .. "]{{subfiles}}\n"
                     .. "\n"
 
                     .. "\\input{{work_header.tex}}\n"
@@ -597,7 +660,7 @@ return {
                     .. "\n"
 
                     .. "\\ifSubfilesClassLoaded {{\n"
-                    .. "    \\input{{abstract.tex}}\n"
+                    .. "    \\input{{" .. config.ABSTRACT_FILE_BASE .. ".tex}}\n"
                     .. "}} {{\n"
                     .. "    \\chapter{{{work_chapter}}} \\label{{chp:{work_chapter_label}}}\n"
                     .. "}}\n"
@@ -625,7 +688,7 @@ return {
                     })),
 
                 s("bsyl", fmt(
-                    "\\documentclass[../course]{{subfiles}}\n"
+                    "\\documentclass[../" .. config.MAIN_FILE_BASE .. "]{{subfiles}}\n"
                     .. "\n"
                     .. "\\begin{{document}}\n"
                     .. "\n"
@@ -642,7 +705,7 @@ return {
                     })),
 
                 s("bsec", fmt(
-                    "\\documentclass[../../course]{{subfiles}}\n"
+                    "\\documentclass[../../" .. config.MAIN_FILE_BASE .. "]{{subfiles}}\n"
                     .. "\n"
 
                     .. "\\input{{section_header.tex}}\n"
@@ -667,12 +730,12 @@ return {
 
                 s("nchp", fmt(
                     "%{chapter_title}%\n"
-                    .. "\\subfileinclude{{chapter_{chapter_dir}/chapter.tex}}{chapter_end}"
+                    .. "\\subfileinclude{{" .. config.CHAPTER_FILE_BASE .. "_{chapter_dir}/" .. config.CHAPTER_FILE_BASE .. ".tex}}{chapter_end}"
                     ,
                     {
                         chapter_title = i(1, "Chapter Name"),
                         chapter_dir = f(
-                            function () return tex_get_include_number("subfileinclude", "chapter") end,
+                            function () return tex_get_include_number("subfileinclude", config.CHAPTER_FILE_BASE) end,
                             { }
                         ),
                         chapter_end = i(0),
@@ -681,12 +744,12 @@ return {
 
                 s("nwrk", fmt(
                     "%{work_title}%\n"
-                    .. "\\subfileinclude{{work_{work_dir}/work.tex}}{work_end}"
+                    .. "\\subfileinclude{{" .. config.WORK_FILE_BASE .. "_{work_dir}/" .. config.WORK_FILE_BASE .. ".tex}}{work_end}"
                     ,
                     {
                         work_title = i(1, "Work Name"),
                         work_dir = f(
-                            function () return tex_get_include_number("subfileinclude", "work") end,
+                            function () return tex_get_include_number("subfileinclude", config.WORK_FILE_BASE) end,
                             { }
                         ),
                         work_end = i(0),
@@ -695,12 +758,12 @@ return {
 
                 s("nsec", fmt(
                     "%{section_title}%\n"
-                    .. "\\subfile{{section_{section_dir}/section.tex}}{section_end}"
+                    .. "\\subfile{{" .. config.SECTION_FILE_BASE .. "_{section_dir}/" .. config.SECTION_FILE_BASE .. ".tex}}{section_end}"
                     ,
                     {
                         section_title = i(1, "Section Name"),
                         section_dir = f(
-                            function () return tex_get_include_number("subfile", "section") end,
+                            function () return tex_get_include_number("subfile", config.SECTION_FILE_BASE) end,
                             { }
                         ),
                         section_end = i(0),
