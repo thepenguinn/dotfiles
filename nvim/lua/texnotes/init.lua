@@ -27,7 +27,7 @@ M.load_local_config = function ()
         return
     end
 
-    parent_dir = tmp:read("a")
+    parent_dir = tmp:read("a"):gsub("\n$", "")
     tmp:close()
 
     parent_dir = path(parent_dir)
@@ -70,7 +70,7 @@ M.local_config = M.load_local_config()
 setmetatable(M.local_config, {
     __index = M.default_config,
 })
-M.config = local_config
+M.config = M.local_config
 
 M._get_text = function (node)
 
