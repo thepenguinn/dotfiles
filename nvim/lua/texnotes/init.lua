@@ -2,6 +2,76 @@ local M = {}
 
 M.tikzpics_dir = "tikzpics"
 
+M.local_config = nil
+M.global_config = nil
+M.config = nil
+M.default_config = {
+    -- base names for different files
+    MAIN_FILE_BASE = "course",
+    CHAPTER_FILE_BASE = "chapter",
+    WORK_FILE_BASE = "work",
+    SECTION_FILE_BASE = "section",
+    SYLLABUS_FILE_BASE = "syllabus",
+    ABSTRACT_FILE_BASE = "abstract",
+}
+
+M.load_local_config = function ()
+    local path = require("pathlib")
+    -- local parent_dir = vim.fn.expand("%:p")
+    local parent_dir
+    local local_config_file
+    local tmp
+
+    tmp = io.popen("pwd")
+    if not tmp then
+        return
+    end
+
+    parent_dir = tmp:read("a")
+    tmp:close()
+
+    parent_dir = path(parent_dir)
+
+    -- first arg --> pathlib dir
+    -- returns --> pathlib config file, else nil
+    local function find_local_config(dir)
+        local config_file
+
+        if not dir then
+            return nil
+        end
+
+        -- looking for .lunatikz directory in the parent directories,
+        -- because, it could the root directory of the project.
+
+        if dir:child(".lunatikz"):is_dir() then
+            config_file = dir:child("texno.config")
+            if config_file:is_file() then
+                return config_file
+            else
+                return nil
+            end
+        else
+            return find_local_config(dir:parent())
+        end
+    end
+
+    local_config_file = find_local_config(parent_dir)
+
+    if local_config_file then
+        return dofile(tostring(local_config_file)) or {}
+    else
+        return {}
+    end
+
+end
+
+M.local_config = M.load_local_config()
+setmetatable(M.local_config, {
+    __index = M.default_config,
+})
+M.config = local_config
+
 M._get_text = function (node)
 
     local start_row, start_col, end_row, end_col
@@ -50,7 +120,7 @@ end
 M._init_chapter = function(parent_dir)
 
     local path = require("pathlib")
-    local chp = io.open(parent_dir .. "/chapter.tex", "r")
+    local chp = io.open(parent_dir .. "/" .. M.config.CHAPTER_FILE_BASE .. ".tex", "r")
     local tmp
     local content
 
@@ -63,14 +133,14 @@ M._init_chapter = function(parent_dir)
         tmp = path("~/.config/notes/chapter_makefile")
         tmp:copy(path(parent_dir .. "/Makefile"))
 
-        tmp = path(parent_dir .. "/syllabus.tex")
+        tmp = path(parent_dir .. "/" .. M.config.SYLLABUS_FILE_BASE .. ".tex")
         tmp:touch()
 
-        tmp = path(parent_dir .. "/chapter.tex")
+        tmp = path(parent_dir .. "/" .. M.config.CHAPTER_FILE_BASE .. ".tex")
         tmp:touch()
 
         vim.system(
-            {"lunatikz", "add", "--build-entry", "chapter.tex"},
+            {"lunatikz", "add", "--build-entry", M.config.CHAPTER_FILE_BASE .. ".tex"},
             {cwd = parent_dir}
         )
 
@@ -80,7 +150,7 @@ M._init_chapter = function(parent_dir)
     end
 
     print("") -- clears the msg
-    vim.cmd("e " .. parent_dir .. "/chapter.tex")
+    vim.cmd("e " .. parent_dir .. "/" .. M.config.CHAPTER_FILE_BASE .. ".tex")
 
     if not content then
         vim.cmd("norm ibchp ")
@@ -337,24 +407,24 @@ M.jump = function()
 
         print("Intializing: Spawning Rexes, Wrapping Raptors, Polishing Ceratops...")
 
-        if cur_file_base == "course" then
-            if sub_file_base == "chapter" then
+        if cur_file_base == M.config.MAIN_FILE_BASE then
+            if sub_file_base == M.config.CHAPTER_FILE_BASE then
                 M._init_chapter(sub_file_parent)
                 return
-            elseif sub_file_base == "work" then
+            elseif sub_file_base == M.config.WORK_FILE_BASE then
                 M._init_work(sub_file_parent)
                 return
             end
-        elseif cur_file_base == "chapter" then
-            if sub_file_base == "section" then
+        elseif cur_file_base == M.config.CHAPTER_FILE_BASE then
+            if sub_file_base == M.config.SECTION_FILE_BASE then
                 M._init_section(sub_file_parent)
                 return
-            elseif sub_file_base == "syllabus" then
+            elseif sub_file_base == M.config.SYLLABUS_FILE_BASE then
                 M._init_syllabus(sub_file_parent)
                 return
             end
-        elseif cur_file_base == "work" then
-            if sub_file_base == "section" then
+        elseif cur_file_base == M.config.WORK_FILE_BASE then
+            if sub_file_base == M.config.SECTION_FILE_BASE then
                 M._init_section(sub_file_parent)
                 return
             end
@@ -592,5 +662,7 @@ M.build_and_view_tikzpic = function()
     )
 
 end
+
+
 
 return M
