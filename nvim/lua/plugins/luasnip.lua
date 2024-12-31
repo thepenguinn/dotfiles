@@ -298,6 +298,15 @@ return {
                 end
             end
 
+            local function tex_gen_subfile_syllabus(args)
+
+                if config.MAIN_FILE_BASE == "course" then
+                    return "\\subfile{{" .. config.SYLLABUS_FILE_BASE ..  ".tex}}\n" .. "\n"
+                elseif config.MAIN_FILE_BASE == "main" then
+                    return ""
+                end
+            end
+
             local function tex_get_include_number(include_type, file_type)
 
                 local ltree = vim.treesitter.get_parser(0)
@@ -612,8 +621,7 @@ return {
                     .. "\n"
                     .. "\\chapter{{{chapter_title}}} \\label{{chp:{chapter_label}}}\n"
                     .. "\n"
-                    .. "\\subfile{{" .. config.SYLLABUS_FILE_BASE ..  ".tex}}\n"
-                    .. "\n"
+                    .. "{chapter_subfile_syllabus}"
                     .. "{chapter_end}\n"
                     .. "\n"
                     .. "\\end{{document}}\n"
@@ -623,6 +631,7 @@ return {
                             f(tex_find_chapter_title, {}),
                             i(nil, "Chapter Title")
                         }),
+                        chapter_subfile_syllabus = f(tex_gen_subfile_syllabus, { }),
                         chapter_label = i(2),
                         chapter_end = i(0),
                     })),
