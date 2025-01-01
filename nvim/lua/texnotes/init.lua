@@ -204,6 +204,26 @@ M._init_work = function(parent_dir)
 
 end
 
+M._init_abstract = function(parent_dir)
+    local path = require("pathlib")
+    local abt = io.open(parent_dir .. "/abstract.tex", "r")
+    local content
+
+    if not abt then
+        print(parent_dir .. "/abstract.tex does not exists.")
+    else
+        content = abt:read()
+        abt:close()
+    end
+
+    vim.cmd("e " .. parent_dir .. "/abstract.tex")
+
+    if not content then
+        vim.cmd("norm ibabt ")
+        require("luasnip").expand()
+    end
+end
+
 M._init_section = function(parent_dir)
 
     local path = require("pathlib")
@@ -413,6 +433,9 @@ M.jump = function()
                 return
             elseif sub_file_base == M.config.WORK_FILE_BASE then
                 M._init_work(sub_file_parent)
+                return
+            elseif sub_file_base == M.config.ABSTRACT_FILE_BASE then
+                M._init_abstract(sub_file_parent)
                 return
             end
         elseif cur_file_base == M.config.CHAPTER_FILE_BASE then
