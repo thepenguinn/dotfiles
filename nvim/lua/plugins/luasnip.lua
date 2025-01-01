@@ -750,6 +750,7 @@ return {
 
                     .. "\\ifSubfilesClassLoaded {{\n"
                     .. "    \\input{{" .. config.ABSTRACT_FILE_BASE .. ".tex}}\n"
+                    .. "    \\makeabstractpage\n"
                     .. "}} {{\n"
                     .. "    \\chapter{{{work_chapter}}} \\label{{chp:{work_chapter_label}}}\n"
                     .. "}}\n"
