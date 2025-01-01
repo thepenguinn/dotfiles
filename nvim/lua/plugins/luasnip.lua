@@ -591,6 +591,86 @@ return {
                         command_body = i(0),
                     })),
 
+                s("bmain", fmt(
+                    "\\documentclass[11pt] {{report}}\n"
+                    .. "\n"
+
+                    .. "\\input{{preamble.tex}}\n"
+                    .. "\n"
+
+                    .. "\\begin{{document}}\n"
+                    .. "\n"
+
+                    .. "\\subfileinclude{{" .. config.ABSTRACT_FILE_BASE .. ".tex}}{main_abstract}\n"
+                    .. "\n"
+
+                    .. "{main_end}\n"
+                    .. "\n"
+
+                    .. "\\end{{document}}\n"
+                    ,
+                    {
+                        main_abstract = i(1),
+                        main_end = i(0),
+                    })),
+
+                s("babt", fmt(
+                    "\\documentclass[" .. config.MAIN_FILE_BASE .. "]{{subfiles}}\n"
+                    .. "\n"
+
+                    .. "\\begin{{document}}\n"
+                    .. "\n"
+
+                    .. "\\def\\author{{{abstract_author}}}\n"
+                    .. "\\def\\supervisor{{{abstract_supervisor}}}\n"
+                    .. "\\def\\title{{{abstract_title}}}\n"
+                    .. "\\def\\subtitle{{{abstract_subtitle}}}\n"
+                    .. "\\def\\subsubtitle{{{abstract_subsubtitle}}}\n"
+                    .. "\n"
+
+                    .. "\\def\\authordesc {{\n"
+                    .. "    {abstract_authordesc}\n"
+                    .. "}}\n"
+                    .. "\n"
+
+                    .. "\\def\\supervisordesc {{\n"
+                    .. "    {abstract_supervisordesc}\n"
+                    .. "}}\n"
+                    .. "\n"
+
+                    .. "\\def\\abstractcontent {{\n"
+                    .. "    {abstract_abstract}\n"
+                    .. "}}\n"
+                    .. "\n"
+
+                    .. "\\input{{abstract_template.tex}}\n"
+                    .. "\n"
+
+                    .. "\\ifSubfilesClassLoaded {{\n"
+                    .. "    \\pagenumbering{{gobble}}\n"
+                    .. "}} {{\n"
+                    .. "}}\n"
+                    .. "\n"
+
+                    .. "\\makeabstractpage"
+
+                    .. "{abstract_end}\n"
+                    .. "\n"
+
+                    .. "\\end{{document}}\n"
+                    ,
+                    {
+                        abstract_author = i(1, "Daniel V Mathew"),
+                        abstract_supervisor = i(2),
+                        abstract_title = i(3, "AN INTERSTING TITLE"),
+                        abstract_subtitle = i(4, "COURSE NAME"),
+                        abstract_subsubtitle = i(5, "TYPE OF WORK"),
+                        abstract_authordesc = i(6),
+                        abstract_supervisordesc = i(7),
+                        abstract_abstract = i(8),
+                        abstract_end = i(0),
+                    })),
+
                 s("bcrs", fmt(
                     "\\documentclass[11pt] {{report}}\n"
                     .. "\n"
