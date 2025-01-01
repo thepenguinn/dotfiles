@@ -11,6 +11,8 @@ SECTIONS := $(wildcard work_*/section_*/section.tex)
 
 TIKZPICS := $(wildcard */tikzpics/*.tex)
 
+ABSTRACT := abstract_template.tex abstract.tex
+
 build: main.pdf view
 
 force:
@@ -18,9 +20,17 @@ force:
 	pdflatex -shell-escape -halt-on-error main.tex
 	$(VIEWER) main.pdf
 
-main.pdf: main.tex preamble.tex colorscheme.sty $(CHAPTERS) $(SECTIONS) $(WORKS) $(TIKZPICS)
+main.pdf: main.tex preamble.tex colorscheme.sty $(ABSTRACT) $(CHAPTERS) $(SECTIONS) $(WORKS) $(TIKZPICS)
 	lunatikz build main.tex
 	pdflatex -shell-escape -halt-on-error main.tex
+
+abstract: abstract.pdf view_abstract
+
+abstract.pdf: preamble.tex colorscheme.sty $(ABSTRACT)
+	pdflatex -shell-escape -halt-on-error abstract.tex
+
+view_abstract:
+	$(VIEWER) abstract.pdf
 
 view:
 	$(VIEWER) main.pdf
@@ -28,4 +38,4 @@ view:
 send:
 	$(SENDER) main.pdf
 
-.PHONY: view build force
+.PHONY: view build force view_abstract abstract

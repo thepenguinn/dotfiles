@@ -99,8 +99,6 @@
     \end{center}
 }
 
-\maketitle
-
 \renewenvironment{abstract} {
     \vspace{30pt}
     \begin{center}
@@ -110,24 +108,29 @@
 } {
 }
 
-\vspace{20pt}
+\newcommand\makeabstractpage[0] {
 
-\begin{abstract}
+    \maketitle
+
+    \vspace{20pt}
+
+    \begin{abstract}
+        \begin{center}
+            \begin{minipage}{0.86\textwidth}
+                \setlength{\parindent}{20pt}
+                {\large
+
+                \abstractcontent
+
+                }
+            \end{minipage}
+        \end{center}
+    \end{abstract}
+
+    \vspace{80pt}
     \begin{center}
-        \begin{minipage}{0.86\textwidth}
-            \setlength{\parindent}{20pt}
-            {\large
-
-            \abstractcontent
-
-            }
-        \end{minipage}
+        {\LARGE \bfseries
+        \today
+        }
     \end{center}
-\end{abstract}
-
-\vspace{80pt}
-\begin{center}
-    {\LARGE \bfseries
-    \today
-    }
-\end{center}
+}
