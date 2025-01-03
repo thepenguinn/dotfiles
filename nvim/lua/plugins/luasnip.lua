@@ -49,67 +49,7 @@ return {
                 return st[1]
             end
 
-            local local_config = nil
-            local global_config = nil
-            local config = nil
-            local default_config = {
-                -- base names for different files
-                MAIN_FILE_BASE = "course",
-                CHAPTER_FILE_BASE = "chapter",
-                WORK_FILE_BASE = "work",
-                SECTION_FILE_BASE = "section",
-                SYLLABUS_FILE_BASE = "syllabus",
-                ABSTRACT_FILE_BASE = "abstract",
-            }
-
-            local function load_local_config()
-                local parent_dir = vim.fn.expand("%:p")
-                local local_config_file
-
-                parent_dir = parent_dir:gsub("/[^/]*$", "")
-                parent_dir = path(parent_dir)
-
-                -- first arg --> pathlib dir
-                -- returns --> pathlib config file, else nil
-                local function find_local_config(dir)
-                    local config_file
-
-                    if not dir then
-                        return nil
-                    end
-
-                    -- looking for .lunatikz directory in the parent directories,
-                    -- because, it could the root directory of the project.
-
-                    if dir:child(".lunatikz"):is_dir() then
-                        config_file = dir:child("texno.config")
-                        if config_file:is_file() then
-                            return config_file
-                        else
-                            return nil
-                        end
-                    else
-                        return find_local_config(dir:parent())
-                    end
-                end
-
-                local_config_file = find_local_config(parent_dir)
-
-                if local_config_file then
-                    return dofile(tostring(local_config_file)) or {}
-                else
-                    return {}
-                end
-
-            end
-
-            local_config = load_local_config()
-
-            setmetatable(local_config, {
-                __index = default_config,
-            })
-
-            config = local_config
+            local config = require("texnotes").config
 
             local function get_text_from_node(bufnr, node)
 
