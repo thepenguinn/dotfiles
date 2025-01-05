@@ -130,7 +130,7 @@ M._init_chapter = function(parent_dir)
         vim.fn.mkdir(parent_dir .. "/tikzpics", "p")
         vim.fn.mkdir(parent_dir .. "/data", "p")
 
-        tmp = path("~/.config/notes/chapter_makefile")
+        tmp = path("~/.config/notes/" .. M.config.MAIN_FILE_BASE .. "/chapter_makefile")
         tmp:copy(path(parent_dir .. "/Makefile"))
 
         tmp = path(parent_dir .. "/" .. M.config.SYLLABUS_FILE_BASE .. ".tex")
@@ -162,7 +162,7 @@ end
 M._init_work = function(parent_dir)
 
     local path = require("pathlib")
-    local wrk = io.open(parent_dir .. "/work.tex", "r")
+    local wrk = io.open(parent_dir .. "/" .. M.config.WORK_FILE_BASE .. "work.tex", "r")
     local tmp
     local content
 
@@ -172,20 +172,20 @@ M._init_work = function(parent_dir)
         vim.fn.mkdir(parent_dir .. "/tikzpics", "p")
         vim.fn.mkdir(parent_dir .. "/data", "p")
 
-        tmp = path("~/.config/notes/work_makefile")
+        tmp = path("~/.config/notes/" .. M.config.MAIN_FILE_BASE .. "/work_makefile")
         tmp:copy(path(parent_dir .. "/Makefile"))
 
         tmp = path("~/.config/notes/work_header.tex")
         tmp:copy(path(parent_dir .. "/work_header.tex"))
 
         tmp = path("~/.config/notes/abstract.tex")
-        tmp:copy(path(parent_dir .. "/abstract.tex"))
+        tmp:copy(path(parent_dir .. "/" .. M.config.ABSTRACT_FILE_BASE .. ".tex"))
 
-        tmp = path(parent_dir .. "/work.tex")
+        tmp = path(parent_dir .. "/" .. M.config.WORK_FILE_BASE .. ".tex")
         tmp:touch()
 
         vim.system(
-            {"lunatikz", "add", "--build-entry", "work.tex"},
+            {"lunatikz", "add", "--build-entry", M.config.WORK_FILE_BASE .. ".tex"},
             {cwd = parent_dir}
         )
 
@@ -216,7 +216,7 @@ M._init_abstract = function(parent_dir)
         abt:close()
     end
 
-    vim.cmd("e " .. parent_dir .. "/abstract.tex")
+    vim.cmd("e " .. parent_dir .. "/" .. M.config.ABSTRACT_FILE_BASE .. ".tex")
 
     if not content then
         vim.cmd("norm ibabt ")
@@ -227,7 +227,7 @@ end
 M._init_section = function(parent_dir)
 
     local path = require("pathlib")
-    local sec = io.open(parent_dir .. "/section.tex", "r")
+    local sec = io.open(parent_dir .. "/" .. M.config.SECTION_FILE_BASE .. ".tex", "r")
     local tmp
     local content
 
@@ -237,17 +237,17 @@ M._init_section = function(parent_dir)
         vim.fn.mkdir(parent_dir .. "/tikzpics", "p")
         vim.fn.mkdir(parent_dir .. "/data", "p")
 
-        tmp = path("~/.config/notes/section_makefile")
+        tmp = path("~/.config/notes/" .. M.config.MAIN_FILE_BASE .. "/section_makefile")
         tmp:copy(path(parent_dir .. "/Makefile"))
 
         tmp = path("~/.config/notes/section_header.tex")
         tmp:copy(path(parent_dir .. "/section_header.tex"))
 
-        tmp = path(parent_dir .. "/section.tex")
+        tmp = path(parent_dir .. "/" .. M.config.SECTION_FILE_BASE .. ".tex")
         tmp:touch()
 
         vim.system(
-            {"lunatikz", "add", "--build-entry", "section.tex"},
+            {"lunatikz", "add", "--build-entry", M.config.SECTION_FILE_BASE .. ".tex"},
             {cwd = parent_dir}
         )
 
@@ -268,22 +268,22 @@ end
 
 M._init_syllabus = function(parent_dir)
 
-    local tmp = io.open(parent_dir .. "/syllabus.tex", "r")
+    local tmp = io.open(parent_dir .. "/" .. M.config.SYLLABUS_FILE_BASE .. ".tex", "r")
     if tmp then
         local content = tmp:read()
         tmp:close()
         if content and content ~= "" then
-            vim.cmd("e " .. parent_dir .. "/syllabus.tex")
+            vim.cmd("e " .. parent_dir .. "/" .. M.config.SYLLABUS_FILE_BASE .. ".tex")
             return
         end
     end
 
-    if vim.fn.bufloaded(parent_dir .. "/syllabus.tex") == 0 then
-        vim.cmd("e " .. parent_dir .. "/syllabus.tex")
+    if vim.fn.bufloaded(parent_dir .. "/" .. M.config.SYLLABUS_FILE_BASE .. ".tex") == 0 then
+        vim.cmd("e " .. parent_dir .. "/" .. M.config.SYLLABUS_FILE_BASE .. ".tex")
         vim.cmd("norm ibsyl ")
         require("luasnip").expand()
     else
-        vim.cmd("e " .. parent_dir .. "/syllabus.tex")
+        vim.cmd("e " .. parent_dir .. "/" .. M.config.SYLLABUS_FILE_BASE .. ".tex")
     end
 
 end
