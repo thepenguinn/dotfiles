@@ -637,6 +637,10 @@ return {
                 s("bchp", fmt(
                     "\\documentclass[../" .. config.MAIN_FILE_BASE .. "]{{subfiles}}\n"
                     .. "\n"
+
+                    .. "\\input{{chapter_header.tex}}\n"
+                    .. "\n"
+
                     .. "\\begin{{document}}\n"
                     .. "\n"
                     .. "\\chapter{{{chapter_title}}} \\label{{chp:{chapter_label}}}\n"

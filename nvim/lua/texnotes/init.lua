@@ -133,6 +133,9 @@ M._init_chapter = function(parent_dir)
         tmp = path("~/.config/notes/" .. M.config.MAIN_FILE_BASE .. "/chapter_makefile")
         tmp:copy(path(parent_dir .. "/Makefile"))
 
+        tmp = path("~/.config/notes/chapter_header.tex")
+        tmp:copy(path(parent_dir .. "/chapter_header.tex"))
+
         tmp = path(parent_dir .. "/" .. M.config.SYLLABUS_FILE_BASE .. ".tex")
         tmp:touch()
 
