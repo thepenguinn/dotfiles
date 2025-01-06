@@ -14,7 +14,7 @@ force:
 	pdflatex -shell-escape -halt-on-error work.tex
 	$(VIEWER) work.pdf
 
-work.pdf: work.tex ../preamble.tex ../colorscheme.sty ../course.tex abstract.tex $(SECTIONS) $(TIKZPICS)
+work.pdf: work.tex work_header.tex ../preamble.tex ../colorscheme.sty ../course.tex abstract.tex $(SECTIONS) $(TIKZPICS)
 	lunatikz build work.tex
 	pdflatex -shell-escape -halt-on-error work.tex
 

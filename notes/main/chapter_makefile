@@ -14,7 +14,7 @@ force:
 	pdflatex -shell-escape -halt-on-error chapter.tex
 	$(VIEWER) chapter.pdf
 
-chapter.pdf: chapter.tex ../preamble.tex ../colorscheme.sty ../main.tex $(SECTIONS) $(TIKZPICS)
+chapter.pdf: chapter.tex chapter_header.tex ../preamble.tex ../colorscheme.sty ../main.tex $(SECTIONS) $(TIKZPICS)
 	lunatikz build chapter.tex
 	pdflatex -shell-escape -halt-on-error chapter.tex
 
