@@ -5,7 +5,7 @@ VIEWER = viewpdf
 
 SECTIONS := $(wildcard section_*/section.tex)
 
-TIKZPICS := $(wildcard */**/tikzpics/*.tex)
+TIKZPICS := $(shell find -type f -wholename "*/tikzpics/*.tex")
 
 build: work.pdf view
 

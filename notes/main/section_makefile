@@ -3,7 +3,7 @@
 SENDER = termux-share -a send
 VIEWER = viewpdf
 
-TIKZPICS := $(wildcard tikzpics/*.tex)
+TIKZPICS := $(shell find -type f -wholename "*/tikzpics/*.tex")
 
 build: section.pdf view
 
