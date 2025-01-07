@@ -675,7 +675,16 @@ M.build_and_view_tikzpic = function()
                     print("Lunatikz ran successfully, opening " .. file_path)
                     vim.system({"termux-share", "-d", file_path})
                 else
-                    print("Lunatikz ran successfully, but pdf doesn't exist " .. file_path)
+
+                    tmp = path(parent_dir .. "/" .. file_name:gsub("(.*)/sub([^/]*%.pdf)$", "%1/end%2"))
+
+                    if tmp:is_file() then
+                        print("Lunatikz ran successfully, opening " .. tostring(tmp))
+                        vim.system({"termux-share", "-d", tostring(tmp)})
+                    else
+                        print("Lunatikz ran successfully, but pdf doesn't exist " .. file_path)
+                    end
+
                 end
 
             else
