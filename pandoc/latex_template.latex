@@ -345,6 +345,9 @@ $endif$
 $if(numbersections)$
 \setcounter{secnumdepth}{$if(secnumdepth)$$secnumdepth$$else$5$endif$}
 $else$
+%% \renewcommand\thesection{\Alph{section}}
+%% \setcounter{secnumdepth}{$if(secnumdepth)$$secnumdepth$$else$5$endif$}
+%% %% \setcounter{section}{0}
 \setcounter{secnumdepth}{-\maxdimen} % remove section numbering
 $endif$
 $if(subfigure)$
