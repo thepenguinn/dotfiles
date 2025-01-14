@@ -862,8 +862,8 @@ return {
                                 i(nil),
                             }),
                             max_height = c(3, {
-                                i(nil, "0.8\\textheight"),
-                                sn(nil, {i(1, "0.8"), t("\\textheight")}),
+                                i(nil, "0.4\\textheight"),
+                                sn(nil, {i(1, "0.4"), t("\\textheight")}),
                                 i(nil),
                             }),
                             image = i(6),
