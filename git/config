@@ -27,4 +27,14 @@
 	directory = /storage/emulated/0/Music/sdl/delelme/sdl
 	directory = /storage/emulated/0/notes/.git
 	directory = /storage/emulated/0/notes/.git
-	directory = remote-repo/notes.git
+	directory = ~/remote-repo/notes.git
+	directory = /storage/emulated/0/src/disaster
+	directory = /storage/emulated/0/src/sscs
+	directory = ~/remote-repo/actualcircuitikz.git
+	directory = ~/remote-repo/circuitikz.git
+	directory = ~/remote-repo/rock.git
+	directory = /storage/emulated/0/src/koreader/koreader/frontend
+	directory = /storage/emulated/0/src/aic_sch/index
+	directory = /data/data/com.termux/files/home/remote-repo/notes.git
+	directory = /data/data/com.termux/files/home/remote-repo/notes.git
+	directory = /data/data/com.termux/files/home/remote-repo/notes.git
