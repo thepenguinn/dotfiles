@@ -525,7 +525,7 @@ M.view_binary = function()
                 tmp = io.open(file_name)
                 if tmp then
                     tmp:close()
-                    vim.system({"termux-share", "-d", file_name})
+                    vim.system({"viewpdf", "--no-timestamp", file_name})
                     print("Opening " .. file_name)
                 else
                     print("File doesn't exist: " .. file_name)
@@ -673,14 +673,14 @@ M.build_and_view_tikzpic = function()
 
                 if tmp:is_file() then
                     print("Lunatikz ran successfully, opening " .. file_path)
-                    vim.system({"termux-share", "-d", file_path})
+                    vim.system({"viewpdf", "--no-timestamp", file_path})
                 else
 
                     tmp = path(parent_dir .. "/" .. file_name:gsub("(.*)/sub([^/]*%.pdf)$", "%1/end%2"))
 
                     if tmp:is_file() then
                         print("Lunatikz ran successfully, opening " .. tostring(tmp))
-                        vim.system({"termux-share", "-d", tostring(tmp)})
+                        vim.system({"viewpdf", "--no-timestamp", tostring(tmp)})
                     else
                         print("Lunatikz ran successfully, but pdf doesn't exist " .. file_path)
                     end
