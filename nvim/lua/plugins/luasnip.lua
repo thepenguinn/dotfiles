@@ -840,7 +840,7 @@ return {
 
                     })),
 
-                s("igx", { c(1, {
+                s("igxo", { c(1, {
                     sn(nil, fmt(
                         "\\begin{{{wrap_begin}}}\n"
                         .. "{figure_options}"
@@ -869,6 +869,68 @@ return {
                             image = i(6),
                             caption = i(4),
                             label = c(5, {
+                                sn(nil, {t("fig:"), i(1)}),
+                                sn(nil, {t("plt:"), i(1)}),
+                            }),
+                            wrap_end = rep(1),
+                            include_end = i(0)
+
+                        })),
+                    sn(nil, fmt(
+                        "\\includegraphics[{options}] {{{image}}}\n"
+                        .. "\n"
+                        .. "{include_end}"
+                        ,
+                        {
+                            options = i(1),
+                            image = i(2),
+                            include_end = i(0),
+                        })),
+                })
+                }),
+
+                s("igx", { c(1, {
+                    sn(nil, fmt(
+                        "\\begin{{{wrap_begin}}}\n"
+                        .. "{figure_options}"
+                        .. "    \\includegraphics [\n"
+                        .. "{optional_args}\n"
+                        .. "    ] {{{image}}}\n"
+                        .. "    \\captionof{{figure}} {{{caption}}}\n"
+                        .. "    \\label{{{label}}}\n"
+                        .. "\\end{{{wrap_end}}}\n"
+                        .. "\n"
+                        .. "{include_end}"
+                        ,
+                        {
+                            wrap_begin = c(1, {i(nil, "figure"), i(nil, "center"), i(nil)}),
+                            figure_options = f(tex_get_figure_options, { 1 }),
+                            optional_args = c(2, {
+                                sn(1, {
+                                    t("        "),
+                                    i(1, ""),
+                                }),
+                                sn(2, {
+                                    t("        width = "),
+                                    c(1, {
+                                        i(nil, "0.7\\textwidth"),
+                                        sn(nil, {i(1, "0.7"), t("\\textwidth")}),
+                                        i(nil, "Dimension"),
+                                    }),
+                                    t({",", ""}),
+                                    t("        height = "),
+                                    c(2, {
+                                        i(nil, "0.4\\textwidth"),
+                                        sn(nil, {i(1, "0.4"), t("\\textwidth")}),
+                                        i(nil, "Dimension"),
+                                    }),
+                                    t({",", ""}),
+                                    sn(3, {t("        "), i(1, ""), }),
+                                }),
+                            }),
+                            image = i(5),
+                            caption = i(3),
+                            label = c(4, {
                                 sn(nil, {t("fig:"), i(1)}),
                                 sn(nil, {t("plt:"), i(1)}),
                             }),
