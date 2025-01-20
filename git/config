@@ -38,3 +38,5 @@
 	directory = /data/data/com.termux/files/home/remote-repo/notes.git
 	directory = /data/data/com.termux/files/home/remote-repo/notes.git
 	directory = /data/data/com.termux/files/home/remote-repo/notes.git
+[init]
+	defaultBranch = main
