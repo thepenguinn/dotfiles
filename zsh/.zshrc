@@ -6,7 +6,10 @@
 #
 
 if [[ -z $TMUX ]] && ! tmux has-session -t general 2>/dev/null; then
-    ~/.local/bin/tss utils:proot general
+    if ! [[ $(uname -r) =~ ".*PRoot-Distro" ]]; then
+        # if not inside proot, start tmux
+        ~/.local/bin/tss utils:proot general
+    fi
 fi
 
 autoload -U compinit && compinit
