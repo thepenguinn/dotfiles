@@ -893,7 +893,7 @@ return {
                     sn(nil, fmt(
                         "\\begin{{{wrap_begin}}}\n"
                         .. "{figure_options}"
-                        .. "    \\includegraphics [\n"
+                        .. "    \\includegraphics ["
                         .. "{optional_args}\n"
                         .. "    ] {{{image}}}\n"
                         .. "    \\captionof{{figure}} {{{caption}}}\n"
@@ -907,18 +907,24 @@ return {
                             figure_options = f(tex_get_figure_options, { 1 }),
                             optional_args = c(2, {
                                 sn(1, {
-                                    t("        "),
+                                    t({"", "        "}),
                                     i(1, ""),
                                 }),
                                 sn(2, {
-                                    t("        width = "),
+                                    t({"", "        max width = \\IGXMaxWidth,"}),
+                                    t({"", "        max height = \\IGXMaxHeight,"}),
+                                    t({"", "        \\IGXDefaultOptionalArgs,"}),
+                                    i(1, ""),
+                                }),
+                                sn(3, {
+                                    t({"", "        max width = "}),
                                     c(1, {
                                         i(nil, "0.7\\textwidth"),
                                         sn(nil, {i(1, "0.7"), t("\\textwidth")}),
                                         i(nil, "Dimension"),
                                     }),
                                     t({",", ""}),
-                                    t("        height = "),
+                                    t("        max height = "),
                                     c(2, {
                                         i(nil, "0.4\\textwidth"),
                                         sn(nil, {i(1, "0.4"), t("\\textwidth")}),
