@@ -7,8 +7,7 @@ CHAPTERS := $(wildcard chapter_*/chapter.tex)
 SYLLABUS := $(wildcard chapter_*/syllabus.tex)
 WORKS := $(wildcard work_*/work.tex)
 
-SECTIONS := $(wildcard chapter_*/section_*/section.tex)
-SECTIONS := $(wildcard work_*/section_*/section.tex)
+SECTIONS := $(wildcard chapter_*/section_*/section.tex) $(wildcard work_*/section_*/section.tex)
 
 TIKZPICS := $(shell find -type f -wholename "*/tikzpics/*.tex")
 
