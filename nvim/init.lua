@@ -146,5 +146,25 @@ vim.api.nvim_create_autocmd({"BufLeave"}, {
     group = tex_notes_group,
 })
 
+-- for openscad
+
+local openscad_group = vim.api.nvim_create_augroup("OpenSCadGroup", {clear = true})
+
+vim.api.nvim_create_autocmd({"BufEnter"}, {
+    pattern = {"*.scad"},
+    callback = function()
+        vim.cmd("set commentstring=/*%s*/")
+    end,
+    group = openscad_group,
+})
+
+vim.api.nvim_create_autocmd({"BufLeave"}, {
+    pattern = {"*.scad"},
+    callback = function()
+        vim.cmd("set commentstring=")
+    end,
+    group = openscad_group,
+})
+
 --
 --
