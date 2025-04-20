@@ -6,9 +6,19 @@
 #
 
 if [[ -z $TMUX ]] && ! tmux has-session -t general 2>/dev/null; then
-    if ! [[ $(uname -r) =~ ".*PRoot-Distro" ]]; then
-        # if not inside proot, start tmux
-        ~/.local/bin/tss utils:proot general
+    if [[ !  $(uname -r) =~ ".*PRoot-Distro" ]] && [[ ! $(tty) =~ "/dev/tty*" ]]; then
+        # if not inside proot or in a tty (on a linux system), start tmux
+
+        # Checking whether we are on Android or not
+        # This is how pfetch checks for Android
+        if [ -d /system/app ] && [ -d /system/priv-app ]; then
+            # if Android then we need proot in utils session
+            ~/.local/bin/tss utils:proot general
+        else
+            # else just spawn the general session for right now
+            ~/.local/bin/tss general
+        fi
+
     fi
 fi
 
@@ -25,7 +35,13 @@ alias kdb="kdb syncall"
 
 # EXPORTS
 
-export PATH="${PATH}:${HOME}/.local/bin:${HOME}/go/bin:${HOME}/.cargo/bin"
+if [ -d /system/app ] && [ -d /system/priv-app ]; then
+    # if on Android
+    export PATH="${PATH}:${HOME}/.local/bin:${HOME}/go/bin:${HOME}/.cargo/bin"
+else
+    export PATH="${PATH}:${HOME}/.local/bin:${HOME}/go/bin:${HOME}/.cargo/bin:/usr/local/texlive/2025/bin/x86_64-linux"
+fi
+
 export GTYPIST_PATH="/data/data/com.termux/files/usr/share/gtypist:"
 export MATHLIB="m"
 export TERM="xterm-256color"
