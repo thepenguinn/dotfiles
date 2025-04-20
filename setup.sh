@@ -13,6 +13,7 @@ ln -s "${PWD}/tss" "${Conf_Dir}" > /dev/null 2>&1
 ln -s "${PWD}/perc" "${Conf_Dir}" > /dev/null 2>&1
 ln -s "${PWD}/notes" "${Conf_Dir}" > /dev/null 2>&1
 ln -s "${PWD}/picom" "${Conf_Dir}" > /dev/null 2>&1
+ln -s "${PWD}/sxhkd" "${Conf_Dir}" > /dev/null 2>&1
 ln -s "${PWD}/zsh/.zshrc" "${HOME}" > /dev/null 2>&1
 ln -s "${PWD}/xinit/.xinitrc" "${HOME}" > /dev/null 2>&1
 
