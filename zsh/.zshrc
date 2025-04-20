@@ -5,23 +5,6 @@
 # (_)___|___/_| |_|_|  \___|
 #
 
-if [[ -z $TMUX ]] && ! tmux has-session -t general 2>/dev/null; then
-    if [[ !  $(uname -r) =~ ".*PRoot-Distro" ]] && [[ ! $(tty) =~ "/dev/tty*" ]]; then
-        # if not inside proot or in a tty (on a linux system), start tmux
-
-        # Checking whether we are on Android or not
-        # This is how pfetch checks for Android
-        if [ -d /system/app ] && [ -d /system/priv-app ]; then
-            # if Android then we need proot in utils session
-            ~/.local/bin/tss utils:proot general
-        else
-            # else just spawn the general session for right now
-            ~/.local/bin/tss general
-        fi
-
-    fi
-fi
-
 autoload -U compinit && compinit
 zmodload -i zsh/complist
 
@@ -64,6 +47,23 @@ export JF_USER_NAME="u0_a246"
 
 export KINDLE_MAC_ADDR="f4:03:2a:d5:42:6c"
 export LOCAL_KINDLE_DIR="$HOME/storage/shared/kindle"
+
+if [[ -z $TMUX ]] && ! tmux has-session -t general 2>/dev/null; then
+    if [[ !  $(uname -r) =~ ".*PRoot-Distro" ]] && [[ ! $(tty) =~ "/dev/tty*" ]]; then
+        # if not inside proot or in a tty (on a linux system), start tmux
+
+        # Checking whether we are on Android or not
+        # This is how pfetch checks for Android
+        if [ -d /system/app ] && [ -d /system/priv-app ]; then
+            # if Android then we need proot in utils session
+            ~/.local/bin/tss utils:proot general
+        else
+            # else just spawn the general session for right now
+            ~/.local/bin/tss general
+        fi
+
+    fi
+fi
 
 ssh() {
 	local jf_user_name="$JF_USER_NAME"
