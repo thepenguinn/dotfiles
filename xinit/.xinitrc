@@ -55,6 +55,7 @@ fi
 # "$xterm" -geometry 80x20+494-0 &
 
 picom &
+sxhkd &
 feh --bg-fill ~/walls/81.jpg
 xrdb ~/.Xresources
 setxkbmap -option ctrl:swapcaps &
