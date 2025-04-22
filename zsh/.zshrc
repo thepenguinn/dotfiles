@@ -34,6 +34,8 @@ export ANDROID_SDK_ROOT=${HOME}/android-sdk
 export ANDROID_HOME=${HOME}/android-sdk
 export PATH=${ANDROID_HOME}/cmdline-tools/latest/bin:${ANDROID_HOME}/platform-tools:${PATH}
 
+export QT_QPA_PLATFORMTHEME="qt5ct"
+
 #export MANPAGER="nvimpager"
 #export PAGER="nvimpager"
 
