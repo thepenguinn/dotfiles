@@ -63,8 +63,8 @@ if [[ -z $TMUX ]] && ! tmux has-session -t general 2>/dev/null; then
             # if Android then we need proot in utils session
             ~/.local/bin/tss utils:proot general
         else
-            # else just spawn the general session for right now
-            ~/.local/bin/tss general
+            # else spawn the utils:general and general sessions for right now
+            ~/.local/bin/tss utils:general general
         fi
 
     fi
