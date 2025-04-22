@@ -56,8 +56,10 @@ fi
 
 picom &
 sxhkd &
+xrandr --dpi 144
 feh --bg-fill ~/walls/81.jpg
 xrdb ~/.Xresources
 setxkbmap -option ctrl:swapcaps &
 dwmlapstatus &
+sleep 0.5 && st -n "main_terminal" &
 exec ~/.local/bin/dwm
