@@ -238,6 +238,10 @@ return {
                 end
             end
 
+            local function norg_journal_get_time(args)
+                return os.date()
+            end
+
             local function tex_gen_subfile_syllabus(args)
 
                 if config.MAIN_FILE_BASE == "course" then
@@ -960,6 +964,20 @@ return {
             })
 
             ls.add_snippets("norg", {
+
+                s("jst", fmt(
+                    "* {jst_time}{jst_head}\n\n"
+                    .. "  {jst_end}",
+                    {
+                        jst_time = f(norg_journal_get_time, nil),
+                        jst_head = c(1, {
+                            sn(nil, {t(": "), i(1)}),
+                            sn(nil, {i(1)}),
+                        }),
+                        jst_end = i(0),
+                            -- f(norg_create_desc, { 1, 3 }),
+                    })
+                ),
 
                 s("ncl", fmt(
                     "{{:{dirctory_name}/index:}}[{link_name}] notes\n"
