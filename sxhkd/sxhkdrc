@@ -98,9 +98,9 @@ alt + shift + bracketright
 ctrl + h
     xdotool keyup h key BackSpace
 
-#####################
+##################
 ### arrow keys ###
-#####################
+##################
 
 alt + ctrl + h
     xdotool keyup h key --clearmodifiers Left
@@ -113,3 +113,26 @@ alt + ctrl + j
 
 alt + ctrl + k
     xdotool keyup k key --clearmodifiers Up
+
+#######################
+### brightness keys ###
+#######################
+
+XF86MonBrightnessUp
+    sudo light -A 1 && notify-send -r 4342 "Backlight" "Current backlight is set to :  $(sudo light -G | cut -d. -f1)%"
+
+XF86MonBrightnessDown
+    sudo light -U 1 && notify-send -r 4342 "Backlight" "Current backlight is set to :  $(sudo light -G | cut -d. -f1)%"
+
+super + ctrl + period
+    sudo light -A 1 && notify-send -r 4342 "Backlight" "Current backlight is set to :  $(sudo light -G | cut -d. -f1)%"
+
+super + ctrl + comma
+    sudo light -U 1 && notify-send -r 4342 "Backlight" "Current backlight is set to :  $(sudo light -G | cut -d. -f1)%"
+
+##################
+### dunst keys ###
+##################
+
+super + ctrl + semicolon
+    dunstctl close
