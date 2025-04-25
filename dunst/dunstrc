@@ -1,0 +1,27 @@
+[global]
+corner_radius = 12
+frame_color = "#ddb6f2"
+frame_width = 3
+font = "Source Code Pro 10"
+highlight = "#cba6f7"
+line_height = 4
+separator_color= frame
+origin = bottom-right
+offset = (25,25)
+# offset = (25,60) # for top right
+
+[urgency_low]
+background = "#1e1e2e"
+foreground = "#cdd6f4"
+frame_color = "#f5c2e7"
+
+[urgency_normal]
+background = "#1e1e2e"
+foreground = "#cdd6f4"
+frame_color = "#ddb6f2"
+# frame_color = "#cba6f7"
+
+[urgency_critical]
+background = "#1e1e2e"
+foreground = "#cdd6f4"
+frame_color = "#f38ba8"
