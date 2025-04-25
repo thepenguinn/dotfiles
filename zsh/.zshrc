@@ -315,5 +315,6 @@ eval "$(ssh-agent -s)" > /dev/null
 
 clear
 pfetch
-printf "\033[31;1m  hello friend.\n"
+# printf "\033[31;1m  hello friend.\n"
+printf "\033[39;3m Ikigai\033[39;1m: \"The Happiness of Always Being Busy.\"\n"
 #tsu -s /system/xbin/bash
