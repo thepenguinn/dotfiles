@@ -20,6 +20,7 @@ ln -s "${PWD}/dunst" "${Conf_Dir}" > /dev/null 2>&1
 ln -s "${PWD}/mpd" "${Conf_Dir}" > /dev/null 2>&1
 ln -s "${PWD}/ncmpcpp" "${Conf_Dir}" > /dev/null 2>&1
 ln -s "${PWD}/zsh/.zshrc" "${HOME}" > /dev/null 2>&1
+ln -s "${PWD}/xresources/.Xresources" "${HOME}" > /dev/null 2>&1
 ln -s "${PWD}/xinit/.xinitrc" "${HOME}" > /dev/null 2>&1
 
 # Checking whether we are on Android or not
