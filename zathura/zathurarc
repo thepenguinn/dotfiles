@@ -1,1 +1,5 @@
 include catppuccin-mocha
+
+set font "Fira Code Retina 12"
+set statusbar-h-padding 28
+set statusbar-v-padding 28
