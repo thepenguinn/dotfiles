@@ -16,6 +16,10 @@ alias ls="exa -laH --group-directories-first"
 alias nvim="TERM=screen-256color nvim"
 alias kdb="kdb syncall"
 
+alias sxiv="devour sxiv -b -o"
+alias mpv="devour mpv"
+alias zathura="devour zathura"
+
 # EXPORTS
 
 if [ -d /system/app ] && [ -d /system/priv-app ]; then
