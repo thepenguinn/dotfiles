@@ -516,9 +516,14 @@ config.set('colors.webpage.darkmode.enabled', True)
 
 # c.content.user_stylesheets = '~/.config/qutebrowser/css/apprentice.css'
 c.content.user_stylesheets = '~/.config/qutebrowser/css/catppuccin.css'
+# c.content.user_stylesheets = '~/.config/qutebrowser/css/duck.css'
 # c.content.user_stylesheets = '~/.config/qutebrowser/css/solarized-dark.css'
 # c.content.user_stylesheets = ['~/.config/qutebrowser/css/dracula.css']
 # c.content.user_stylesheets = ['~/.config/qutebrowser/css/gruvbox.css']
+
+c.fonts.web.size.default = 16
+c.fonts.web.size.default_fixed = 16
+c.zoom.default = 130
 
 # keybindings
 
