@@ -59,7 +59,7 @@ sxhkd &
 dunst &
 unclutter &
 xrandr --dpi 144
-feh --bg-fill ~/walls/81.jpg
+feh --bg-fill "~/walls/backiee-269161-landscape.jpg"
 xrdb ~/.Xresources
 setxkbmap -option ctrl:swapcaps &
 dwmlapstatus &
