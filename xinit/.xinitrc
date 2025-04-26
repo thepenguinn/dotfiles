@@ -57,6 +57,7 @@ fi
 picom &
 sxhkd &
 dunst &
+unclutter &
 xrandr --dpi 144
 feh --bg-fill ~/walls/81.jpg
 xrdb ~/.Xresources
