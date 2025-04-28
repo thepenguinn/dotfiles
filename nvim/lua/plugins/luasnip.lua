@@ -239,7 +239,7 @@ return {
             end
 
             local function norg_journal_get_time(args)
-                return os.date()
+                return os.date("%a %d %b %G %r %Z")
             end
 
             local function tex_gen_subfile_syllabus(args)
