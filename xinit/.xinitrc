@@ -61,7 +61,6 @@ unclutter &
 xrandr --dpi 144
 feh --bg-fill ~/walls/backiee-269161-landscape.jpg
 xrdb ~/.Xresources
-setxkbmap -option ctrl:swapcaps &
 dwmlapstatus &
 sleep 0.5 && st -n "main_terminal" &
 exec ~/.local/bin/dwm
