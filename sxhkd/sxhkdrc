@@ -119,16 +119,16 @@ alt + ctrl + k
 #######################
 
 XF86MonBrightnessUp
-    sudo light -A 1 && notify-send -r 4342 "Backlight" "Current backlight is set to :  $(sudo light -G | cut -d. -f1)%"
+    sudo light -A 1 && notify-send -t 1000 -r 4342 "Backlight" "Current backlight is set to :  $(sudo light -G | cut -d. -f1)%"
 
 XF86MonBrightnessDown
-    sudo light -U 1 && notify-send -r 4342 "Backlight" "Current backlight is set to :  $(sudo light -G | cut -d. -f1)%"
+    sudo light -U 1 && notify-send -t 1000 -r 4342 "Backlight" "Current backlight is set to :  $(sudo light -G | cut -d. -f1)%"
 
 super + ctrl + period
-    sudo light -A 1 && notify-send -r 4342 "Backlight" "Current backlight is set to :  $(sudo light -G | cut -d. -f1)%"
+    sudo light -A 1 && notify-send -t 1000 -r 4342 "Backlight" "Current backlight is set to :  $(sudo light -G | cut -d. -f1)%"
 
 super + ctrl + comma
-    sudo light -U 1 && notify-send -r 4342 "Backlight" "Current backlight is set to :  $(sudo light -G | cut -d. -f1)%"
+    sudo light -U 1 && notify-send -t 1000 -r 4342 "Backlight" "Current backlight is set to :  $(sudo light -G | cut -d. -f1)%"
 
 ##################
 ### dunst keys ###
