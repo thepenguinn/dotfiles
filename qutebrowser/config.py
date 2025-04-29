@@ -527,6 +527,13 @@ c.zoom.default = 130
 
 # keybindings
 
+config.bind('<Ctrl-r>', 'reload',)
+config.bind('<Ctrl-r>', 'reload', mode = 'insert')
+
+config.set('url.start_pages', ['~/projects/catppuccin-startpage/index.html'])
+config.set('tabs.show', 'never')
+config.set('statusbar.show', 'never')
+
 config.bind('xt', 'config-cycle tabs.show always never')
 config.bind('xb', 'config-cycle statusbar.show always never')
 config.bind('xx', 'config-cycle tabs.show always never;; config-cycle statusbar.show always never')
