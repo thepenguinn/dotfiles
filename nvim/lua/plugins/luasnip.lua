@@ -965,6 +965,46 @@ return {
 
             ls.add_snippets("norg", {
 
+                s("jdrs", fmt(
+                    "* {jdrs_time}: {jdrs_head}\n\n"
+                    .. "  {jdrs_end}",
+                    {
+                        jdrs_time = f(norg_journal_get_time, nil),
+                        jdrs_head = t("Going to Sleep"),
+                        jdrs_end = i(0),
+                    })
+                ),
+
+                s("jdre", fmt(
+                    "* {jdre_time}: {jdre_head}\n\n"
+                    .. "  {jdre_end}",
+                    {
+                        jdre_time = f(norg_journal_get_time, nil),
+                        jdre_head = t("Finished Evening Routine"),
+                        jdre_end = i(0),
+                    })
+                ),
+
+                s("jdrm", fmt(
+                    "* {jdrm_time}: {jdrm_head}\n\n"
+                    .. "  {jdrm_end}",
+                    {
+                        jdrm_time = f(norg_journal_get_time, nil),
+                        jdrm_head = t("Finished Morning Routine"),
+                        jdrm_end = i(0),
+                    })
+                ),
+
+                s("jdrw", fmt(
+                    "* {jdrw_time}: {jdrw_head}\n\n"
+                    .. "  {jdrw_end}",
+                    {
+                        jdrw_time = f(norg_journal_get_time, nil),
+                        jdrw_head = t("Woke Up"),
+                        jdrw_end = i(0),
+                    })
+                ),
+
                 s("jst", fmt(
                     "* {jst_time}{jst_head}\n\n"
                     .. "  {jst_end}",
