@@ -4,6 +4,8 @@
 
 vim.g.mapleader = " "
 
+vim.g.maplocalleader = " "
+
 -- GLOBAL SETTINGS --
 
 vim.opt.rnu = true
