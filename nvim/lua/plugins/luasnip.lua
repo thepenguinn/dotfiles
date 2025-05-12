@@ -980,7 +980,7 @@ return {
                     .. "  {jdre_end}",
                     {
                         jdre_time = f(norg_journal_get_time, nil),
-                        jdre_head = t("Finished Evening Routine"),
+                        jdre_head = t("Finished Evening Ritual"),
                         jdre_end = i(0),
                     })
                 ),
@@ -990,7 +990,7 @@ return {
                     .. "  {jdrm_end}",
                     {
                         jdrm_time = f(norg_journal_get_time, nil),
-                        jdrm_head = t("Finished Morning Routine"),
+                        jdrm_head = t("Finished Morning Ritual"),
                         jdrm_end = i(0),
                     })
                 ),
