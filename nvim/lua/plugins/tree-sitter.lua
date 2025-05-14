@@ -9,7 +9,7 @@ return {
                     'python', 'java', 'cpp', 'norg', 'bash',
                     'lua', 'make', 'latex', 'verilog', 'scheme',
                     'asm', 'cmake', 'tcl', 'matlab', 'rust', 'html',
-                    'xml', 'groovy',
+                    'xml', 'groovy', 'markdown_inline',
                 },
                 highlight = {
                     enable = true,
