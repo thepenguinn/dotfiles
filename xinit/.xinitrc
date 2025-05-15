@@ -65,7 +65,7 @@ unclutter &
 feh --bg-fill ~/Downloads/mandelbrot_gap_magenta.png
 xrdb ~/.Xresources
 dwmlapstatus &
-sh -c "sleep 0.25 && st -n main_terminal" &
-sh -c "sleep 0.25 && while true; do qutebrowser --nowindow; done" &
+sh -c "st -n main_terminal" &
+# sleep 0.5 && sh -c "sleep 2.5 && while true; do qutebrowser --nowindow ; done" &
 
 exec ~/.local/bin/dwm
