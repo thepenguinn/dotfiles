@@ -54,14 +54,18 @@ fi
 # "$xterm" -geometry 80x50+494+51 &
 # "$xterm" -geometry 80x20+494-0 &
 
+xrandr --dpi 144
+
 picom &
 sxhkd &
 dunst &
 unclutter &
-xrandr --dpi 144
+
 # feh --bg-fill ~/walls/backiee-269161-landscape.jpg
 feh --bg-fill ~/Downloads/mandelbrot_gap_magenta.png
 xrdb ~/.Xresources
 dwmlapstatus &
-sleep 0.5 && st -n "main_terminal" &
+sh -c "sleep 0.25 && st -n main_terminal" &
+sh -c "sleep 0.25 && while true; do qutebrowser --nowindow; done" &
+
 exec ~/.local/bin/dwm
