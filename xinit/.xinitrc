@@ -66,6 +66,6 @@ feh --bg-fill ~/Downloads/mandelbrot_gap_magenta.png
 xrdb ~/.Xresources
 dwmlapstatus &
 sh -c "st -n main_terminal" &
-# sleep 0.5 && sh -c "sleep 2.5 && while true; do qutebrowser --nowindow ; done" &
+sh -c "while true; do [ ! -z \"$DISPLAY\" ] && qutebrowser --nowindow ; done" &
 
 exec ~/.local/bin/dwm
