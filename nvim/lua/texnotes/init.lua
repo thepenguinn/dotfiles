@@ -136,8 +136,10 @@ M._init_chapter = function(parent_dir)
         tmp = path("~/.config/notes/chapter_header.tex")
         tmp:copy(path(parent_dir .. "/chapter_header.tex"))
 
-        tmp = path(parent_dir .. "/" .. M.config.SYLLABUS_FILE_BASE .. ".tex")
-        tmp:touch()
+        if M.config.MAIN_FILE_BASE == "course" then
+            tmp = path(parent_dir .. "/" .. M.config.SYLLABUS_FILE_BASE .. ".tex")
+            tmp:touch()
+        end
 
         tmp = path(parent_dir .. "/" .. M.config.CHAPTER_FILE_BASE .. ".tex")
         tmp:touch()
