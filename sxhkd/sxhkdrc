@@ -136,3 +136,10 @@ super + ctrl + comma
 
 super + ctrl + semicolon
     dunstctl close
+
+#######################
+### screenshot keys ###
+#######################
+
+super + shift + p
+    screenshot
