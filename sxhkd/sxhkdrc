@@ -141,5 +141,5 @@ super + ctrl + semicolon
 ### screenshot keys ###
 #######################
 
-super + shift + p
+super + ctrl + p
     screenshot
