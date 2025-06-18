@@ -16,13 +16,9 @@
   },
   "modules": [
     "break",
-    // {
-    //   "type": "title",
-    //   "format": "   {6}{7}{8}"
-    // },
     {
-      "type": "custom",
-      "format": "  ─────────────────────────────────────────────── " // `\u001b` is `\033`, or `\e`
+      "type": "title",
+      "format": "   {6}{7}{8}"
     },
     "break",
     // {
@@ -123,17 +119,13 @@
     //   "format": "                    " // `\u001b` is `\033`, or `\e`
     // },
     {
-      "type": "custom",
-      "format": "  ─────────────────────────────────────────────── " // `\u001b` is `\033`, or `\e`
+      "type": "colors",
+      "paddingLeft": 3,
+      "symbol": "circle",
+      "block": {
+        "width": 10
+      }
     },
-    // {
-    //   "type": "colors",
-    //   "paddingLeft": 3,
-    //   "symbol": "circle",
-    //   "block": {
-    //     "width": 10
-    //   }
-    // },
     "break",
     {
       "type": "custom",
