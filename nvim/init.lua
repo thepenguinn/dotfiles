@@ -103,23 +103,44 @@ local pyexec_group = vim.api.nvim_create_augroup("PyExecGroup", {clear = true})
 
 require("pyexec")
 
+local test_fn = function ()
+
+    local calendar = require("neorg").modules.get_module("core.ui.calendar")
+
+    if not calendar then
+        return
+    end
+
+    calendar.select_date({
+        callback = function(arg)
+            print(vim.inspect(arg))
+        end
+    })
+    -- print(vim.inspect(calendar))
+
+end
+
+require("norg")
+
 vim.api.nvim_create_autocmd({"BufEnter"}, {
     pattern = {"*.norg", "*.tex"},
     callback = function()
+        vim.keymap.set("n", "<leader>tt", test_fn)
+        vim.keymap.set("n", "<leader>tas", require("norg").add_todo_schedule)
         vim.keymap.set("n", "<leader>og", require("pyexec").exec_at_cursor)
         vim.api.nvim_create_user_command("PyExecAll", require("pyexec").exec_all, {})
     end,
     group = pyexec_group,
 })
 
-vim.api.nvim_create_autocmd({"BufLeave"}, {
-    pattern = {"*.norg", "*.tex"},
-    callback = function()
-        vim.keymap.del("n", "<leader>og")
-        vim.api.nvim_del_user_command("PyExecAll")
-    end,
-    group = pyexec_group,
-})
+-- vim.api.nvim_create_autocmd({"BufLeave"}, {
+--     pattern = {"*.norg", "*.tex"},
+--     callback = function()
+--         vim.keymap.del("n", "<leader>og")
+--         vim.api.nvim_del_user_command("PyExecAll")
+--     end,
+--     group = pyexec_group,
+-- })
 
 local tex_notes_group = vim.api.nvim_create_augroup("TexNotesGroup", {clear = true})
 
