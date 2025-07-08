@@ -40,3 +40,9 @@
 	directory = /data/data/com.termux/files/home/remote-repo/notes.git
 [init]
 	defaultBranch = main
+[credential "https://github.com"]
+	helper = 
+	helper = !/usr/bin/gh auth git-credential
+[credential "https://gist.github.com"]
+	helper = 
+	helper = !/usr/bin/gh auth git-credential
