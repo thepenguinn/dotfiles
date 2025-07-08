@@ -22,6 +22,10 @@ ln -s "${PWD}/ncmpcpp" "${Conf_Dir}" > /dev/null 2>&1
 ln -s "${PWD}/zsh/.zshrc" "${HOME}" > /dev/null 2>&1
 ln -s "${PWD}/xresources/.Xresources" "${HOME}" > /dev/null 2>&1
 ln -s "${PWD}/xinit/.xinitrc" "${HOME}" > /dev/null 2>&1
+ln -s "${PWD}/alacritty" "${Conf_Dir}" > /dev/null 2>&1
+ln -s "${PWD}/kitty" "${Conf_Dir}" > /dev/null 2>&1
+ln -s "${PWD}/fastfetch" "${Conf_Dir}" > /dev/null 2>&1
+ln -s "${PWD}/xremap" "${Conf_Dir}" > /dev/null 2>&1
 
 # Checking whether we are on Android or not
 # This is how pfetch checks for Android
