@@ -8,7 +8,7 @@ return {
             require('neorg').setup {
                 load = {
                     ["core.defaults"] = {}, -- Loads default behaviour
-                    ["core..concealer"] = {
+                    ["core.concealer"] = {
                         config = {
                             icon_preset = "basic",
                         },
@@ -34,6 +34,12 @@ return {
                     ["core.highlights"] = {
                         config = {
                             todo_items_match_color = "all",
+                        },
+                    },
+                    ["core.qol.todo_items"] = {
+                        config = {
+                            create_todo_items = true,
+                            create_todo_parents = true,
                         },
                     },
                     ["core.looking-glass"] = {},
