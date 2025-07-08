@@ -1,0 +1,17 @@
+keymap:
+  - name: Number keys
+    remap:
+      M-a: KEY_1
+      M-s: KEY_2
+      M-d: KEY_3
+      M-f: KEY_4
+      M-g: KEY_5
+      M-h: KEY_6
+      M-j: KEY_7
+      M-k: KEY_8
+      M-l: KEY_9
+      M-semicolon: KEY_0
+      M-KEY_LEFTBRACE: KEY_MINUS
+      M-KEY_RIGHTBRACE: KEY_EQUAL
+      M-q: KEY_GRAVE
+      C-h: C-KEY_BACKSPACE
