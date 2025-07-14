@@ -1,0 +1,16 @@
+#!/bin/bash
+
+# okay 0 is always created
+
+tmux new-window -t ${1}
+tmux split-window -t ${1}:0
+tmux split-window -t ${1}:1
+
+tmux send-keys -t ${1}:1.0 "script -f tailme.out" Enter
+tmux send-keys -t ${1}:1.0 "slides present.md" Enter
+tmux send-keys -t ${1}:1.1 "nvim" Enter
+
+tmux send-keys -t ${1}:0.0 "printf \"\033[?25l\" && tail -f tailme.out" Enter
+tmux send-keys -t ${1}:0.0 "clear" Enter
+
+tmux switch-client -t ${1}:0
