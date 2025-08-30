@@ -51,6 +51,13 @@ super + ctrl + semicolon
 super + ctrl + p
     screenshot
 
+#######################
+### screenshot keys ###
+#######################
+
+super + ctrl + P
+    screenrecord
+
 ########################
 ### F12 key for tmux ###
 ########################
