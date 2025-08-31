@@ -60,12 +60,14 @@ picom &
 sxhkd &
 dunst &
 unclutter &
+sudo xremap ~/.config/xremap/config.yml &
+xinput set-prop 9 320 1 # enabling tapping touch pad
 
 # feh --bg-fill ~/walls/backiee-269161-landscape.jpg
-feh --bg-fill ~/Downloads/mandelbrot_gap_magenta.png
+feh --bg-fill ~/.config/wallpaper/mandelbrot_gap_magenta.png
 xrdb ~/.Xresources
 dwmlapstatus &
-sh -c "st -n main_terminal" &
+sh -c "kitty --name main_terminal" &
 sh -c "while true; do [ ! -z \"$DISPLAY\" ] && qutebrowser --nowindow ; done" &
 
 exec ~/.local/bin/dwm
