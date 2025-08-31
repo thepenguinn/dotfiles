@@ -317,16 +317,28 @@ fi
 eval "$(starship init zsh)" > /dev/null
 eval "$(ssh-agent -s)" > /dev/null
 
-clear
-pfetch
-# printf "\033[31;1m  hello friend.\n"
-printf "\033[37;3m Ikigai\033[37;1m: \"The Happiness of Always Being Busy.\"\n\033[31;0m"
-#tsu -s /system/xbin/bash
-
 if [ ! -d /system/app ] || [ ! -d /system/priv-app ]; then
     # not on android
+    fastfetch () {
+        kitten icat --align=left /home/daniel/fun/ifetch/cat_final_ano.png | command fastfetch --raw - --logo-width 17 --logo-height 16 && printf "\033[2F"
+    }
+    if [[ ! $(tty) =~ /dev/tty* ]] ; then
+        clear
+        fastfetch
+    else
+        clear
+        pfetch
+        # printf "\033[31;1m  hello friend.\n"
+        printf "\033[37;3m Ikigai\033[37;1m: \"The Happiness of Always Being Busy.\"\n\033[31;0m"
+    fi
     if [ -z "$DISPLAY" ] && [ "$XDG_VTNR" -eq 1 ] && [ $(tty) = "/dev/tty1" ] ; then
         # if only we are in tty1
         exec startx
     fi
+else
+    clear
+    pfetch
+    # printf "\033[31;1m  hello friend.\n"
+    printf "\033[37;3m Ikigai\033[37;1m: \"The Happiness of Always Being Busy.\"\n\033[31;0m"
+    #tsu -s /system/xbin/bash
 fi
