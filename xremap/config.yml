@@ -14,4 +14,3 @@ keymap:
       M-KEY_LEFTBRACE: KEY_MINUS
       M-KEY_RIGHTBRACE: KEY_EQUAL
       M-q: KEY_GRAVE
-      C-h: C-KEY_BACKSPACE
