@@ -189,5 +189,7 @@ vim.api.nvim_create_autocmd({"BufLeave"}, {
     group = openscad_group,
 })
 
+vim.cmd("set mouse=")
+
 --
 --
