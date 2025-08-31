@@ -26,6 +26,7 @@ ln -s "${PWD}/alacritty" "${Conf_Dir}" > /dev/null 2>&1
 ln -s "${PWD}/kitty" "${Conf_Dir}" > /dev/null 2>&1
 ln -s "${PWD}/fastfetch" "${Conf_Dir}" > /dev/null 2>&1
 ln -s "${PWD}/xremap" "${Conf_Dir}" > /dev/null 2>&1
+ln -s "${PWD}/wallpaper" "${Conf_Dir}" > /dev/null 2>&1
 
 # Checking whether we are on Android or not
 # This is how pfetch checks for Android
