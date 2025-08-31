@@ -2,5 +2,6 @@ Xcursor.theme: Vimix-white-cursors
 Xcursor.size: 24
 
 Sxiv.background: #1e1e2e
+! Sxiv.background: #000000
 Sxiv.foreground: #cba6f7
 Sxiv.font: Fira Code Retina:size=8
