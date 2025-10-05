@@ -11,6 +11,8 @@ SECTIONS := $(wildcard chapter_*/section_*/section.tex) $(wildcard work_*/sectio
 
 TIKZPICS := $(shell find -type f -wholename "*/tikzpics/*.tex")
 
+BUILD_FILES := $(wildcard *.aux *.bbl *.bcf *.blg *.lof main.log *.lot main.pdf *.run.xml *.toc *.tstp)
+
 build: course.pdf view
 
 force:
@@ -22,10 +24,13 @@ course.pdf: course.tex preamble.tex colorscheme.sty $(CHAPTERS) $(SYLLABUS) $(SE
 	lunatikz build course.tex
 	pdflatex -shell-escape -halt-on-error course.tex
 
+clean:
+	rm $(BUILD_FILES)
+
 view:
 	$(VIEWER) course.pdf
 
 send:
 	$(SENDER) course.pdf
 
-.PHONY: view build force
+.PHONY: view build force clean

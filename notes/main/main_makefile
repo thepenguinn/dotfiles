@@ -12,6 +12,8 @@ TIKZPICS := $(shell find -type f -wholename "*/tikzpics/*.tex")
 
 ABSTRACT := abstract_template.tex abstract.tex
 
+BUILD_FILES := $(wildcard *.aux *.bbl *.bcf *.blg *.lof main.log *.lot main.pdf *.run.xml *.toc *.tstp)
+
 build: main.pdf view
 
 force:
@@ -28,6 +30,9 @@ abstract: abstract.pdf view_abstract
 abstract.pdf: preamble.tex colorscheme.sty $(ABSTRACT)
 	pdflatex -shell-escape -halt-on-error abstract.tex
 
+clean:
+	rm $(BUILD_FILES)
+
 view_abstract:
 	$(VIEWER) abstract.pdf
 
@@ -37,4 +42,4 @@ view:
 send:
 	$(SENDER) main.pdf
 
-.PHONY: view build force view_abstract abstract
+.PHONY: view build force view_abstract abstract clean
