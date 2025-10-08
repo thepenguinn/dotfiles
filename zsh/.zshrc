@@ -43,6 +43,8 @@ export QT_QPA_PLATFORMTHEME="qt5ct"
 #export MANPAGER="nvimpager"
 #export PAGER="nvimpager"
 
+export GOOGLE_APPLICATION_CREDENTIALS="${HOME}/.local/secret/daily-progress-fetcher-key.json"
+
 # SOURCES
 
 export MOTO_MAC_ADDR="88:79:7e:be:5e:e4"
