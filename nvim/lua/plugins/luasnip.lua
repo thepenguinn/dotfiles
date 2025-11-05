@@ -1005,6 +1005,23 @@ return {
                     })
                 ),
 
+                s("jstg", fmt(
+                    "* {jstg_time}: {jstg_head}\n\n"
+                    .. " ** One Thing I'm Grateful For\n\n"
+                    .. "   {jstg_one_grate}\n\n"
+                    .. " ** Another Thing I'm Grateful For\n\n"
+                    .. "   {jstg_another_grate}\n\n"
+                    .. " ** One Thing that Went Well Today\n\n"
+                    .. "   {jstg_well_today}",
+                    {
+                        jstg_time = f(norg_journal_get_time, nil),
+                        jstg_one_grate = i(1),
+                        jstg_another_grate = i(2),
+                        jstg_well_today = i(0),
+                        jstg_head = t("Gratitude"),
+                    })
+                ),
+
                 s("jst", fmt(
                     "* {jst_time}{jst_head}\n\n"
                     .. "  {jst_end}",
